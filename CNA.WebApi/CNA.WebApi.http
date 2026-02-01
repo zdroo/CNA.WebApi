@@ -1,0 +1,6 @@
+@CNA.WebApi_HostAddress = http://localhost:5019
+
+GET {{CNA.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="CNA.Application/CNA.Application.csproj" />
+  <Project Path="CNA.Contracts/CNA.Contracts.csproj" />
+  <Project Path="CNA.Domain/CNA.Domain.csproj" />
+  <Project Path="CNA.Infrastructure/CNA.Infrastructure.csproj" />
+  <Project Path="CNA.WebApi/CNA.WebApi.csproj" />
+</Solution>
