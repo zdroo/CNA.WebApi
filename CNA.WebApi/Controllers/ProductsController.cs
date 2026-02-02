@@ -19,7 +19,7 @@ namespace CNA.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ProductResponse>>> GetAll()
+        public async Task<ActionResult<List<ProductResponse>>> GetProducts()
         {
             var result = await _mediator.Send(new GetProductsQuery());
             return Ok(result);
@@ -37,6 +37,13 @@ namespace CNA.WebApi.Controllers
         {
             var id = await _mediator.Send(new CreateProductCommand(request));
             return CreatedAtAction(nameof(GetById), new { id }, id);
+        }
+
+
+        [HttpDelete]
+        public async Task<ActionResult<Guid>> DeleteProduct(Guid productId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
