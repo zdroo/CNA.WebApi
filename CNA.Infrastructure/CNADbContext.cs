@@ -18,20 +18,17 @@ namespace CNA.Infrastructure
         {
             base.OnModelCreating(modelBuilder);
 
-            // Product -> Variant (1:N)
             modelBuilder.Entity<Product>()
                 .HasMany(p => p.Variants)
                 .WithOne(v => v.Product)
                 .HasForeignKey(v => v.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Variant -> Attributes (1:N)
             modelBuilder.Entity<ProductVariant>()
                 .HasMany(v => v.Attributes)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Variant -> Stock (1:1)
             modelBuilder.Entity<ProductVariant>()
                 .HasOne(v => v.Stock)
                 .WithOne()
