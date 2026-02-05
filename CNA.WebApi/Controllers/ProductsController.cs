@@ -1,14 +1,13 @@
-﻿using CNA.Application.Catalog.Commands;
-using CNA.Application.Catalog.Queries;
-using CNA.Contracts.Requests;
+﻿using CNA.Application.Catalog.Queries;
+using CNA.Application.Catalog.Queries.Filters;
 using CNA.Contracts.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CNA.WebApi.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/products")]
     public class ProductsController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -19,24 +18,27 @@ namespace CNA.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ProductResponse>>> GetAll()
+        public async Task<ActionResult<List<ProductResponse>>> GetProducts(
+            ProductsFilter filter,
+            CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(new GetProductsQuery());
+            var result = await _mediator.Send(
+                new GetProductsQuery(filter),
+                cancellationToken);
+
             return Ok(result);
         }
 
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<ProductResponse>> GetById(Guid id)
+        public async Task<ActionResult<ProductResponse>> GetById(
+            Guid id,
+            CancellationToken cancellationToken)
         {
-            var product = await _mediator.Send(new GetProductByIdQuery(id));
-            return product is null ? NotFound() : Ok(product);
-        }
+            var product = await _mediator.Send(
+                new GetProductByIdQuery(id),
+                cancellationToken);
 
-        [HttpPost]
-        public async Task<ActionResult<Guid>> Create(CreateProductRequest request)
-        {
-            var id = await _mediator.Send(new CreateProductCommand(request));
-            return CreatedAtAction(nameof(GetById), new { id }, id);
+            return product is null ? NotFound() : Ok(product);
         }
     }
 }

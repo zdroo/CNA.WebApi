@@ -1,4 +1,5 @@
-﻿using CNA.Domain.Common;
+﻿using CNA.Domain.Catalog.Enums;
+using CNA.Domain.Common;
 
 namespace CNA.Domain.Catalog
 {
@@ -12,6 +13,9 @@ namespace CNA.Domain.Catalog
 
         private readonly List<VariantAttribute> _attributes = new();
         public IReadOnlyCollection<VariantAttribute> Attributes => _attributes;
+
+        private readonly List<Review> _reviews = new();
+        public IReadOnlyCollection<Review> Reviews => _reviews;
 
         public bool IsActive { get; private set; } = true;
 
@@ -28,5 +32,25 @@ namespace CNA.Domain.Catalog
         {
             _attributes.Add(new VariantAttribute(name, value));
         }
+
+        public void AddReview(RatingScore rating, string comment, Guid userId)
+        {
+            if (_reviews.Any(r => r.UserId == userId))
+                throw new InvalidOperationException("User already reviewed this variant");
+
+            var review = new Review(Id, rating, comment, userId);
+            _reviews.Add(review);
+        }
+
+        public decimal GetAverageRating()
+        {
+            if (_reviews.Count == 0)
+                return 0;
+
+            var average = _reviews.Sum(r => (int)r.Rating) / (decimal)_reviews.Count;
+            return Math.Round(average, 2);
+        }
+
+        public int ReviewsCount => _reviews.Count;
     }
 }

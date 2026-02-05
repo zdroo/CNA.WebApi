@@ -6,11 +6,12 @@ namespace CNA.Domain.Catalog
     {
         public string Name { get; private set; } = default!;
         public string Slug { get; private set; } = default!;
-
         public Guid? ParentCategoryId { get; private set; }
         public Category? ParentCategory { get; private set; }
-
         public bool IsActive { get; private set; } = true;
+
+        private readonly List<Product> _products = new();
+        public IReadOnlyCollection<Product> Products => _products;
 
         protected Category() { }
 

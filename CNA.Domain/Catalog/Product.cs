@@ -1,4 +1,5 @@
 ﻿using CNA.Domain.Common;
+using CNA.Domain.Exceptions;
 
 namespace CNA.Domain.Catalog
 {
@@ -37,6 +38,21 @@ namespace CNA.Domain.Catalog
         public void AddVariant(ProductVariant variant)
         {
             _variants.Add(variant);
+        }
+        public void RemoveVariant(ProductVariant variant) 
+        { 
+            _variants.Remove(variant); 
+        }
+        public void RemoveVariant(Guid variantId)
+        {
+            var variant = _variants.FirstOrDefault(x => x.Id == variantId);
+
+            if (variant != null)
+            {
+                _variants.Remove(variant);
+            }
+
+            throw new VariantNotExistingException(variantId);
         }
     }
 
