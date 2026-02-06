@@ -23,13 +23,13 @@ namespace CNA.Application.Catalog.CommandHandlers
 
             var r = command.Request;
 
-            product.UpdateVariant(
-                command.VariantId,
-                r.Name,
-                r.Price,
-                r.IsActive,
-                r.Attributes
-            );
+            //product.UpdateVariant(
+            //    command.VariantId,
+            //    r.Name,
+            //    r.Price,
+            //    r.IsActive,
+            //    r.Attributes
+            //);
 
             await _repository.UpdateAsync(product);
         }

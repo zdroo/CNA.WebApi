@@ -1,4 +1,5 @@
 ﻿using CNA.Domain.Common;
+using CNA.Domain.Exceptions;
 
 namespace CNA.Domain.Catalog
 {
@@ -15,6 +16,19 @@ namespace CNA.Domain.Catalog
         {
             ProductVariantId = productVariantId;
             Quantity = quantity;
+        }
+
+        internal Stock(int quantity)
+        {
+            if (quantity < 0)
+                throw new InvalidOperationException("Stock cannot be negative");
+
+            Quantity = quantity;
+        }
+
+        internal void Increase(int amount)
+        {
+            Quantity += amount;
         }
 
         public void Decrease(int amount)

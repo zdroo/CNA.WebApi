@@ -17,5 +17,4 @@ namespace CNA.Domain.Catalog
             Value = value;
         }
     }
-
 }

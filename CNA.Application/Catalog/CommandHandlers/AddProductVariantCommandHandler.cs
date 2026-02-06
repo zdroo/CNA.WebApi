@@ -1,5 +1,6 @@
 ﻿using CNA.Application.Catalog.Commands;
 using CNA.Application.Interfaces;
+using CNA.Domain.Catalog;
 using MediatR;
 
 namespace CNA.Application.Catalog.CommandHandlers
@@ -23,15 +24,16 @@ namespace CNA.Application.Catalog.CommandHandlers
 
             var r = command.Request;
 
-            var variantId = product.AddVariant(
+            var variant = product.AddVariant(
                 r.Sku,
-                r.Name,
                 r.Price,
-                r.Attributes
+                r.Quantity,
+                r.VariantAttributes.Select(a => (a.Name, a.Value))
             );
 
             await _repository.UpdateAsync(product);
-            return variantId;
+
+            return variant.Id;
         }
     }
 }

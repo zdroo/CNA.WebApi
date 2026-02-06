@@ -51,6 +51,22 @@ namespace CNA.Domain.Catalog
             return Math.Round(average, 2);
         }
 
+        public void IncreaseStock(int amount)
+        {
+            if (amount <= 0)
+                throw new InvalidOperationException("Amount must be positive");
+
+            Stock.Increase(amount);
+        }
+
+        public void DecreaseStock(int amount)
+        {
+            if (amount <= 0)
+                throw new InvalidOperationException("Amount must be positive");
+
+            Stock.Decrease(amount);
+        }
+
         public int ReviewsCount => _reviews.Count;
     }
 }

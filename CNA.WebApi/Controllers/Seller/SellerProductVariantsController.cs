@@ -1,6 +1,6 @@
-﻿using CNA.Contracts.Requests.ProductVariants;
+﻿using CNA.Application.Catalog.Commands;
+using CNA.Contracts.Requests.ProductVariants;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CNA.WebApi.Controllers.Seller

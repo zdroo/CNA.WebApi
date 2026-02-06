@@ -39,6 +39,23 @@ namespace CNA.Domain.Catalog
         {
             _variants.Add(variant);
         }
+
+        public ProductVariant AddVariant(string sku, decimal price, int quantity, IEnumerable<(string Name, string Value)> attributes) 
+        { 
+            var variant = new ProductVariant(this.Id, sku, price); 
+
+            foreach (var attr in attributes) 
+            { 
+                variant.AddAttribute(attr.Name, attr.Value); 
+            
+            }
+
+            variant.Stock.Increase(quantity);
+
+            _variants.Add(variant); 
+            return variant; 
+        }
+
         public void RemoveVariant(ProductVariant variant) 
         { 
             _variants.Remove(variant); 
@@ -55,5 +72,4 @@ namespace CNA.Domain.Catalog
             throw new VariantNotExistingException(variantId);
         }
     }
-
 }
