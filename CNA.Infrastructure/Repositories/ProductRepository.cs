@@ -19,6 +19,12 @@ namespace CNA.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task DeleteAsync(Product product)
+        {
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<IReadOnlyList<Product>> ListAllAsync()
         {
             return await _context.Products

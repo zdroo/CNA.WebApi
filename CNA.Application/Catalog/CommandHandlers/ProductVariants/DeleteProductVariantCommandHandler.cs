@@ -2,7 +2,7 @@
 using CNA.Application.Interfaces;
 using MediatR;
 
-namespace CNA.Application.Catalog.CommandHandlers
+namespace CNA.Application.Catalog.CommandHandlers.ProductVariants
 {
     public class DeleteProductVariantCommandHandler
         : IRequestHandler<DeleteProductVariantCommand>

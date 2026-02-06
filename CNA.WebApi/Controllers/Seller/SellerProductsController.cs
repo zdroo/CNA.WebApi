@@ -39,7 +39,7 @@ namespace CNA.WebApi.Controllers.Seller
                 new UpdateProductCommand(id, request),
                 cancellationToken);
 
-            return NoContent();
+            return Ok(id);
         }
 
         [HttpDelete("{id:guid}")]
@@ -51,7 +51,7 @@ namespace CNA.WebApi.Controllers.Seller
                 new DeleteProductCommand(id),
                 cancellationToken);
 
-            return NoContent();
+            return Ok();
         }
     }
 }

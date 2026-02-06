@@ -8,6 +8,7 @@ namespace CNA.Domain.Catalog
         public Guid ProductId { get; private set; }
         public Product Product { get; private set; } = default!;
         public string Sku { get; private set; } = default!;
+        public string Name { get; private set; } = default!;
         public decimal Price { get; private set; }
         public Stock Stock { get; private set; } = default!;
 
@@ -16,6 +17,7 @@ namespace CNA.Domain.Catalog
 
         private readonly List<Review> _reviews = new();
         public IReadOnlyCollection<Review> Reviews => _reviews;
+        public int ReviewsCount => _reviews.Count;
 
         public bool IsActive { get; private set; } = true;
 
@@ -31,6 +33,11 @@ namespace CNA.Domain.Catalog
         public void AddAttribute(string name, string value)
         {
             _attributes.Add(new VariantAttribute(name, value));
+        }
+
+        public void ClearAttributes()
+        {
+            _attributes.Clear();
         }
 
         public void AddReview(RatingScore rating, string comment, Guid userId)
@@ -66,7 +73,19 @@ namespace CNA.Domain.Catalog
 
             Stock.Decrease(amount);
         }
+        public void UpdateDetails(string? name, string? sku, decimal? price, bool? isActive)
+        {
+            if (!string.IsNullOrWhiteSpace(name))
+                Name = name;
 
-        public int ReviewsCount => _reviews.Count;
+            if (!string.IsNullOrWhiteSpace(sku))
+                Sku = sku;
+
+            if (price.HasValue && price.Value < 0)
+                Price = price.Value;
+
+            if (isActive.HasValue)
+                IsActive = isActive.Value;
+        }
     }
 }

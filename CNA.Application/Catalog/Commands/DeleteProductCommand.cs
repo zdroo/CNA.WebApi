@@ -2,5 +2,5 @@
 
 namespace CNA.Application.Catalog.Commands
 {
-    public record DeleteProductCommand(Guid productId) : IRequest;
+    public record DeleteProductCommand(Guid ProductId) : IRequest;
 }

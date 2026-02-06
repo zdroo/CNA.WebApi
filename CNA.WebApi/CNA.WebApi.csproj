@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CNA.Application\CNA.Application.csproj" />
     <ProjectReference Include="..\CNA.Contracts\CNA.Contracts.csproj" />
+    <ProjectReference Include="..\CNA.Infrastructure\CNA.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@
 using CNA.Application.Interfaces;
 using MediatR;
 
-namespace CNA.Application.Catalog.CommandHandlers
+namespace CNA.Application.Catalog.CommandHandlers.Products
 {
     public class UpdateProductCommandHandler
     : IRequestHandler<UpdateProductCommand>
@@ -23,13 +23,16 @@ namespace CNA.Application.Catalog.CommandHandlers
 
             var r = command.Request;
 
-            //product.UpdateDetails(
-            //    r.Name,
-            //    r.Description,
-            //    r.Brand,
-            //    r.CategoryId,
-            //    r.IsActive
-            //);
+            product.UpdateProduct(
+                r.Name,
+                r.Description,
+                r.Brand,
+                r.CategoryId,
+                r.IsActive,
+                r.IsShippable,
+                r.IsDigital,
+                r.IsReturnable
+            );
 
             await _repository.UpdateAsync(product);
         }

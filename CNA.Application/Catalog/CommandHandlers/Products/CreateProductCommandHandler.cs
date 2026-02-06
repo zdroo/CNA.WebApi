@@ -3,7 +3,7 @@ using CNA.Application.Interfaces;
 using CNA.Domain.Catalog;
 using MediatR;
 
-namespace CNA.Application.Catalog.CommandHandlers
+namespace CNA.Application.Catalog.CommandHandlers.Products
 {
     public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Guid>
     {

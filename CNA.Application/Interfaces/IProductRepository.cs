@@ -7,6 +7,7 @@ namespace CNA.Application.Interfaces
         Task<Product?> GetByIdAsync(Guid id);
         Task<IReadOnlyList<Product>> ListAllAsync();
         Task AddAsync(Product product);
+        Task DeleteAsync(Product product);
         Task UpdateAsync(Product product);
 
         // optional: cautare dupa categorie, filtrare, etc.

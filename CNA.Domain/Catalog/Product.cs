@@ -60,6 +60,7 @@ namespace CNA.Domain.Catalog
         { 
             _variants.Remove(variant); 
         }
+
         public void RemoveVariant(Guid variantId)
         {
             var variant = _variants.FirstOrDefault(x => x.Id == variantId);
@@ -70,6 +71,63 @@ namespace CNA.Domain.Catalog
             }
 
             throw new VariantNotExistingException(variantId);
+        }
+
+        public void UpdateVariant(
+            Guid variantId,
+            string? name,
+            string? sku,
+            decimal? price,
+            int? quantity,
+            IEnumerable<(string Name, string Value)>? attributes,
+            bool? isActive)
+        {
+            var variant = _variants.FirstOrDefault(v => v.Id == variantId)
+                ?? throw new Exception("Variant not found");
+
+            variant.UpdateDetails(name, sku, price, isActive);
+
+            variant.ClearAttributes();
+
+            if (attributes != null)
+            {
+                foreach (var attr in attributes)
+                {
+                    variant.AddAttribute(attr.Name, attr.Value);
+                }
+            }
+
+            if (quantity.HasValue)
+            {
+                variant.Stock.Increase(quantity.Value);
+            }
+        }
+
+        public void UpdateProduct(string? name, string? description, string? brand, Guid? categoryId, bool? isActive, bool? isShippable, bool? isDigital, bool? isReturnable)
+        {
+            if (name != null)
+                Name = name;
+
+            if (description != null)
+                Description = description;
+
+            if (brand != null)
+                Brand = brand;
+
+            if (categoryId != null)
+                CategoryId = categoryId.Value;
+
+            if (isActive.HasValue)
+                IsActive = isActive.Value;
+
+            if (isShippable.HasValue)
+                IsShippable = isShippable.Value;
+
+            if (isDigital.HasValue)
+                IsDigital = isDigital.Value;
+
+            if (isReturnable.HasValue)
+                IsReturnable = isReturnable.Value;
         }
     }
 }

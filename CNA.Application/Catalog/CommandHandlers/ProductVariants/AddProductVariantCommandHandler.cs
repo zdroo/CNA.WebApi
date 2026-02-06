@@ -1,9 +1,8 @@
 ﻿using CNA.Application.Catalog.Commands;
 using CNA.Application.Interfaces;
-using CNA.Domain.Catalog;
 using MediatR;
 
-namespace CNA.Application.Catalog.CommandHandlers
+namespace CNA.Application.Catalog.CommandHandlers.ProductVariants
 {
     public class AddProductVariantCommandHandler
         : IRequestHandler<AddProductVariantCommand, Guid>

@@ -2,7 +2,7 @@
 using CNA.Application.Interfaces;
 using MediatR;
 
-namespace CNA.Application.Catalog.CommandHandlers
+namespace CNA.Application.Catalog.CommandHandlers.ProductVariants
 {
     public class UpdateProductVariantCommandHandler
         : IRequestHandler<UpdateProductVariantCommand>
@@ -23,13 +23,15 @@ namespace CNA.Application.Catalog.CommandHandlers
 
             var r = command.Request;
 
-            //product.UpdateVariant(
-            //    command.VariantId,
-            //    r.Name,
-            //    r.Price,
-            //    r.IsActive,
-            //    r.Attributes
-            //);
+            product.UpdateVariant(
+                command.VariantId,
+                r.Sku,
+                r.Name,
+                r.Price,
+                r.Quantity,
+                r.VariantAttributes.Select(a => (a.Name, a.Value)),
+                r.IsActive
+            );
 
             await _repository.UpdateAsync(product);
         }
