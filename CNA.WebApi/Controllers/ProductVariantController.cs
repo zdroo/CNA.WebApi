@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Core;
+using CNA.Application.Catalog.Queries;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 
 namespace CNA.WebApi.Controllers
 {
@@ -6,16 +10,31 @@ namespace CNA.WebApi.Controllers
     [ApiController]
     public class ProductVariantController : ControllerBase
     {
+
+        private readonly IMediator _mediator;
+
+        public ProductVariantController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
         [HttpPost]
         public async Task<ActionResult<Guid>> CreateProductVariant()
         {
             throw new NotImplementedException();
         }
+        
 
         [HttpGet]
-        public async Task<ActionResult<Guid>> GetProductVariantsByProductId(Guid productId)
+        public async Task<ActionResult<Guid>> GetVariants(
+        Guid productId,
+        CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var variantId = await _mediator.Send(
+                new GetProductVariantsQuery(productId),
+                cancellationToken);
+
+            return Ok(variantId);
         }
 
         [HttpGet]

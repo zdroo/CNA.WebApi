@@ -9,13 +9,6 @@ namespace CNA.WebApi.Controllers.Seller
     [ApiController]
     public class SellerProductVariantsController : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public SellerProductVariantsController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpPost]
         public async Task<ActionResult<Guid>> AddVariant(
         Guid productId,
