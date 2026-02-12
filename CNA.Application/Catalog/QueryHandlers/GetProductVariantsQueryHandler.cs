@@ -16,7 +16,7 @@ namespace CNA.Application.Catalog.QueryHandlers
 
         public async Task<List<ProductVariantResponse>> Handle(GetProductVariantsQuery query, CancellationToken cancellationToken)
         {
-            var products = await _repository.GetByIdAsync(query.Filter.ProductId);
+            var products = await _repository.GetByIdAsync(query.ProductId);
 
             //return products.Variants.ToList();
 

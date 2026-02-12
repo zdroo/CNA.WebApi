@@ -32,7 +32,7 @@ namespace CNA.WebApi.Controllers
                 MaxPrice = filter.MaxPrice,
                 PageSize = filter.PageSize,
             };
-            var variants = await _mediator.Send(new GetProductVariantsQuery(queryFilter));
+            var variants = await _mediator.Send(new GetProductVariantsQuery(filter.ProductId));
 
             return Ok(variants);
         }
