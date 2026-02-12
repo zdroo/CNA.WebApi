@@ -8,19 +8,25 @@ namespace CNA.WebApi.Controllers
     public class OrderController : ControllerBase
     {
         [HttpGet]
-        public Task<ActionResult> GetOrders()
+        public Task<ActionResult> GetOrders(Guid userId) //mai elegant trb
         {
             throw new NotImplementedException();
         }
 
         [HttpGet]
-        public Task<ActionResult> GetOrder(Guid orderId)
+        public Task<ActionResult> GetOrderDetails(Guid orderId)
         {
             throw new NotImplementedException();
         }
 
         [HttpPost]
-        public Task<ActionResult> PlaceOrder()
+        public Task<ActionResult> Checkout()
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPut]
+        public Task<ActionResult> CancelOrder()
         {
             throw new NotImplementedException();
         }

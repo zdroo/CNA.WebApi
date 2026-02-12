@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CNA.Application.Catalog.Queries;
+using CNA.Application.Catalog.Queries.Filters;
+using CNA.Contracts.Requests.Filters;
+using CNA.Contracts.Responses;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CNA.WebApi.Controllers
 {
@@ -6,16 +11,28 @@ namespace CNA.WebApi.Controllers
     [ApiController]
     public class ProductVariantController : ControllerBase
     {
-        [HttpPost]
-        public async Task<ActionResult<Guid>> CreateProductVariant()
+        private readonly IMediator _mediator;
+
+        public ProductVariantController(IMediator mediator)
         {
-            throw new NotImplementedException();
+            _mediator = mediator;
         }
 
         [HttpGet]
-        public async Task<ActionResult<Guid>> GetProductVariantsByProductId(Guid productId)
+        public async Task<IActionResult> GetProductVariantsByProductId(ProductVariantsFilterRequest filter)
         {
-            throw new NotImplementedException();
+            var queryFilter = new ProductVariantsFilter
+            {
+                ProductId = filter.ProductId,
+                Brand = filter.Brand,
+                SearchText = filter.SearchText,
+                MinPrice = filter.MinPrice,
+                MaxPrice = filter.MaxPrice,
+                PageSize = filter.PageSize,
+            };
+            var variants = await _mediator.Send(new GetProductVariantsQuery(queryFilter));
+
+            return Ok(variants);
         }
 
         [HttpGet]

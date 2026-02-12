@@ -7,13 +7,19 @@ namespace CNA.WebApi.Controllers
     public class CartController : ControllerBase
     {
         [HttpGet]
-        public Task<ActionResult> GetCartItems()
+        public Task<IActionResult> GetCart(Guid currentUserId) //poate facem o modificare eleganta
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPost]
+        public Task<ActionResult> AddToCart()
         {
             throw new NotImplementedException();
         }
 
         [HttpPut]
-        public Task<ActionResult> AddToCart()
+        public Task<ActionResult> UpdateQuantity(Guid productVariantId)
         {
             throw new NotImplementedException();
         }
