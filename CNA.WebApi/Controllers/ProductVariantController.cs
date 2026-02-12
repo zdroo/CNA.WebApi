@@ -4,6 +4,7 @@ using CNA.Contracts.Requests.Filters;
 using CNA.Contracts.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 
 namespace CNA.WebApi.Controllers
 {
@@ -17,6 +18,7 @@ namespace CNA.WebApi.Controllers
         {
             _mediator = mediator;
         }
+        
 
         [HttpGet]
         public async Task<IActionResult> GetProductVariantsByProductId(ProductVariantsFilterRequest filter)
