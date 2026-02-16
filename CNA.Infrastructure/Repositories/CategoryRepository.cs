@@ -13,17 +13,24 @@ namespace CNA.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task AddCategory()
+        public async Task AddCategoryAsync(Category category)
         {
-
+            _context.Categories.Add(category);
         }
-        public async Task DeleteCategory()
+        public async Task DeleteCategoryAsync(Category category)
         {
-
+            _context.Categories.Remove(category);
+            await _context.SaveChangesAsync();
         }
         public async Task<List<Category>> GetCategoriesAsync()
         {
             return await _context.Categories.ToListAsync();
+        }
+        public async Task<Category?> GetByIdAsync(Guid categoryId)
+        {
+            return await _context.Categories
+                .Include(p => p.Products)
+                .FirstOrDefaultAsync(c => c.Id == categoryId);
         }
     }
 }

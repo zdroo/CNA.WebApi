@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace CNA.Application.Catalog.Commands
+namespace CNA.Application.Catalog.Commands.ProductVariants
 {
     public record DeleteProductVariantCommand(
     Guid ProductId,

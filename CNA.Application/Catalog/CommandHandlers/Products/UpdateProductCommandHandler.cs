@@ -1,4 +1,4 @@
-﻿using CNA.Application.Catalog.Commands;
+﻿using CNA.Application.Catalog.Commands.Products;
 using CNA.Application.Interfaces;
 using MediatR;
 

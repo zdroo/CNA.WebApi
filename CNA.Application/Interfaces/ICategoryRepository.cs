@@ -4,8 +4,9 @@ namespace CNA.Application.Interfaces
 {
     public interface ICategoryRepository
     {
-        Task AddCategory();
-        Task DeleteCategory();
+        Task AddCategoryAsync(Category category);
+        Task DeleteCategoryAsync(Category category);
         Task<List<Category>> GetCategoriesAsync();
+        Task<Category?> GetByIdAsync(Guid categoryId);
     }
 }

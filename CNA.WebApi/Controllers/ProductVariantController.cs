@@ -1,10 +1,8 @@
 ﻿using CNA.Application.Catalog.Queries;
 using CNA.Application.Catalog.Queries.Filters;
 using CNA.Contracts.Requests.Filters;
-using CNA.Contracts.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading;
 
 namespace CNA.WebApi.Controllers
 {
@@ -18,7 +16,7 @@ namespace CNA.WebApi.Controllers
         {
             _mediator = mediator;
         }
-        
+
 
         [HttpGet]
         public async Task<IActionResult> GetProductVariantsByProductId(ProductVariantsFilterRequest filter)
@@ -38,7 +36,7 @@ namespace CNA.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Guid>> GetProductVariantsById(Guid productVariantId)
+        public async Task<ActionResult<Guid>> GetProductVariantById(Guid productVariantId)
         {
             throw new NotImplementedException();
         }

@@ -15,4 +15,8 @@
     <ProjectReference Include="..\CNA.Domain\CNA.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Catalog\CommandHandlers\Cart\" />
+  </ItemGroup>
+
 </Project>
