@@ -7,8 +7,6 @@ namespace CNA.Domain.Catalog
     {
         public string Name { get; private set; } = default!;
         public string Description { get; private set; } = default!;
-        public string Brand { get; private set; } = default!;
-
         public Guid CategoryId { get; private set; }
         public Category Category { get; private set; } = default!;
 
@@ -26,12 +24,10 @@ namespace CNA.Domain.Catalog
         public Product(
             string name,
             string description,
-            string brand,
             Guid categoryId)
         {
             Name = name;
             Description = description;
-            Brand = brand;
             CategoryId = categoryId;
         }
 
@@ -40,9 +36,9 @@ namespace CNA.Domain.Catalog
             _variants.Add(variant);
         }
 
-        public ProductVariant AddVariant(string sku, decimal price, int quantity, IEnumerable<(string Name, string Value)> attributes) 
+        public ProductVariant AddVariant(string sku, decimal price, string description, string brand, int quantity, IEnumerable<(string Name, string Value)> attributes) 
         { 
-            var variant = new ProductVariant(this.Id, sku, price); 
+            var variant = new ProductVariant(this.Id, sku, price, description, brand); 
 
             foreach (var attr in attributes) 
             { 
@@ -110,9 +106,6 @@ namespace CNA.Domain.Catalog
 
             if (description != null)
                 Description = description;
-
-            if (brand != null)
-                Brand = brand;
 
             if (categoryId != null)
                 CategoryId = categoryId.Value;

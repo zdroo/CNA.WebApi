@@ -21,7 +21,6 @@ namespace CNA.Application.Catalog.CommandHandlers.Products
             var product = new Product(
                 r.Name,
                 r.Description,
-                r.Brand,
                 r.CategoryId
             );
 

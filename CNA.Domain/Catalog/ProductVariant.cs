@@ -7,6 +7,8 @@ namespace CNA.Domain.Catalog
     {
         public Guid ProductId { get; private set; }
         public Product Product { get; private set; } = default!;
+        public string Description { get; private set; }
+        public string Brand { get; private set; }
         public string Sku { get; private set; } = default!;
         public string Name { get; private set; } = default!;
         public decimal Price { get; private set; }
@@ -23,11 +25,13 @@ namespace CNA.Domain.Catalog
 
         protected ProductVariant() { }
 
-        public ProductVariant(Guid productId, string sku, decimal price)
+        public ProductVariant(Guid productId, string sku, decimal price, string description, string brand)
         {
             ProductId = productId;
             Sku = sku;
             Price = price;
+            Description = description;
+            Brand = brand;
         }
 
         public void AddAttribute(string name, string value)

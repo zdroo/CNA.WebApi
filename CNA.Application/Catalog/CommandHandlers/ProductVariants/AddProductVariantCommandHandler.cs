@@ -26,6 +26,8 @@ namespace CNA.Application.Catalog.CommandHandlers.ProductVariants
             var variant = product.AddVariant(
                 r.Sku,
                 r.Price,
+                r.Description,
+                r.Brand,
                 r.Quantity,
                 r.VariantAttributes.Select(a => (a.Name, a.Value))
             );

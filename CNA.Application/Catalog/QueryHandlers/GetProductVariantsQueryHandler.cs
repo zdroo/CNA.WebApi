@@ -7,16 +7,16 @@ namespace CNA.Application.Catalog.QueryHandlers
 {
     public class GetProductVariantsQueryHandler : IRequestHandler<GetProductVariantsQuery, List<ProductVariantResponse>>
     {
-        private readonly IProductRepository _repository;
+        private readonly IProductVariantRepository _repository;
 
-        public GetProductVariantsQueryHandler(IProductRepository repository)
+        public GetProductVariantsQueryHandler(IProductVariantRepository repository)
         {
             _repository = repository;
         }
 
         public async Task<List<ProductVariantResponse>> Handle(GetProductVariantsQuery query, CancellationToken cancellationToken)
         {
-            var products = await _repository.GetByIdAsync(query.ProductId);
+            var product = await _repository.GetFiltered(query);
 
             //return products.Variants.ToList();
 
