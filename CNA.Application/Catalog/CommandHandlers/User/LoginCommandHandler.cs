@@ -2,7 +2,9 @@
 using CNA.Application.Interfaces;
 using CNA.Application.Services;
 using CNA.Contracts.Models;
+using CNA.Domain.Catalog.Entities;
 using MediatR;
+using System.Security.Authentication;
 
 namespace CNA.Application.Catalog.CommandHandlers.User
 {
@@ -31,18 +33,26 @@ namespace CNA.Application.Catalog.CommandHandlers.User
                 .GetByEmailAsync(request.Email);
 
             if (user == null)
-                throw new Exception("Invalid credentials.");
+                throw new AuthenticationException("Invalid email.");
 
             var isValid = _passwordHasher
                 .Verify(request.Password, user.PasswordHash);
 
             if (!isValid)
-                throw new Exception("Invalid credentials.");
+                throw new AuthenticationException("Invalid password.");
 
             var token = _jwtService.GenerateToken(user);
+
+            var refreshToken = new RefreshToken(
+                token: Guid.NewGuid().ToString(),
+                expiresAt: DateTime.UtcNow.AddDays(365),
+                userId: user.Id
+            );
+
+            user.AddRefreshToken(refreshToken);
+            await _userRepository.UpdateAsync(user);
 
             return new AuthResponse(token);
         }
     }
-
 }

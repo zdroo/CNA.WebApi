@@ -1,5 +1,5 @@
 ﻿using CNA.Application.Catalog.Queries;
-using CNA.Domain.Catalog;
+using CNA.Domain.Catalog.Entities;
 
 namespace CNA.Application.Interfaces
 {

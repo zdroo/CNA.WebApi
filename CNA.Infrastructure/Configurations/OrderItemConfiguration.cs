@@ -25,5 +25,4 @@ namespace CNA.Infrastructure.Configurations
                 .IsRequired();
         }
     }
-
 }

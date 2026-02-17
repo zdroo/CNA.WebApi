@@ -1,6 +1,7 @@
 ﻿using CNA.Application.Catalog.Queries;
 using CNA.Application.Interfaces;
 using CNA.Domain.Catalog;
+using CNA.Domain.Catalog.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CNA.Infrastructure.Repositories

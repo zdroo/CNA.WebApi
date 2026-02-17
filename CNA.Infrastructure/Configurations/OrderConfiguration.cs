@@ -32,5 +32,4 @@ namespace CNA.Infrastructure.Configurations
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
         }
     }
-
 }

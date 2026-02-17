@@ -33,7 +33,6 @@ namespace CNA.Infrastructure.Configurations
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.HasKey(c => c.Id);
-
         }
     }
 }

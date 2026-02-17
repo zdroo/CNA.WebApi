@@ -1,4 +1,4 @@
 ﻿namespace CNA.Contracts.Models
 {
-    public record AuthResponse(string Token);
+    public record AuthResponse(string Token, string RefreshToken);
 }

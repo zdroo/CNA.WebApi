@@ -10,7 +10,14 @@ namespace CNA.Domain.Catalog.Entities
         public UserRole Role { get; private set; } = UserRole.User;
         public Cart? Cart { get; private set; }
         public bool IsActive { get; private set; }
-        public DateTime CreatedAt { get; private set; }
+
+        private readonly List<RefreshToken> _refreshTokens = new();
+        public IReadOnlyCollection<RefreshToken> RefreshTokens => _refreshTokens;
+
+        public void AddRefreshToken(RefreshToken token)
+        {
+            _refreshTokens.Add(token);
+        }
 
         protected User() { }
 

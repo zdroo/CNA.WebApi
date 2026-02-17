@@ -14,6 +14,11 @@ namespace CNA.Infrastructure
         public DbSet<ProductVariant> ProductVariants => Set<ProductVariant>();
         public DbSet<VariantAttribute> VariantAttributes => Set<VariantAttribute>();
         public DbSet<Stock> Stocks => Set<Stock>();
+        public DbSet<User> Users => Set<User>();
+        public DbSet<Review> Reviews => Set<Review>();
+        public DbSet<Order> Orders => Set<Order>();
+        public DbSet<OrderItem> OrderItems => Set<OrderItem>();
+        public DbSet<CartItem> CartItems => Set<CartItem>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,6 +32,7 @@ namespace CNA.Infrastructure
             modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
             modelBuilder.ApplyConfiguration(new CartConfiguration());
             modelBuilder.ApplyConfiguration(new CartItemConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
         }
     }
 }
