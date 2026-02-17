@@ -1,7 +1,7 @@
 ﻿using CNA.Domain.Catalog.Enums;
 using CNA.Domain.Common;
 
-namespace CNA.Domain.Catalog
+namespace CNA.Domain.Catalog.Entities
 {
     public class Review : BaseEntity
     {

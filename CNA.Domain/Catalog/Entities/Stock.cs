@@ -1,7 +1,7 @@
 ﻿using CNA.Domain.Common;
 using CNA.Domain.Exceptions;
 
-namespace CNA.Domain.Catalog
+namespace CNA.Domain.Catalog.Entities
 {
     public class Stock : BaseEntity
     {

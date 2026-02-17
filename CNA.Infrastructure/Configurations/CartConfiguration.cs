@@ -1,4 +1,4 @@
-﻿using CNA.Domain.Catalog;
+﻿using CNA.Domain.Catalog.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -16,7 +16,6 @@ namespace CNA.Infrastructure.Configurations
             builder.Property(c => c.UserId)
                 .IsRequired();
 
-            // 1 Cart per User
             builder.HasIndex(c => c.UserId)
                 .IsUnique();
 
@@ -25,8 +24,16 @@ namespace CNA.Infrastructure.Configurations
                 .HasForeignKey("CartId")
                 .OnDelete(DeleteBehavior.Cascade);
 
+            //builder.HasMany(c => c.Items)
+            //   .WithOne(i => i.Cart)
+            //   .HasForeignKey(i => i.CartId)
+            //   .OnDelete(DeleteBehavior.Cascade);
+
             builder.Navigation(nameof(Cart.Items))
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.HasKey(c => c.Id);
+
         }
     }
 }
