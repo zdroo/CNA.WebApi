@@ -3,6 +3,7 @@ using CNA.Infrastructure;
 using CNA.Infrastructure.Repositories;
 using CNA.Infrastructure.Services;
 using CNA.WebApi.Middleware;
+using CNA.WebApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -17,6 +18,9 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<CNA.Application.Services.IPasswordHasher, CNA.Application.Services.PasswordHasher>();
 builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IUserContextService, UserContextService>();
+
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddDbContext<CNADbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServer")));

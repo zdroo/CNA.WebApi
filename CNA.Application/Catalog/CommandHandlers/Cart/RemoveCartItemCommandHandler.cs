@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CNA.Application.Catalog.Commands.Cart
+namespace CNA.Application.Catalog.CommandHandlers.Cart
 {
-    internal class AddToCartCommand
+    internal class RemoveCartItemCommandHandler
     {
     }
 }

@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CNA.Application.Catalog.Commands.Cart;
+using CNA.Application.Catalog.Queries.Cart;
+using CNA.Application.Interfaces;
+using CNA.Contracts.Requests.Cart;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CNA.WebApi.Controllers
 {
@@ -6,28 +11,48 @@ namespace CNA.WebApi.Controllers
     [ApiController]
     public class CartController : ControllerBase
     {
-        [HttpGet]
-        public Task<IActionResult> GetCart(Guid currentUserId) //poate facem o modificare eleganta
+        private Guid CurrentUserId => _userContext.GetUserId();
+
+        private readonly IUserContextService _userContext;
+        private readonly IMediator _mediator;
+
+        public CartController(IMediator mediator, IUserContextService userContext)
         {
-            throw new NotImplementedException();
+            _mediator = mediator;
+            _userContext = userContext;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCart()
+        {
+            var userId = _userContext.GetUserId();
+            var cart = await _mediator.Send(new GetCartByUserIdQuery(userId));
+
+            return Ok(cart);
         }
 
         [HttpPost]
-        public Task<ActionResult> AddToCart()
+        public async Task<IActionResult> AddToCart(AddProductVariantToCartRequest request)
         {
-            throw new NotImplementedException();
+            var command = new AddCartItemCommand(CurrentUserId, request.productVariantId);
+            var cartItemId = await _mediator.Send(command);
+            return Ok(cartItemId);
         }
 
         [HttpPut]
-        public Task<ActionResult> UpdateQuantity(Guid productVariantId)
+        public async Task<IActionResult> UpdateQuantity(UpdateCartItemRequest request)
         {
-            throw new NotImplementedException();
+            var command = new UpdateCartItemCommand(CurrentUserId, request.CartItemId, request.Quantity);
+            await _mediator.Send(command);
+            return NoContent();
         }
 
         [HttpDelete]
-        public Task<ActionResult> RemoveFromCart()
+        public async Task<IActionResult> RemoveFromCart(RemoveCartItemRequest request)
         {
-            throw new NotImplementedException();
+            var command = new RemoveCartItemCommand(CurrentUserId, request.CartItemId);
+            await _mediator.Send(command);
+            return NoContent();
         }
     }
 }
