@@ -4,7 +4,7 @@ using CNA.Contracts.Models;
 using CNA.Domain.Catalog.Entities;
 using MediatR;
 
-namespace CNA.Application.Catalog.CommandHandlers
+namespace CNA.Application.Catalog.CommandHandlers.User
 {
     public class RefreshTokenCommandHandler
         : IRequestHandler<RefreshTokenCommand, AuthResponse>
@@ -34,7 +34,7 @@ namespace CNA.Application.Catalog.CommandHandlers
             refreshToken.Revoke();
             var newRefreshToken = new RefreshToken(
                 token: Guid.NewGuid().ToString(),
-                expiresAt: DateTime.UtcNow.AddDays(7),
+                expiresAt: DateTime.UtcNow.AddDays(365),
                 userId: user.Id
             );
             user.AddRefreshToken(newRefreshToken);
@@ -43,8 +43,7 @@ namespace CNA.Application.Catalog.CommandHandlers
 
             var accessToken = _jwtService.GenerateToken(user);
 
-            return new AuthResponse(accessToken);
+            return new AuthResponse(accessToken, refreshToken.Token);
         }
     }
-
 }

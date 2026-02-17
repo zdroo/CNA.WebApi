@@ -52,7 +52,7 @@ namespace CNA.Application.Catalog.CommandHandlers.User
             user.AddRefreshToken(refreshToken);
             await _userRepository.UpdateAsync(user);
 
-            return new AuthResponse(token);
+            return new AuthResponse(token, refreshToken.Token);
         }
     }
 }

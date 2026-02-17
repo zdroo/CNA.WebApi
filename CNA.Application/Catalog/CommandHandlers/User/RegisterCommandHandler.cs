@@ -2,6 +2,7 @@
 using CNA.Application.Interfaces;
 using CNA.Application.Services;
 using CNA.Contracts.Models;
+using CNA.Domain.Catalog.Entities;
 using MediatR;
 
 namespace CNA.Application.Catalog.CommandHandlers.User
@@ -37,11 +38,17 @@ namespace CNA.Application.Catalog.CommandHandlers.User
 
             var user = new Domain.Catalog.Entities.User(request.Email, passwordHash);
 
+            var token = _jwtService.GenerateToken(user);
+            var refreshToken = new RefreshToken(
+                token: Guid.NewGuid().ToString(),
+                expiresAt: DateTime.UtcNow.AddDays(365),
+                userId: user.Id
+            );
+
+            user.AddRefreshToken(refreshToken);
             await _userRepository.AddAsync(user);
 
-            var token = _jwtService.GenerateToken(user);
-
-            return new AuthResponse(token);
+            return new AuthResponse(token, refreshToken.Token);
         }
     }
 
