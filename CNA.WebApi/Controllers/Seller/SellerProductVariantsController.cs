@@ -1,5 +1,4 @@
-﻿using CNA.Application.Catalog.Commands;
-using CNA.Application.Catalog.Commands.ProductVariants;
+﻿using CNA.Application.Catalog.Commands.ProductVariants;
 using CNA.Contracts.Requests.ProductVariants;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

@@ -19,18 +19,18 @@ namespace CNA.WebApi.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetProductVariantsByProductId(ProductVariantsFilterRequest filter)
+        public async Task<IActionResult> GetProductVariantsByProductId(Guid productId, ProductVariantsFilterRequest filter)
         {
             var queryFilter = new ProductVariantsFilter
             {
-                ProductId = filter.ProductId,
+                ProductId = productId,
                 Brand = filter.Brand,
                 SearchText = filter.SearchText,
                 MinPrice = filter.MinPrice,
                 MaxPrice = filter.MaxPrice,
                 PageSize = filter.PageSize,
             };
-            var variants = await _mediator.Send(new GetProductVariantsQuery(filter.ProductId));
+            var variants = await _mediator.Send(new GetProductVariantsQuery(productId, queryFilter));
 
             return Ok(variants);
         }
