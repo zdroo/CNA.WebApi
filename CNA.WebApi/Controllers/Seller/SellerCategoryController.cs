@@ -1,4 +1,5 @@
 ﻿using CNA.Application.Catalog.Commands;
+using CNA.Application.Catalog.Commands.Categories;
 using CNA.Contracts.Requests.Categories;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

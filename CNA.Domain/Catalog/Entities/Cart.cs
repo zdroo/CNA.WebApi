@@ -1,10 +1,11 @@
 ﻿using CNA.Domain.Common;
 
-namespace CNA.Domain.Catalog
+namespace CNA.Domain.Catalog.Entities
 {
     public class Cart : BaseEntity
     {
         public Guid UserId { get; private set; }
+        public User User { get; private set; } = default!;
 
         private readonly List<CartItem> _items = new();
         public IReadOnlyCollection<CartItem> Items => _items;

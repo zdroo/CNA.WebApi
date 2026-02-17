@@ -1,4 +1,4 @@
-﻿using CNA.Domain.Catalog;
+﻿using CNA.Domain.Catalog.Entities;
 using CNA.Infrastructure.Configurations;
 using Microsoft.EntityFrameworkCore;
 

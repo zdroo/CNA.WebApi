@@ -1,6 +1,6 @@
 ﻿using CNA.Domain.Common;
 
-namespace CNA.Domain.Catalog
+namespace CNA.Domain.Catalog.Entities
 {
     public class VariantAttribute : BaseEntity
     {

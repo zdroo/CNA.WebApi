@@ -1,4 +1,5 @@
 ﻿using CNA.Application.Catalog.Commands;
+using CNA.Application.Catalog.Commands.Products;
 using CNA.Contracts.Requests;
 using CNA.Contracts.Requests.Products;
 using MediatR;

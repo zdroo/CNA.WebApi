@@ -1,10 +1,10 @@
 ﻿using CNA.Application.Interfaces;
-using CNA.Domain.Catalog;
+using CNA.Domain.Catalog.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CNA.Infrastructure.Repositories
 {
-    internal class CategoryRepository : ICategoryRepository
+    public class CategoryRepository : ICategoryRepository
     {
         private readonly CNADbContext _context;
 
