@@ -23,13 +23,14 @@ namespace CNA.Application.Catalog.QueryHandlers
                 Id = p.Id,
                 Name = p.Name,
                 Description = p.Description,
-                Brand = p.Brand,
                 CategoryId = p.CategoryId,
                 IsActive = p.IsActive,
                 Variants = p.Variants.Select(v => new ProductVariantResponse
                 {
                     Id = v.Id,
                     Sku = v.Sku,
+                    Description = v.Description,
+                    Brand = v.Brand,
                     Price = v.Price,
                     StockQuantity = v.Stock.Quantity,
                     Attributes = v.Attributes.ToDictionary(a => a.Name, a => a.Value)

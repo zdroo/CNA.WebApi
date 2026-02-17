@@ -25,7 +25,6 @@ namespace CNA.Application.Catalog.QueryHandlers
                 Id = p.Id,
                 Name = p.Name,
                 Description = p.Description,
-                Brand = p.Brand,
                 CategoryId = p.CategoryId,
                 IsActive = p.IsActive,
                 Variants = p.Variants.Select(v => new ProductVariantResponse
