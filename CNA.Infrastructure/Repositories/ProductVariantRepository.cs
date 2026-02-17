@@ -1,6 +1,5 @@
 ﻿using CNA.Application.Catalog.Queries;
 using CNA.Application.Interfaces;
-using CNA.Domain.Catalog;
 using CNA.Domain.Catalog.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +12,14 @@ namespace CNA.Infrastructure.Repositories
         public ProductVariantRepository(CNADbContext context)
         {
             _context = context;
+        }
+
+        public async Task<List<ProductVariant>> GetByProductId(Guid productId)
+        {
+            return await _context.ProductVariants
+                .Include(x => x.Attributes)
+                .AsNoTracking()
+                .Where(p => p.ProductId == productId).ToListAsync();
         }
 
         public async Task<List<ProductVariant>> GetFiltered(GetProductVariantsQuery filter)
