@@ -16,11 +16,21 @@ namespace CNA.Application.Catalog.QueryHandlers
 
         public async Task<List<ProductVariantResponse>> Handle(GetProductVariantsByProductIdQuery query, CancellationToken cancellationToken)
         {
-            var product = await _repository.Get(query);
+            var productVariants = await _repository.GetByProductId(query.ProductId);
 
-            //return products.Variants.ToList();
-
-            return new List<ProductVariantResponse>();
+            return productVariants.Select(_ => new ProductVariantResponse(
+                _.Id, 
+                _.Sku, 
+                _.Description, 
+                _.Brand, 
+                _.Price,
+                _.Stock.Quantity, 
+                _.Attributes.ToDictionary(
+                    x => x.Name,
+                    x => x.Value
+                    )
+                )
+            ).ToList();
         }
     }
 }

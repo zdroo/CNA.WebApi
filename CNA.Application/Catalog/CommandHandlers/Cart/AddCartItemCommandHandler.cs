@@ -1,6 +1,5 @@
 ﻿using CNA.Application.Catalog.Commands.Cart;
 using CNA.Application.Interfaces;
-using CNA.Domain.Catalog.Entities;
 using MediatR;
 
 namespace CNA.Application.Catalog.CommandHandlers.Cart
