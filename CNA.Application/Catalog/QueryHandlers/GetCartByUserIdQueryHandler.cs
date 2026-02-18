@@ -22,9 +22,10 @@ namespace CNA.Application.Catalog.QueryHandlers
             var cart = user.GetOrCreateCart();
 
             var cartResponse = new CartResponse
-            {
-                UserId = cart.UserId,
-                Items = cart.Items.Select(_ => new CartItemResponse
+            (
+                cart.UserId,
+                cart.GetTotal(),
+                cart.Items.Select(_ => new CartItemResponse
                 (
                     _.Id,
                     _.ProductVariantId,
@@ -33,7 +34,7 @@ namespace CNA.Application.Catalog.QueryHandlers
                     _.Price,
                     _.Total
                 )).ToList()
-            };
+            );
 
             return cartResponse;
         }
