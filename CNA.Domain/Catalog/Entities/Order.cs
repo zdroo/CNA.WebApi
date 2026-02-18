@@ -1,6 +1,5 @@
 ﻿using CNA.Domain.Catalog.Enums;
 using CNA.Domain.Common;
-using CNA.Domain.Exceptions;
 
 namespace CNA.Domain.Catalog.Entities
 {
@@ -8,10 +7,8 @@ namespace CNA.Domain.Catalog.Entities
     {
         public Guid UserId { get; private set; }
         public OrderStatus Status { get; private set; }
-
         private readonly List<OrderItem> _items = new();
         public IReadOnlyCollection<OrderItem> Items => _items;
-
         public decimal TotalAmount { get; private set; }
 
         protected Order() { }

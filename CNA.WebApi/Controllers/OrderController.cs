@@ -1,6 +1,6 @@
-﻿using CNA.Application.Interfaces;
+﻿using CNA.Application.Catalog.Queries.Order;
+using CNA.Application.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CNA.WebApi.Controllers
@@ -23,9 +23,10 @@ namespace CNA.WebApi.Controllers
         }
 
         [HttpGet]
-        public Task<ActionResult> GetOrders()
+        public async Task<IActionResult> GetOrders()
         {
-            throw new NotImplementedException();
+            var orders = await _mediator.Send(new GetOrdersQuery(CurrentUserId));
+            return Ok(orders);
         }
 
         [HttpGet]

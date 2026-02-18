@@ -45,7 +45,7 @@ namespace CNA.WebApi.Controllers
         public async Task<IActionResult> UpdateQuantity(UpdateCartItemRequest request)
         {
             var command = new UpdateCartItemCommand(request.CartItemId, request.Quantity);
-            var cartItem = _mediator.Send(command);
+            var cartItem = await _mediator.Send(command);
             return Ok(cartItem);
         }
 

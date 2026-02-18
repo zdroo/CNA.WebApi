@@ -6,5 +6,6 @@ namespace CNA.Application.Interfaces
     {
         Task AddAsync(Order order);
         Task<Order?> GetByIdAsync(Guid id);
+        Task<List<Order>> GetOrders(Guid userId);
     }
 }
