@@ -2,5 +2,5 @@
 
 namespace CNA.Application.Catalog.Commands.Cart
 {
-    public record AddCartItemCommand(Guid UserId, Guid ProductVariantId) : IRequest<Guid>;
+    public record AddCartItemCommand(Guid UserId, Guid ProductVariantId) : IRequest;
 }

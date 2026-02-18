@@ -17,7 +17,7 @@ namespace CNA.Domain.Catalog.Entities
             UserId = userId;
         }
 
-        public void AddItem(Guid productVariantId, int quantity, decimal price)
+        public void AddItem(Guid productVariantId, decimal price, int quantity = 1)
         {
             var existing = _items.FirstOrDefault(i => i.ProductVariantId == productVariantId);
 

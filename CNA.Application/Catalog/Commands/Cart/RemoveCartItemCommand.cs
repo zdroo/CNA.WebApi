@@ -2,5 +2,5 @@
 
 namespace CNA.Application.Catalog.Commands.Cart
 {
-    public record RemoveCartItemCommand(Guid UserId, Guid CartItemId) : IRequest;
+    public record RemoveCartItemCommand(Guid CartItemId) : IRequest;
 }

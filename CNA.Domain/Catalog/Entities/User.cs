@@ -35,9 +35,14 @@ namespace CNA.Domain.Catalog.Entities
             Role = role;
         }
 
-        public void AssignCart(Cart cart)
+        public Cart GetOrCreateCart()
         {
-            Cart = cart;
+            if (Cart == null)
+            {
+                Cart = new Cart(Id);
+            }
+
+            return Cart;
         }
     }
 }
