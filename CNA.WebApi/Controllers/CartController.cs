@@ -31,7 +31,7 @@ namespace CNA.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddToCart(AddProductVariantToCartRequest request)
+        public async Task<IActionResult> AddToCart([FromBody] AddProductVariantToCartRequest request)
         {
             var command = new AddCartItemCommand(CurrentUserId, request.productVariantId);
             await _mediator.Send(command);

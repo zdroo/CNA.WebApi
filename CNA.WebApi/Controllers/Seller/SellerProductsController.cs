@@ -19,7 +19,7 @@ namespace CNA.WebApi.Controllers.Seller
 
         [HttpPost]
         public async Task<ActionResult<Guid>> Create(
-            CreateProductRequest request,
+            [FromBody] CreateProductRequest request,
             CancellationToken cancellationToken)
         {
             var id = await _mediator.Send(

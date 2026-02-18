@@ -16,14 +16,14 @@ namespace CNA.WebApi.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterCommand command)
+        public async Task<IActionResult> Register([FromBody] RegisterCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginCommand command)
+        public async Task<IActionResult> Login([FromBody] LoginCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);

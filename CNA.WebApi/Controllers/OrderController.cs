@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CNA.Application.Interfaces;
+using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CNA.WebApi.Controllers
@@ -7,8 +9,21 @@ namespace CNA.WebApi.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
+        private Guid CurrentUserId => _userContext.GetUserId();
+
+        private readonly IUserContextService _userContext;
+        private readonly IMediator _mediator;
+
+        public OrderController(
+            IUserContextService userContext,
+            IMediator mediator)
+        {
+            _userContext = userContext;
+            _mediator = mediator;
+        }
+
         [HttpGet]
-        public Task<ActionResult> GetOrders(Guid userId) //mai elegant trb
+        public Task<ActionResult> GetOrders()
         {
             throw new NotImplementedException();
         }

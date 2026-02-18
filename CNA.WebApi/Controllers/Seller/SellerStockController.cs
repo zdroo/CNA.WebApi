@@ -2,7 +2,7 @@
 
 namespace CNA.WebApi.Controllers.Seller
 {
-    [Route("api/[controller]")]
+    [Route("api/stock")]
     [ApiController]
     public class SellerStockController : ControllerBase
     {

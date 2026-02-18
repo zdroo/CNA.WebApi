@@ -19,7 +19,7 @@ namespace CNA.WebApi.Controllers.Seller
         [HttpPost]
         public async Task<ActionResult<Guid>> AddVariant(
         Guid productId,
-        CreateProductVariantRequest request,
+        [FromBody] CreateProductVariantRequest request,
         CancellationToken cancellationToken)
         {
             var variantId = await _mediator.Send(
