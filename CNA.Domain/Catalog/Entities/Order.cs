@@ -10,6 +10,13 @@ namespace CNA.Domain.Catalog.Entities
         private readonly List<OrderItem> _items = new();
         public IReadOnlyCollection<OrderItem> Items => _items;
         public decimal TotalAmount { get; private set; }
+        public string ShippingFirstName { get; private set; }
+        public string ShippingLastName { get; private set; }
+        public string ShippingAddressLine1 { get; private set; }
+        public string ShippingCity { get; private set; }
+        public string ShippingPostalCode { get; private set; }
+        public string ShippingCountry { get; private set; }
+        public string ShippingPhone { get; private set; }
 
         protected Order() { }
 

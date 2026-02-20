@@ -10,7 +10,8 @@ namespace CNA.Application.Catalog.QueryHandlers
     {
         private readonly IOrderRepository _orderRepository;
 
-        public GetOrdersQueryHandler(IOrderRepository orderRepository)
+        public GetOrdersQueryHandler(
+            IOrderRepository orderRepository)
         {
             _orderRepository = orderRepository;
         }

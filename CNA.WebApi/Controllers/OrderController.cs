@@ -1,4 +1,5 @@
-﻿using CNA.Application.Catalog.Queries.Order;
+﻿using CNA.Application.Catalog.Commands.Order;
+using CNA.Application.Catalog.Queries.Order;
 using CNA.Application.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -30,9 +31,10 @@ namespace CNA.WebApi.Controllers
         }
 
         [HttpGet]
-        public Task<ActionResult> GetOrderDetails(Guid orderId)
+        public async Task<IActionResult> GetOrderDetails(Guid orderId)
         {
-            throw new NotImplementedException();
+            var order = await _mediator.Send(new GetOrderDetailsQuery(orderId));
+            return Ok(order);
         }
 
         [HttpPost]
@@ -42,9 +44,10 @@ namespace CNA.WebApi.Controllers
         }
 
         [HttpPut]
-        public Task<ActionResult> CancelOrder()
+        public async Task<IActionResult> CancelOrder(Guid orderId)
         {
-            throw new NotImplementedException();
+            await _mediator.Send(new CancelOrderCommand(orderId));
+            return Ok();
         }
     }
 }
