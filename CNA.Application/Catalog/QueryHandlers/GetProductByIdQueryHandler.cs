@@ -1,4 +1,4 @@
-﻿using CNA.Application.Catalog.Queries.Products;
+﻿using CNA.Application.Catalog.Queries.Product;
 using CNA.Application.Interfaces;
 using CNA.Contracts.Responses;
 using MediatR;

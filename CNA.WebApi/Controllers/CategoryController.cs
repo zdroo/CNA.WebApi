@@ -1,5 +1,4 @@
-﻿using CNA.Application.Catalog.Queries;
-using CNA.Application.Interfaces;
+﻿using CNA.Application.Catalog.Queries.Categories;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
