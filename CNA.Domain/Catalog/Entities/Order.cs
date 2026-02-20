@@ -17,6 +17,7 @@ namespace CNA.Domain.Catalog.Entities
         public string ShippingPostalCode { get; private set; }
         public string ShippingCountry { get; private set; }
         public string ShippingPhone { get; private set; }
+        public bool IsPaid { get; private set; }
 
         protected Order() { }
 
@@ -31,12 +32,12 @@ namespace CNA.Domain.Catalog.Entities
 
         public void MarkAsPaid()
         {
-            Status = OrderStatus.Paid;
+            IsPaid = true;
         }
 
         public void Cancel()
         {
-            if (Status == OrderStatus.Paid)
+            if (Status >= OrderStatus.Shipped)
                 throw new Exception("Cannot cancel paid order");
 
             Status = OrderStatus.Cancelled;
