@@ -30,6 +30,14 @@ namespace CNA.Infrastructure.Repositories
                 .FirstOrDefaultAsync(p => p.ProductId == productVariantId);
         }
 
+        public async Task<List<ProductVariant>> GetByProductVariantIds(IEnumerable<Guid> productVariantIds)
+        {
+            return await _context.ProductVariants
+                .Include(x => x.Attributes)
+                .AsNoTracking()
+                .Where(_ => productVariantIds.Contains(_.Id)).ToListAsync();
+        }
+
         public async Task<List<ProductVariant>> GetFiltered(GetProductVariantsQuery filter)
         {
             var query = _context.ProductVariants

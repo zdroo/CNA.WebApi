@@ -1,5 +1,4 @@
 ﻿using CNA.Domain.Common;
-using CNA.Domain.Exceptions;
 
 namespace CNA.Domain.Catalog.Entities
 {
@@ -31,7 +30,7 @@ namespace CNA.Domain.Catalog.Entities
             Quantity += amount;
         }
 
-        public void Decrease(int amount)
+        internal void Decrease(int amount)
         {
             if (Quantity < amount)
                 throw new InvalidOperationException("Insufficient stock");
@@ -40,5 +39,4 @@ namespace CNA.Domain.Catalog.Entities
             MarkUpdated();
         }
     }
-
 }

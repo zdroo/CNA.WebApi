@@ -30,9 +30,17 @@ namespace CNA.Domain.Catalog.Entities
             _items.Add(new CartItem(productVariantId, quantity, price));
         }
 
-        public void RemoveItem(Guid productVariantId)
+        public void RemoveItemByProductVariantId(Guid productVariantId)
         {
             var item = _items.FirstOrDefault(i => i.ProductVariantId == productVariantId)
+                ?? throw new Exception("Item not found");
+
+            _items.Remove(item);
+        }
+
+        public void RemoveItemByCartItemId(Guid cartItemId)
+        {
+            var item = _items.FirstOrDefault(i => i.Id == cartItemId)
                 ?? throw new Exception("Item not found");
 
             _items.Remove(item);

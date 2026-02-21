@@ -56,5 +56,13 @@ namespace CNA.WebApi.Controllers
             await _mediator.Send(command);
             return NoContent();
         }
+
+        [HttpPost("checkout")]
+        public async Task<IActionResult> Checkout([FromBody] List<Guid> CartItemIds)
+        {
+            await _mediator.Send(new CartCheckoutCommand(CurrentUserId, CartItemIds));
+
+            return Ok();
+        }
     }
 }

@@ -8,5 +8,6 @@ namespace CNA.Application.Interfaces
         Task<List<ProductVariant>> GetByProductId(Guid productId);
         Task<List<ProductVariant>> GetFiltered(GetProductVariantsQuery filter);
         Task<ProductVariant?> GetByProductVariantId(Guid productVariantId);
+        Task<List<ProductVariant>> GetByProductVariantIds(IEnumerable<Guid> productVariantIds);
     }
 }
