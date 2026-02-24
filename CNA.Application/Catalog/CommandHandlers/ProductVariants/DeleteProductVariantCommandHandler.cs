@@ -8,10 +8,13 @@ namespace CNA.Application.Catalog.CommandHandlers.ProductVariants
         : IRequestHandler<DeleteProductVariantCommand>
     {
         private readonly IProductRepository _repository;
-
-        public DeleteProductVariantCommandHandler(IProductRepository repository)
+        private readonly IUnitOfWork _unitOfWork;
+        public DeleteProductVariantCommandHandler(
+            IProductRepository repository,
+            IUnitOfWork unitOfWork)
         {
             _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task Handle(
@@ -23,7 +26,7 @@ namespace CNA.Application.Catalog.CommandHandlers.ProductVariants
 
             product.RemoveVariant(command.VariantId);
 
-            await _repository.UpdateAsync(product);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

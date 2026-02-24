@@ -11,13 +11,16 @@ namespace CNA.Application.Catalog.CommandHandlers.User
     {
         private readonly IUserRepository _userRepository;
         private readonly IJwtService _jwtService;
+        private readonly IUnitOfWork _unitOfWork;
 
         public RefreshTokenCommandHandler(
             IUserRepository userRepository,
-            IJwtService jwtService)
+            IJwtService jwtService,
+            IUnitOfWork unitOfWork)
         {
             _userRepository = userRepository;
             _jwtService = jwtService;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<AuthResponse> Handle(
@@ -39,7 +42,7 @@ namespace CNA.Application.Catalog.CommandHandlers.User
             );
             user.AddRefreshToken(newRefreshToken);
 
-            await _userRepository.UpdateAsync(user);
+            await _unitOfWork.SaveChangesAsync();
 
             var accessToken = _jwtService.GenerateToken(user);
 

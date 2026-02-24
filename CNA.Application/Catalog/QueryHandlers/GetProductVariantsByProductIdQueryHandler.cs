@@ -7,9 +7,9 @@ namespace CNA.Application.Catalog.QueryHandlers
 {
     public class GetProductVariantsByProductIdQueryHandler : IRequestHandler<GetProductVariantsByProductIdQuery, List<ProductVariantResponse>>
     {
-        private readonly IProductVariantRepository _repository;
+        private readonly IProductRepository _repository;
 
-        public GetProductVariantsByProductIdQueryHandler(IProductVariantRepository repository)
+        public GetProductVariantsByProductIdQueryHandler(IProductRepository repository)
         {
             _repository = repository;
         }

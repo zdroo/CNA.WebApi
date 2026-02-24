@@ -4,5 +4,5 @@ using MediatR;
 
 namespace CNA.Application.Catalog.Queries.ProductVariant
 {
-    public record GetProductVariantsQuery(Guid ProductId, ProductVariantsFilter Filter) : IRequest<List<ProductVariantResponse?>>;
+    public record GetProductVariantsQuery(Guid ProductId, ProductVariantsFilter Filter) : IRequest<List<ProductVariantResponse>>;
 }

@@ -8,10 +8,14 @@ namespace CNA.Application.Catalog.CommandHandlers.Products
     : IRequestHandler<UpdateProductCommand>
     {
         private readonly IProductRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UpdateProductCommandHandler(IProductRepository repository)
+        public UpdateProductCommandHandler(
+            IProductRepository repository,
+            IUnitOfWork unitOfWork)
         {
             _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task Handle(
@@ -34,7 +38,7 @@ namespace CNA.Application.Catalog.CommandHandlers.Products
                 r.IsReturnable
             );
 
-            await _repository.UpdateAsync(product);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

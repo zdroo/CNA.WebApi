@@ -14,15 +14,18 @@ namespace CNA.Application.Catalog.CommandHandlers.User
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IJwtService _jwtService;
+        private readonly IUnitOfWork _unitOfWork;
 
         public LoginCommandHandler(
             IUserRepository userRepository,
             IPasswordHasher passwordHasher,
-            IJwtService jwtService)
+            IJwtService jwtService,
+            IUnitOfWork unitOfWork)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
             _jwtService = jwtService;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<AuthResponse> Handle(
@@ -50,7 +53,7 @@ namespace CNA.Application.Catalog.CommandHandlers.User
             );
 
             user.AddRefreshToken(refreshToken);
-            await _userRepository.UpdateAsync(user);
+            await _unitOfWork.SaveChangesAsync();
 
             return new AuthResponse(token, refreshToken.Token);
         }

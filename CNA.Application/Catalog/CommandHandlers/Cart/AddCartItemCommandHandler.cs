@@ -7,23 +7,23 @@ namespace CNA.Application.Catalog.CommandHandlers.Cart
     public class AddCartItemCommandHandler : IRequestHandler<AddCartItemCommand>
     {
         private readonly ICartRepository _cartRepository;
-        private readonly IProductVariantRepository _variantRepository;
+        private readonly IProductRepository _productRepository;
         private readonly IUserRepository _userRepository;
 
         public AddCartItemCommandHandler(
             ICartRepository cartRepository,
-            IProductVariantRepository variantRepository,
+            IProductRepository productRepository,
             IUserRepository userRepository)
         {
             _cartRepository = cartRepository;
-            _variantRepository = variantRepository;
+            _productRepository = productRepository;
             _userRepository = userRepository;
         }
 
         public async Task Handle(AddCartItemCommand command, CancellationToken cancellationToken = default)
         {
             Domain.Catalog.Entities.Cart? cart;
-            var variant = await _variantRepository.GetByProductVariantId(command.ProductVariantId)
+            var variant = await _productRepository.GetByProductVariantId(command.ProductVariantId)
                 ?? throw new ArgumentException("Variant not found");
 
             cart = await _cartRepository.GetByUserIdAsync(command.UserId);

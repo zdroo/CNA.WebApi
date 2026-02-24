@@ -4,13 +4,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CNA.Infrastructure.Repositories
 {
-    public class CartItemRepository : ICartItemRepository
+    public class CartRepository : ICartRepository
     {
         private readonly CNADbContext _context;
 
-        public CartItemRepository(CNADbContext context)
+        public CartRepository(CNADbContext context)
         {
             _context = context;
+        }
+
+        public async Task<Cart?> GetByUserIdAsync(Guid userId)
+        {
+            return await _context.Carts.FirstOrDefaultAsync(_ => _.UserId == userId);
+        }
+        public async Task AddAsync(Cart cart)
+        {
+            _context.Carts.Add(cart);
+            await _context.SaveChangesAsync();
         }
 
         public Task<CartItem?> GetByIdAsync(Guid cartItemId)

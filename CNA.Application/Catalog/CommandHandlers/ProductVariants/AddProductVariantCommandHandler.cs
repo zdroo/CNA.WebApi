@@ -8,10 +8,14 @@ namespace CNA.Application.Catalog.CommandHandlers.ProductVariants
         : IRequestHandler<AddProductVariantCommand, Guid>
     {
         private readonly IProductRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AddProductVariantCommandHandler(IProductRepository repository)
+        public AddProductVariantCommandHandler(
+            IProductRepository repository,
+            IUnitOfWork unitOfWork)
         {
             _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Guid> Handle(
@@ -32,7 +36,7 @@ namespace CNA.Application.Catalog.CommandHandlers.ProductVariants
                 r.VariantAttributes.Select(a => (a.Name, a.Value))
             );
 
-            await _repository.UpdateAsync(product);
+            await _unitOfWork.SaveChangesAsync();
 
             return variant.Id;
         }

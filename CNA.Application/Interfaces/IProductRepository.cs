@@ -1,4 +1,5 @@
-﻿using CNA.Domain.Catalog.Entities;
+﻿using CNA.Application.Catalog.Queries.ProductVariant;
+using CNA.Domain.Catalog.Entities;
 
 namespace CNA.Application.Interfaces
 {
@@ -8,9 +9,10 @@ namespace CNA.Application.Interfaces
         Task<IReadOnlyList<Product>> ListAllAsync();
         Task AddAsync(Product product);
         Task DeleteAsync(Product product);
-        Task UpdateAsync(Product product);
-
-        // optional: cautare dupa categorie, filtrare, etc.
         Task<IReadOnlyList<Product>> ListByCategoryAsync(Guid categoryId);
+
+        Task<List<ProductVariant>> GetByProductId(Guid productId);
+        Task<List<ProductVariant>> GetFiltered(GetProductVariantsQuery filter);
+        Task<ProductVariant?> GetByProductVariantId(Guid productVariantId);
     }
 }

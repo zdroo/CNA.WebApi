@@ -7,16 +7,16 @@ namespace CNA.Application.Catalog.CommandHandlers.Cart
 {
     public class UpdateCartItemCommandHandler : IRequestHandler<UpdateCartItemCommand, CartItemResponse>
     {
-        private readonly ICartItemRepository _cartItemRepository;
+        private readonly ICartRepository _cartRepository;
 
-        public UpdateCartItemCommandHandler(ICartItemRepository cartItemRepository)
+        public UpdateCartItemCommandHandler(ICartRepository cartItemRepository)
         {
-            _cartItemRepository = cartItemRepository;
+            _cartRepository = cartItemRepository;
         }
 
         public async Task<CartItemResponse> Handle(UpdateCartItemCommand command, CancellationToken cancellationToken)
         {
-            var cartItem = await _cartItemRepository.GetByIdAsync(command.CartItemId)
+            var cartItem = await _cartRepository.GetByIdAsync(command.CartItemId)
                 ?? throw new Exception("Item not found");
 
             cartItem.Increase(command.Quantity);
