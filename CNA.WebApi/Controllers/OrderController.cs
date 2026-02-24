@@ -37,12 +37,6 @@ namespace CNA.WebApi.Controllers
             return Ok(order);
         }
 
-        [HttpPost]
-        public Task<ActionResult> Checkout()
-        {
-            throw new NotImplementedException();
-        }
-
         [HttpPut]
         public async Task<IActionResult> CancelOrder(Guid orderId)
         {

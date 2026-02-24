@@ -16,6 +16,10 @@ namespace CNA.Infrastructure.Configurations
                 .IsRequired()
                 .HasMaxLength(50);
 
+            builder
+                .Property(p => p.RowVersion)
+                .IsRowVersion();
+
             builder.HasIndex(v => v.Sku)
                 .IsUnique();
 

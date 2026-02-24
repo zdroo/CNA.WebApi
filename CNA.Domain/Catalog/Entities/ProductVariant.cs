@@ -5,6 +5,7 @@ namespace CNA.Domain.Catalog.Entities
 {
     public class ProductVariant : BaseEntity
     {
+        public byte[] RowVersion { get; private set; }
         public Guid ProductId { get; private set; }
         public Product Product { get; private set; } = default!;
         public string Description { get; private set; }
@@ -77,6 +78,13 @@ namespace CNA.Domain.Catalog.Entities
 
             Stock.Decrease(amount);
         }
+
+        public void ValidateQuantity(int quantity)
+        {
+            if (Stock.Quantity < quantity)
+                throw new InvalidOperationException($"Insufficient stock for {Name}. {quantity} items requested, but only {Stock.Quantity} items available.");
+        }
+
         public void UpdateDetails(string? name, string? sku, decimal? price, bool? isActive)
         {
             if (!string.IsNullOrWhiteSpace(name))
