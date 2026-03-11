@@ -2,10 +2,17 @@
 {
     public record ProductVariantsFilterRequest
     {
-        public decimal? MinPrice { get; set; }
-        public decimal? MaxPrice { get; set; }
+        public Guid? ProductId { get; set; }
+        public Guid? CategoryId { get; set; }
         public string? Brand { get; set; }
+        public PriceRange? PriceRange { get; set; }
         public string? SearchText { get; set; }
-        public int PageSize { get; set; } = 20;
+        public Dictionary<string, string>? Attributes { get; set; }
+        public bool OnlyActive { get; set; } = true;
+        public bool OnlyInStock { get; set; } = true;
+        public bool Featured { get; set; }
+        public ProductSortBy? SortBy { get; set; }
+        public int Page { get; set; } = 1;
+        public int PageSize { get; set; } = 12;
     }
 }

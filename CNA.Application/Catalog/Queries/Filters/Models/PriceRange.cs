@@ -1,4 +1,10 @@
 ﻿namespace CNA.Application.Catalog.Queries.Filters.Models
 {
-    public record PriceRange(decimal MinPrice, decimal MaxPrice);
+    public record PriceRange
+    {
+        public decimal? MinPrice { get; init; }
+        public decimal? MaxPrice { get; init; }
+
+        //public PriceRange() { }
+    }
 }

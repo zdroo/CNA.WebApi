@@ -3,6 +3,7 @@ using CNA.Application.Catalog.Queries.ProductVariant;
 using CNA.Contracts.Requests.Filters;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ProductSortBy = CNA.Application.Catalog.Queries.Filters.Models.ProductSortBy;
 
 namespace CNA.WebApi.Controllers
 {
@@ -26,18 +27,25 @@ namespace CNA.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProductVariantsFiltered(Guid productId, ProductVariantsFilterRequest filter)
+        public async Task<IActionResult> GetProductVariantsFiltered(ProductVariantsFilterRequest filter)
         {
             var queryFilter = new ProductVariantsFilter
             {
-                ProductId = productId,
+                ProductId = filter.ProductId,
+                CategoryId = filter.CategoryId,
+                Attributes = filter.Attributes,
                 Brand = filter.Brand,
                 SearchText = filter.SearchText,
-                MinPrice = filter.MinPrice,
-                MaxPrice = filter.MaxPrice,
+                PriceRange = MapFilterPriceRange(filter.PriceRange),
+                OnlyActive = filter.OnlyActive,
+                OnlyInStock = filter.OnlyInStock,
+                Featured = filter.Featured,
+                SortBy = (ProductSortBy)filter.SortBy,
                 PageSize = filter.PageSize,
+                Page = filter.Page,
             };
-            var variants = await _mediator.Send(new GetProductVariantsQuery(productId, queryFilter));
+
+            var variants = await _mediator.Send(new GetProductVariantsQuery(queryFilter));
 
             return Ok(variants);
         }
@@ -48,10 +56,20 @@ namespace CNA.WebApi.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpDelete]
-        public async Task<ActionResult<Guid>> DeleteProductVariant(Guid productVariantId)
+        private Application.Catalog.Queries.Filters.Models.PriceRange? MapFilterPriceRange(Contracts.Requests.Filters.PriceRange? requestedPriceRange)
         {
-            throw new NotImplementedException();
+            if (requestedPriceRange is null)
+            {
+                return null;
+            }
+
+            var result = new Application.Catalog.Queries.Filters.Models.PriceRange
+            {
+                MinPrice = requestedPriceRange.MinPrice,
+                MaxPrice = requestedPriceRange.MaxPrice
+            };
+
+            return result;
         }
     }
 }

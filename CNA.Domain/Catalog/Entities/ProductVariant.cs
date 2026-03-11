@@ -13,6 +13,7 @@ namespace CNA.Domain.Catalog.Entities
         public string Sku { get; private set; } = default!;
         public string Name { get; private set; } = default!;
         public decimal Price { get; private set; }
+        public bool IsFeatured { get; private set; }
         public Stock Stock { get; private set; } = default!;
 
         private readonly List<VariantAttribute> _attributes = new();

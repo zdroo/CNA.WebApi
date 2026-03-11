@@ -1,4 +1,5 @@
-﻿using CNA.Application.Catalog.Queries.ProductVariant;
+﻿using CNA.Application.Catalog.Queries.Filters;
+using CNA.Application.Catalog.Queries.Filters.Models;
 using CNA.Application.Interfaces;
 using CNA.Domain.Catalog.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -53,8 +54,42 @@ namespace CNA.Infrastructure.Repositories
                 .Include(p => p.Variants)
                     .ThenInclude(v => v.Attributes)
                 .Include(p => p.Variants)
+        .           ThenInclude(v => v.Reviews)
+                .Include(p => p.Variants)
                     .ThenInclude(v => v.Stock)
                 .ToListAsync();
+        }
+
+        public async Task<List<Product>> GetFiltered(ProductsFilter filter)
+        {
+            var query = _context.Products
+                .Include(v => v.Variants)
+                .AsQueryable();
+
+            if (filter.CategoryId.HasValue)
+            {
+                query = query.Where(p => p.CategoryId == filter.CategoryId.Value);
+            }
+
+            if (!string.IsNullOrWhiteSpace(filter.SearchText))
+            {
+                query = query.Where(p =>
+                    EF.Functions.Like(p.Name, $"%{filter.SearchText}%") ||
+                    EF.Functions.Like(p.Description, $"%{filter.SearchText}%")
+                    );
+            }
+            
+            if (filter.IsFeatured)
+            {
+                // TODO
+            }
+
+            //if (filter.PageSize.HasValue)
+            //{
+            //    // TO DO
+            //}
+
+            return await query.ToListAsync();
         }
 
         public async Task<List<ProductVariant>> GetByProductId(Guid productId)
@@ -73,27 +108,82 @@ namespace CNA.Infrastructure.Repositories
                 .FirstOrDefaultAsync(p => p.ProductId == productVariantId);
         }
 
-        public async Task<List<ProductVariant>> GetFiltered(GetProductVariantsQuery filter)
+        public async Task<List<ProductVariant>> GetFiltered(ProductVariantsFilter filter)
         {
             var query = _context.ProductVariants
-                .AsNoTracking()
-                .Where(p => p.ProductId == filter.ProductId);
+                .Include(v => v.Product)
+                .Include(v => v.Attributes)
+                .Include(v => v.Stock)
+                .Include(v => v.Reviews)
+                .AsQueryable();
 
-            var customFilter = filter.Filter;
+            if (filter.ProductId.HasValue)
+            {
+                query = query.Where(p => p.ProductId == filter.ProductId);
+            }
 
-            if (customFilter.MinPrice.HasValue)
-                query = query.Where(p => p.Price >= customFilter.MinPrice.Value);
+            if (filter.CategoryId.HasValue)
+            {
+                query = query.Where(p => p.Product.CategoryId == filter.CategoryId);
+            }
 
-            if (customFilter.MaxPrice.HasValue)
-                query = query.Where(p => p.Price <= customFilter.MaxPrice.Value);
+            if (!string.IsNullOrWhiteSpace(filter.Brand))
+                query = query.Where(p => p.Brand == filter.Brand);
 
-            if (!string.IsNullOrWhiteSpace(customFilter.Brand))
-                query = query.Where(p => p.Brand == customFilter.Brand);
+            if (filter.PriceRange is not null)
+            {
+                if (filter.PriceRange.MinPrice.HasValue)
+                    query = query.Where(p => p.Price >= filter.PriceRange.MinPrice.Value);
 
-            if (!string.IsNullOrWhiteSpace(customFilter.SearchText))
+                if (filter.PriceRange.MaxPrice.HasValue)
+                    query = query.Where(p => p.Price <= filter.PriceRange.MaxPrice.Value);
+            }
+
+            if (!string.IsNullOrWhiteSpace(filter.SearchText))
                 query = query.Where(p =>
-                    EF.Functions.Like(p.Name, $"%{customFilter.SearchText}%") ||
-                    EF.Functions.Like(p.Description, $"%{customFilter.SearchText}%"));
+                    EF.Functions.Like(p.Name, $"%{filter.SearchText}%") ||
+                    EF.Functions.Like(p.Description, $"%{filter.SearchText}%"));
+
+            if (filter.Attributes != null)
+            {
+                foreach (var attr in filter.Attributes)
+                {
+                    var name = attr.Key;
+                    var value = attr.Value;
+
+                    query = query.Where(v =>
+                        v.Attributes.Any(a =>
+                            a.Name == name && a.Value == value));
+                }
+            }
+
+            if (filter.OnlyActive)
+            {
+                query = query.Where(v => v.IsActive);
+            }
+
+            if (filter.OnlyInStock)
+            {
+                query = query.Where(v => v.Stock.Quantity > 0);
+            }
+
+            if (filter.Featured)
+            {
+                query = query.Where(v => v.IsFeatured);
+            }
+
+            query = filter.SortBy switch
+            {
+                ProductSortBy.PriceAsc => query.OrderBy(v => v.Price),
+                ProductSortBy.PriceDesc => query.OrderByDescending(v => v.Price),
+                ProductSortBy.Newest => query.OrderByDescending(v => v.CreatedAt),
+                _ => query
+            };
+
+            //if (filter.PageSize.HasValue)
+            //{
+            //    // TO DO
+            //}
 
             return await query.ToListAsync();
         }
