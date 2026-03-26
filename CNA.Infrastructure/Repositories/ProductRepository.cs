@@ -1,6 +1,7 @@
 ﻿using CNA.Application.Catalog.Queries.Filters;
 using CNA.Application.Catalog.Queries.Filters.Models;
 using CNA.Application.Interfaces;
+using CNA.Contracts.Responses;
 using CNA.Domain.Catalog.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -95,6 +96,8 @@ namespace CNA.Infrastructure.Repositories
         public async Task<List<ProductVariant>> GetByProductId(Guid productId)
         {
             return await _context.ProductVariants
+                .Include(x => x.Stock)
+                .Include(x => x.Reviews)
                 .Include(x => x.Attributes)
                 .AsNoTracking()
                 .Where(p => p.ProductId == productId).ToListAsync();
@@ -106,6 +109,14 @@ namespace CNA.Infrastructure.Repositories
                 .Include(x => x.Attributes)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.ProductId == productVariantId);
+        }
+
+        public async Task<List<ProductVariant>> GetByProductVariantIds(IEnumerable<Guid> productVariantIds)
+        {
+            return await _context.ProductVariants
+                .Include(x => x.Attributes)
+                .AsNoTracking()
+                .Where(_ => productVariantIds.Contains(_.Id)).ToListAsync();
         }
 
         public async Task<List<ProductVariant>> GetFiltered(ProductVariantsFilter filter)
@@ -186,6 +197,36 @@ namespace CNA.Infrastructure.Repositories
             //}
 
             return await query.ToListAsync();
+        }
+
+        public async Task<List<AttributeFilter>> GetVariantFiltersAsync(AttributesFilter filter)
+        {
+            var query = _context.ProductVariants
+                .Include(v => v.Product)
+                .Include(v => v.Attributes)
+                .AsQueryable();
+
+            if (filter.CategoryId.HasValue)
+            {
+                query = query.Where(v => v.Product.CategoryId == filter.CategoryId);
+            }
+
+            if (filter.ProductId.HasValue)
+            {
+                query = query.Where(v => v.ProductId == filter.ProductId);
+            }
+
+            var attributes = await query
+                .SelectMany(v => v.Attributes)
+                .GroupBy(a => a.Name)
+                .Select(g => new AttributeFilter
+                {
+                    Name = g.Key,
+                    Values = g.Select(x => x.Value).Distinct().ToList()
+                })
+                .ToListAsync();
+
+            return attributes;
         }
     }
 }

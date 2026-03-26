@@ -1,4 +1,5 @@
 ﻿using CNA.Application.Catalog.Queries.Filters;
+using CNA.Contracts.Responses;
 using CNA.Domain.Catalog.Entities;
 
 namespace CNA.Application.Interfaces
@@ -14,5 +15,7 @@ namespace CNA.Application.Interfaces
         Task<List<ProductVariant>> GetByProductId(Guid productId);
         Task<List<ProductVariant>> GetFiltered(ProductVariantsFilter filter);
         Task<ProductVariant?> GetByProductVariantId(Guid productVariantId);
+        Task<List<ProductVariant>> GetByProductVariantIds(IEnumerable<Guid> productVariantIds);
+        Task<List<AttributeFilter>> GetVariantFiltersAsync(AttributesFilter filter);
     }
 }

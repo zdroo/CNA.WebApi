@@ -46,6 +46,11 @@ namespace CNA.Domain.Catalog.Entities
             _items.Remove(item);
         }
 
+        public void Clear()
+        {
+            _items.Clear();
+        }
+
         public decimal GetTotal() => _items.Sum(i => i.Total);
     }
 }

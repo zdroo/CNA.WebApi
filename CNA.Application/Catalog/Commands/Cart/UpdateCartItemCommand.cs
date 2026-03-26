@@ -3,5 +3,5 @@ using MediatR;
 
 namespace CNA.Application.Catalog.Commands.Cart
 {
-    public record UpdateCartItemCommand(Guid CartItemId, int Quantity) : IRequest<CartItemResponse>;
+    public record UpdateCartItemCommand(Guid UserId, Guid CartItemId, int Quantity) : IRequest<CartItemResponse>;
 }

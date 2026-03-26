@@ -1,13 +1,14 @@
 ﻿using CNA.Application.Catalog.Queries.Filters;
 using CNA.Application.Catalog.Queries.ProductVariant;
 using CNA.Contracts.Requests.Filters;
+using CNA.Contracts.Requests.Filters.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProductSortBy = CNA.Application.Catalog.Queries.Filters.Models.ProductSortBy;
 
 namespace CNA.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/product-variant")]
     [ApiController]
     public class ProductVariantController : ControllerBase
     {
@@ -27,7 +28,7 @@ namespace CNA.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProductVariantsFiltered(ProductVariantsFilterRequest filter)
+        public async Task<IActionResult> GetProductVariantsFiltered([FromQuery]ProductVariantsFilterRequest filter)
         {
             var queryFilter = new ProductVariantsFilter
             {
@@ -45,9 +46,19 @@ namespace CNA.WebApi.Controllers
                 Page = filter.Page,
             };
 
-            var variants = await _mediator.Send(new GetProductVariantsQuery(queryFilter));
+            var variants = await _mediator.Send(
+                new GetProductVariantsQuery(queryFilter));
 
             return Ok(variants);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAttributes(Guid categoryId, Guid productId)
+        {
+            var attributes = await _mediator.Send(
+                new AttributesFilter(categoryId, productId));
+
+            return Ok(attributes);
         }
 
         [HttpGet]
@@ -56,7 +67,7 @@ namespace CNA.WebApi.Controllers
             throw new NotImplementedException();
         }
 
-        private Application.Catalog.Queries.Filters.Models.PriceRange? MapFilterPriceRange(Contracts.Requests.Filters.PriceRange? requestedPriceRange)
+        private Application.Catalog.Queries.Filters.Models.PriceRange? MapFilterPriceRange(PriceRange? requestedPriceRange)
         {
             if (requestedPriceRange is null)
             {

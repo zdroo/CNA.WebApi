@@ -6,37 +6,32 @@ namespace CNA.Application.Catalog.CommandHandlers.Cart
 {
     public class AddCartItemCommandHandler : IRequestHandler<AddCartItemCommand>
     {
-        private readonly ICartRepository _cartRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IProductRepository _productRepository;
         private readonly IUserRepository _userRepository;
 
         public AddCartItemCommandHandler(
-            ICartRepository cartRepository,
+            IUnitOfWork unitOfWork,
             IProductRepository productRepository,
             IUserRepository userRepository)
         {
-            _cartRepository = cartRepository;
+            _unitOfWork = unitOfWork;
             _productRepository = productRepository;
             _userRepository = userRepository;
         }
 
         public async Task Handle(AddCartItemCommand command, CancellationToken cancellationToken = default)
         {
-            Domain.Catalog.Entities.Cart? cart;
+            var user = await _userRepository.GetByIdAsync(command.UserId)
+                        ?? throw new Exception("User not found");
+
+            var cart = user.GetOrCreateCart();
+
             var variant = await _productRepository.GetByProductVariantId(command.ProductVariantId)
                 ?? throw new ArgumentException("Variant not found");
 
-            cart = await _cartRepository.GetByUserIdAsync(command.UserId);
-
-            if (cart == null)
-            {
-                var user = await _userRepository.GetByIdAsync(command.UserId);
-                if (user == null)
-                    throw new ArgumentException("User not found");
-                cart = user.GetOrCreateCart();
-            }
-
             cart.AddItem(variant.Id, variant.Price);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

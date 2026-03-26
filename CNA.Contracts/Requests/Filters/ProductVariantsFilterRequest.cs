@@ -1,4 +1,6 @@
-﻿namespace CNA.Contracts.Requests.Filters
+﻿using CNA.Contracts.Requests.Filters.Models;
+
+namespace CNA.Contracts.Requests.Filters
 {
     public record ProductVariantsFilterRequest
     {

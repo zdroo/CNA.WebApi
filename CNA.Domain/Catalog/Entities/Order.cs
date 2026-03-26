@@ -7,7 +7,6 @@ namespace CNA.Domain.Catalog.Entities
     {
         public Guid UserId { get; private set; }
         public OrderStatus Status { get; private set; }
-        private readonly List<OrderItem> _items = new();
         public IReadOnlyCollection<OrderItem> Items => _items;
         public decimal TotalAmount { get; private set; }
         public string ShippingFirstName { get; private set; }
@@ -18,6 +17,8 @@ namespace CNA.Domain.Catalog.Entities
         public string ShippingCountry { get; private set; }
         public string ShippingPhone { get; private set; }
         public bool IsPaid { get; private set; }
+
+        private readonly List<OrderItem> _items = new();
 
         protected Order() { }
 

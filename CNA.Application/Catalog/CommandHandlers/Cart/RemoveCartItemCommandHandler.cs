@@ -6,19 +6,24 @@ namespace CNA.Application.Catalog.CommandHandlers.Cart
 {
     public class RemoveCartItemCommandHandler : IRequestHandler<RemoveCartItemCommand>
     {
-        private readonly ICartRepository _cartRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUserRepository _userRepository;
 
-        public RemoveCartItemCommandHandler(ICartRepository cartRepository)
+        public RemoveCartItemCommandHandler(IUnitOfWork unitOfWork, IUserRepository userRepository)
         {
-            _cartRepository = cartRepository;
+            _unitOfWork = unitOfWork;
+            _userRepository = userRepository;
         }
 
         public async Task Handle(RemoveCartItemCommand command, CancellationToken cancellationToken)
         {
-            var cartItem = await _cartRepository.GetByIdAsync(command.CartItemId)
-                ?? throw new Exception("CartItem not found");
+            var user = await _userRepository.GetByIdAsync(command.UserId)
+                ?? throw new Exception("User not found");
 
-            await _cartRepository.RemoveCartItemAsync(cartItem);
+            var cart = user.GetOrCreateCart();
+
+            cart.RemoveItemByCartItemId(command.CartItemId);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

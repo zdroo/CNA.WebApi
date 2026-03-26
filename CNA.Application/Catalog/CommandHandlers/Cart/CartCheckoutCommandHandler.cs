@@ -9,16 +9,16 @@ namespace CNA.Application.Catalog.CommandHandlers.Cart
     public class CartCheckoutCommandHandler : IRequestHandler<CartCheckoutCommand>
     {
         private readonly IUserRepository _userRepository;
-        private readonly IProductVariantRepository _productVariantRepository;
+        private readonly IProductRepository _productRepository;
         private readonly IOrderRepository _orderRepository;
 
         public CartCheckoutCommandHandler(
             IUserRepository userRepository,
-            IProductVariantRepository productVariantRepository,
+            IProductRepository productRepository,
             IOrderRepository orderRepository)
         {
             _userRepository = userRepository;
-            _productVariantRepository = productVariantRepository;
+            _productRepository = productRepository;
             _orderRepository = orderRepository;
         }
 
@@ -42,7 +42,7 @@ namespace CNA.Application.Catalog.CommandHandlers.Cart
                     if (itemsToCheckout.Count != command.CartItemIds.Count)
                         throw new Exception("No match between cart items and items to checkout");
 
-                    var variants = await _productVariantRepository.GetByProductVariantIds(
+                    var variants = await _productRepository.GetByProductVariantIds(
                         itemsToCheckout.Select(x => x.ProductVariantId));
 
                     if (variants.Count() != itemsToCheckout.Count)

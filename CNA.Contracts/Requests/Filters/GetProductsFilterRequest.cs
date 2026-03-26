@@ -1,6 +1,6 @@
 ﻿namespace CNA.Contracts.Requests.Filters
 {
-    public class GetProductsFilterRequest
+    public record GetProductsFilterRequest
     {
         public Guid? CategoryId { get; set; }
         public string? SearchText { get; set; }

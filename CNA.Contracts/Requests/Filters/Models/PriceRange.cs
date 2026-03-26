@@ -1,4 +1,4 @@
-﻿namespace CNA.Contracts.Requests.Filters
+﻿namespace CNA.Contracts.Requests.Filters.Models
 {
     public class PriceRange
     {

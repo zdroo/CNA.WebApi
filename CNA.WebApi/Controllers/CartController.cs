@@ -44,7 +44,7 @@ namespace CNA.WebApi.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateQuantity(UpdateCartItemRequest request)
         {
-            var command = new UpdateCartItemCommand(request.CartItemId, request.Quantity);
+            var command = new UpdateCartItemCommand(CurrentUserId, request.CartItemId, request.Quantity);
             var cartItem = await _mediator.Send(command);
             return Ok(cartItem);
         }
@@ -52,9 +52,21 @@ namespace CNA.WebApi.Controllers
         [HttpDelete]
         public async Task<IActionResult> RemoveFromCart(RemoveCartItemRequest request)
         {
-            var command = new RemoveCartItemCommand(request.CartItemId);
+            var command = new RemoveCartItemCommand(CurrentUserId, request.CartItemId);
             await _mediator.Send(command);
-            return NoContent();
+
+            var cartResponse = await _mediator.Send(new GetCartByUserIdQuery(CurrentUserId));
+            return Ok(cartResponse);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> ClearCart()
+        {
+            var command = new ClearCartCommand(CurrentUserId);
+            await _mediator.Send(command);
+
+            var cartResponse = await _mediator.Send(new GetCartByUserIdQuery(CurrentUserId));
+            return Ok(cartResponse);
         }
 
         [HttpPost("checkout")]
