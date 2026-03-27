@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace CNA.WebApi.Controllers.Seller
 {
-    [Route("api/[controller]")]
+    [Route("api/seller/import")]
     [ApiController]
     public class SellerImportController : ControllerBase
     {

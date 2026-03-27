@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CNA.WebApi.Controllers.Seller
 {
-    [Route("api/[controller]")]
+    [Route("api/seller/product-variant")]
     [ApiController]
     public class SellerProductVariantsController : ControllerBase
     {

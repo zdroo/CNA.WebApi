@@ -51,7 +51,7 @@ namespace CNA.WebApi.Controllers.Seller
                 new DeleteProductCommand(id),
                 cancellationToken);
 
-            return Ok();
+            return NoContent();
         }
     }
 }

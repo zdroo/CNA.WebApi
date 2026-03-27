@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CNA.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/order")]
     [ApiController]
     public class OrderController : ControllerBase
     {

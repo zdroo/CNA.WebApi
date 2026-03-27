@@ -1,6 +1,5 @@
 ﻿using CNA.Domain.Catalog.Entities;
 using CNA.Domain.Catalog.Entities.Localization;
-using CNA.Infrastructure.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace CNA.Infrastructure
@@ -30,22 +29,23 @@ namespace CNA.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfiguration(new AddressConfiguration());
-            modelBuilder.ApplyConfiguration(new CartConfiguration());
-            modelBuilder.ApplyConfiguration(new CartItemConfiguration());
-            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
-            modelBuilder.ApplyConfiguration(new CountryConfiguration());
-            modelBuilder.ApplyConfiguration(new OrderConfiguration());
-            modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
-            modelBuilder.ApplyConfiguration(new PaymentConfiguration());
-            modelBuilder.ApplyConfiguration(new ProductConfiguration());
-            modelBuilder.ApplyConfiguration(new ProductVariantConfiguration());
-            modelBuilder.ApplyConfiguration(new RefreshTokenConfiguration());
-            modelBuilder.ApplyConfiguration(new ReviewConfiguration());
-            modelBuilder.ApplyConfiguration(new ShippingContactConfiguration());
-            modelBuilder.ApplyConfiguration(new StockConfiguration());
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
-            modelBuilder.ApplyConfiguration(new VariantAttributeConfiguration());
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(CNADbContext).Assembly);
         }
     }
 }
+//modelBuilder.ApplyConfiguration(new AddressConfiguration());
+//modelBuilder.ApplyConfiguration(new CartConfiguration());
+//modelBuilder.ApplyConfiguration(new CartItemConfiguration());
+//modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+//modelBuilder.ApplyConfiguration(new CountryConfiguration());
+//modelBuilder.ApplyConfiguration(new OrderConfiguration());
+//modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
+//modelBuilder.ApplyConfiguration(new PaymentConfiguration());
+//modelBuilder.ApplyConfiguration(new ProductConfiguration());
+//modelBuilder.ApplyConfiguration(new ProductVariantConfiguration());
+//modelBuilder.ApplyConfiguration(new RefreshTokenConfiguration());
+//modelBuilder.ApplyConfiguration(new ReviewConfiguration());
+//modelBuilder.ApplyConfiguration(new ShippingContactConfiguration());
+//modelBuilder.ApplyConfiguration(new StockConfiguration());
+//modelBuilder.ApplyConfiguration(new UserConfiguration());
+//modelBuilder.ApplyConfiguration(new VariantAttributeConfiguration());
