@@ -1,6 +1,7 @@
 ﻿using CNA.Domain.Catalog.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 
 namespace CNA.Infrastructure.Configurations
 {
@@ -15,6 +16,8 @@ namespace CNA.Infrastructure.Configurations
             builder.Property(o => o.UserId)
                 .IsRequired();
 
+            builder.Property(o => o.ShippingContactId);  // nullable, no IsRequired
+
             builder.Property(o => o.Status)
                 .IsRequired()
                 .HasConversion<string>();
@@ -23,13 +26,24 @@ namespace CNA.Infrastructure.Configurations
                 .HasColumnType("decimal(18,2)")
                 .IsRequired();
 
-            builder.HasMany(typeof(OrderItem), "_items")
+            builder.Property(o => o.IsPaid)
+                .IsRequired()
+                .HasDefaultValue(false);
+
+            builder.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(o => o.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany<OrderItem>("_items")
                 .WithOne()
                 .HasForeignKey("OrderId")
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Navigation(nameof(Order.Items))
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.OwnsOne(o => o.ShippingAddress, sa => sa.ToJson());
         }
     }
 }

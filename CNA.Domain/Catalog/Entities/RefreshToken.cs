@@ -23,5 +23,4 @@ namespace CNA.Domain.Catalog.Entities
 
         public void Revoke() => IsRevoked = true;
     }
-
 }

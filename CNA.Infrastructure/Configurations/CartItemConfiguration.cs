@@ -12,7 +12,8 @@ namespace CNA.Infrastructure.Configurations
 
             builder.HasKey(ci => ci.Id);
 
-            builder.Property<Guid>("CartId");
+            builder.Property(ci => ci.CartId)
+                .IsRequired();
 
             builder.Property(ci => ci.ProductVariantId)
                 .IsRequired();

@@ -1,6 +1,5 @@
 ﻿using CNA.Application.Catalog.Commands.Categories;
 using CNA.Application.Interfaces;
-using CNA.Domain.Catalog;
 using CNA.Domain.Catalog.Entities;
 using MediatR;
 

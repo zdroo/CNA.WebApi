@@ -70,9 +70,9 @@ namespace CNA.WebApi.Controllers
         }
 
         [HttpPost("checkout")]
-        public async Task<IActionResult> Checkout([FromBody] List<Guid> CartItemIds)
+        public async Task<IActionResult> Checkout([FromBody] CheckoutRequest request)
         {
-            await _mediator.Send(new CartCheckoutCommand(CurrentUserId, CartItemIds));
+            await _mediator.Send(new CartCheckoutCommand(CurrentUserId, request.ShippingContactId, request.CartItemIds));
 
             return Ok();
         }

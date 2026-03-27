@@ -1,8 +1,9 @@
 ﻿using CNA.Domain.Catalog.Enums;
+using CNA.Domain.Common;
 
 namespace CNA.Domain.Catalog.Entities
 {
-    public class Payment
+    public class Payment : BaseEntity
     {
         public Guid OrderId { get; private set; }
         public PaymentStatus Status { get; private set; }

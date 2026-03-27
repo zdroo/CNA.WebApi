@@ -13,7 +13,8 @@ namespace CNA.Infrastructure.Configurations
             builder.HasKey(r => r.Id);
 
             builder.Property(r => r.Rating)
-                .IsRequired();
+                .IsRequired()
+                .HasConversion<int>();
 
             builder.Property(r => r.Comment)
                 .HasMaxLength(1000);
@@ -21,10 +22,26 @@ namespace CNA.Infrastructure.Configurations
             builder.Property(r => r.UserId)
                 .IsRequired();
 
+            builder.Property(r => r.ProductVariantId)
+                .IsRequired();
+
             builder.Property(r => r.CreatedAt)
                 .IsRequired();
 
+            builder.HasOne(r => r.ProductVariant)
+                .WithMany()
+                .HasForeignKey(r => r.ProductVariantId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.HasIndex(r => r.ProductVariantId);
+
+            builder.HasIndex(r => new { r.ProductVariantId, r.UserId })
+                .IsUnique();
         }
     }
 }

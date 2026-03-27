@@ -1,4 +1,5 @@
 ﻿using CNA.Domain.Catalog.Entities;
+using CNA.Domain.Catalog.Entities.Localization;
 using CNA.Infrastructure.Configurations;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +21,10 @@ namespace CNA.Infrastructure
         public DbSet<OrderItem> OrderItems => Set<OrderItem>();
         public DbSet<Cart> Carts => Set<Cart>();
         public DbSet<CartItem> CartItems => Set<CartItem>();
+        public DbSet<ShippingContact> ShippingContacts => Set<ShippingContact>();
+        public DbSet<Country> Countries => Set<Country>();
+        public DbSet<Address> Addresses => Set<Address>();
+        public DbSet<Payment> Payments => Set<Payment>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,6 +39,10 @@ namespace CNA.Infrastructure
             modelBuilder.ApplyConfiguration(new CartConfiguration());
             modelBuilder.ApplyConfiguration(new CartItemConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new ShippingContactConfiguration());
+            modelBuilder.ApplyConfiguration(new CountryConfiguration());
+            modelBuilder.ApplyConfiguration(new AddressConfiguration());
+            modelBuilder.ApplyConfiguration(new PaymentConfiguration());
         }
     }
 }

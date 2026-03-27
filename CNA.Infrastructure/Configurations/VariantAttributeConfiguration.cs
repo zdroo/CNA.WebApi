@@ -12,6 +12,9 @@ namespace CNA.Infrastructure.Configurations
 
             builder.HasKey(a => a.Id);
 
+            builder.Property(a => a.ProductVariantId)
+                .IsRequired();
+
             builder.Property(a => a.Name)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -21,9 +24,9 @@ namespace CNA.Infrastructure.Configurations
                 .HasMaxLength(200);
 
             builder.HasOne(a => a.ProductVariant)
-                   .WithMany(v => v.Attributes)
-                   .HasForeignKey(a => a.ProductVariantId)
-                   .OnDelete(DeleteBehavior.Cascade);
+                .WithMany()
+                .HasForeignKey(a => a.ProductVariantId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasIndex(a => a.ProductVariantId);
         }

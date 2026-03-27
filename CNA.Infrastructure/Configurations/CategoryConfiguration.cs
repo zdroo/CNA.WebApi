@@ -16,10 +16,29 @@ namespace CNA.Infrastructure.Configurations
                 .IsRequired()
                 .HasMaxLength(100);
 
-            builder.HasMany(c => c.Products)
+            builder.Property(c => c.Slug)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            builder.HasIndex(c => c.Slug)
+                .IsUnique();
+
+            builder.Property(c => c.IsActive)
+                .IsRequired()
+                .HasDefaultValue(true);
+
+            builder.HasOne(c => c.ParentCategory)
+                .WithMany()
+                .HasForeignKey(c => c.ParentCategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany<Product>("_products")
                 .WithOne(p => p.Category)
                 .HasForeignKey(p => p.CategoryId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Navigation(nameof(Category.Products))
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
         }
     }
 }

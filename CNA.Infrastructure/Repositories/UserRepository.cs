@@ -16,6 +16,8 @@ namespace CNA.Infrastructure.Repositories
         public async Task<User?> GetByIdAsync(Guid id)
         {
             return await _context.Users
+                .Include(u => u.Addresses)
+                .Include(u => u.ShippingContacts)
                 .Include(u => u.RefreshTokens)
                 .Include(u => u.Cart)
                     .ThenInclude(c => c.Items)

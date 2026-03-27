@@ -12,6 +12,9 @@ namespace CNA.Infrastructure.Configurations
 
             builder.HasKey(s => s.Id);
 
+            builder.Property(s => s.ProductVariantId)
+                .IsRequired();
+
             builder.Property(s => s.Quantity)
                 .IsRequired();
 

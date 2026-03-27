@@ -21,5 +21,4 @@ namespace CNA.Domain.Catalog.Entities
             Slug = slug;
         }
     }
-
 }

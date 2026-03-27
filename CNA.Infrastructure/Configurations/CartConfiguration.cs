@@ -19,20 +19,13 @@ namespace CNA.Infrastructure.Configurations
             builder.HasIndex(c => c.UserId)
                 .IsUnique();
 
-            builder.HasMany(typeof(CartItem), "_items")
-                .WithOne()
-                .HasForeignKey("CartId")
+            builder.HasMany<CartItem>("_items")
+                .WithOne(ci => ci.Cart)
+                .HasForeignKey(ci => ci.CartId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            //builder.HasMany(c => c.Items)
-            //   .WithOne(i => i.Cart)
-            //   .HasForeignKey(i => i.CartId)
-            //   .OnDelete(DeleteBehavior.Cascade);
 
             builder.Navigation(nameof(Cart.Items))
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
-
-            builder.HasKey(c => c.Id);
         }
     }
 }
