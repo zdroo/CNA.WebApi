@@ -20,5 +20,18 @@ namespace CNA.Domain.Catalog.Entities
             Name = name;
             Slug = slug;
         }
+
+        public void UpdateCategory(string name, string slug)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Name = name;
+            }
+
+            if (string.IsNullOrWhiteSpace(slug))
+            {
+                Slug = slug;
+            }
+        }
     }
 }
