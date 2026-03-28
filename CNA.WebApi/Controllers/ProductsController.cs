@@ -1,4 +1,4 @@
-﻿using CNA.Application.Catalog.Queries.Filters;
+﻿using CNA.Application.Catalog.Filters;
 using CNA.Application.Catalog.Queries.Product;
 using CNA.Contracts.Requests.Filters;
 using CNA.Contracts.Responses;

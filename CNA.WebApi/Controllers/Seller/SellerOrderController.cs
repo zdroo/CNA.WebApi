@@ -1,5 +1,5 @@
-﻿using CNA.Application.Catalog.Filters.Models;
-using CNA.Application.Catalog.Queries.Filters;
+﻿using CNA.Application.Catalog.Filters;
+using CNA.Application.Catalog.Filters.Models;
 using CNA.Contracts.Requests.Filters;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

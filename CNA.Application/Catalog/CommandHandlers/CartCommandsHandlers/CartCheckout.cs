@@ -84,7 +84,7 @@ public static class CartCheckout
             );
         }
 
-        private static List<CartItem> GetItemsToCheckout(Cart cart, List<Guid> cartItemIds)
+        private static List<CartItem> GetItemsToCheckout(Domain.Catalog.Entities.Cart cart, List<Guid> cartItemIds)
         {
             var items = cart.Items
                 .Where(x => cartItemIds.Contains(x.Id))
@@ -121,12 +121,12 @@ public static class CartCheckout
                 item.Variant.DecreaseStock(item.CartItem.Quantity);
         }
 
-        private static Order CreateOrder(
+        private static Domain.Catalog.Entities.Order CreateOrder(
             Command command,
             ShippingAddressSnapshot snapshot,
             List<CartItemWithVariant> itemsWithVariants)
         {
-            return new Order(
+            return new Domain.Catalog.Entities.Order(
                 command.UserId,
                 command.ShippingContactId,
                 snapshot,

@@ -44,7 +44,7 @@ public static class Login
 
             var token = _jwtService.GenerateToken(user);
 
-            var refreshToken = new RefreshToken(
+            var refreshToken = new Domain.Catalog.Entities.RefreshToken(
                 token: Guid.NewGuid().ToString(),
                 expiresAt: DateTime.UtcNow.AddDays(365),
                 userId: user.Id

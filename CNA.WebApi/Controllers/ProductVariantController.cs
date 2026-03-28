@@ -1,5 +1,5 @@
-﻿using CNA.Application.Catalog.Filters.Models;
-using CNA.Application.Catalog.Queries.Filters;
+﻿using CNA.Application.Catalog.Filters;
+using CNA.Application.Catalog.Filters.Models;
 using CNA.Application.Catalog.Queries.ProductVariant;
 using CNA.Contracts.Requests.Filters;
 using CNA.Contracts.Requests.Filters.Models;
@@ -29,7 +29,7 @@ namespace CNA.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProductVariantsFiltered([FromQuery]ProductVariantsFilterRequest filter)
+        public async Task<IActionResult> GetProductVariantsFiltered([FromQuery] ProductVariantsFilterRequest filter)
         {
             var queryFilter = new ProductVariantsFilter
             {
@@ -68,14 +68,14 @@ namespace CNA.WebApi.Controllers
             throw new NotImplementedException();
         }
 
-        private Application.Catalog.Filters.Models.PriceRange? MapFilterPriceRange(PriceRange? requestedPriceRange)
+        private Application.Catalog.Filters.Models.PriceRange? MapFilterPriceRange(Contracts.Requests.Filters.Models.PriceRange? requestedPriceRange)
         {
             if (requestedPriceRange is null)
             {
                 return null;
             }
 
-            var result = new Application.Catalog.Queries.Filters.Models.PriceRange
+            var result = new Application.Catalog.Filters.Models.PriceRange
             {
                 MinPrice = requestedPriceRange.MinPrice,
                 MaxPrice = requestedPriceRange.MaxPrice

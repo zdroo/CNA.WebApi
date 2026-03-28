@@ -23,7 +23,7 @@ public static class CreateProduct
         {
             var r = command.Request;
 
-            var product = new Product(
+            var product = new Domain.Catalog.Entities.Product(
                 r.Name,
                 r.Description,
                 r.CategoryId
