@@ -1,5 +1,4 @@
-﻿using CNA.Application.Catalog.Commands.Cart;
-using CNA.Application.Catalog.Queries.Cart;
+﻿using CNA.Application.Catalog.CartOperations;
 using CNA.Application.Interfaces;
 using CNA.Contracts.Requests.Cart;
 using MediatR;
@@ -25,7 +24,7 @@ namespace CNA.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCart()
         {
-            var cart = await _mediator.Send(new GetCartByUserIdQuery(CurrentUserId));
+            var cart = await _mediator.Send(new GetCartByUserId.Query(CurrentUserId));
 
             return Ok(cart);
         }
@@ -33,10 +32,10 @@ namespace CNA.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToCart([FromBody] AddProductVariantToCartRequest request)
         {
-            var command = new AddCartItemCommand(CurrentUserId, request.productVariantId);
+            var command = new AddCartItem.Command(CurrentUserId, request.productVariantId);
             await _mediator.Send(command);
 
-            var cartResponse = await _mediator.Send(new GetCartByUserIdQuery(CurrentUserId));
+            var cartResponse = await _mediator.Send(new GetCartByUserId.Query(CurrentUserId));
 
             return Ok(cartResponse);
         }
@@ -44,7 +43,7 @@ namespace CNA.WebApi.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateQuantity(UpdateCartItemRequest request)
         {
-            var command = new UpdateCartItemCommand(CurrentUserId, request.CartItemId, request.Quantity);
+            var command = new UpdateCartItem.Command(CurrentUserId, request.CartItemId, request.Quantity);
             var cartItem = await _mediator.Send(command);
             return Ok(cartItem);
         }
@@ -52,27 +51,27 @@ namespace CNA.WebApi.Controllers
         [HttpDelete]
         public async Task<IActionResult> RemoveFromCart(RemoveCartItemRequest request)
         {
-            var command = new RemoveCartItemCommand(CurrentUserId, request.CartItemId);
+            var command = new RemoveCartItem.Command(CurrentUserId, request.CartItemId);
             await _mediator.Send(command);
 
-            var cartResponse = await _mediator.Send(new GetCartByUserIdQuery(CurrentUserId));
+            var cartResponse = await _mediator.Send(new GetCartByUserId.Query(CurrentUserId));
             return Ok(cartResponse);
         }
 
         [HttpDelete]
         public async Task<IActionResult> ClearCart()
         {
-            var command = new ClearCartCommand(CurrentUserId);
+            var command = new ClearCart.Command(CurrentUserId);
             await _mediator.Send(command);
 
-            var cartResponse = await _mediator.Send(new GetCartByUserIdQuery(CurrentUserId));
+            var cartResponse = await _mediator.Send(new GetCartByUserId.Query(CurrentUserId));
             return Ok(cartResponse);
         }
 
         [HttpPost("checkout")]
         public async Task<IActionResult> Checkout([FromBody] CheckoutRequest request)
         {
-            await _mediator.Send(new CartCheckoutCommand(CurrentUserId, request.ShippingContactId, request.CartItemIds));
+            await _mediator.Send(new CartCheckout.Command(CurrentUserId, request.ShippingContactId, request.CartItemIds));
 
             return Ok();
         }

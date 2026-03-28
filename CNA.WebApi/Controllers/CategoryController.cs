@@ -1,4 +1,4 @@
-﻿using CNA.Application.Catalog.Queries.Categories;
+﻿using CNA.Application.Catalog.CategoriesOperations;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +17,7 @@ namespace CNA.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
-            var categories = await _mediator.Send(new GetCategoriesQuery());
+            var categories = await _mediator.Send(new GetCategories.Query());
 
             return Ok(categories);
         }

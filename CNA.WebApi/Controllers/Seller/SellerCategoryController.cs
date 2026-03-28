@@ -1,6 +1,5 @@
-﻿using CNA.Application.Catalog.Commands.Categories;
+﻿using CNA.Application.Catalog.CategoriesOperations;
 using CNA.Contracts.Requests.Categories;
-using CNA.Domain.Catalog.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +19,7 @@ namespace CNA.WebApi.Controllers.Seller
         [HttpGet]
         public async Task<IActionResult> CreateCategory(CreateCategoryRequest request)
         {
-            var id = await _mediator.Send(new CreateCategoryCommand(request));
+            var id = await _mediator.Send(new CreateCategory.Command(request));
             return Ok(id);
         }
 
@@ -33,7 +32,7 @@ namespace CNA.WebApi.Controllers.Seller
         [HttpDelete("{categoryId:guid}")]
         public async Task<IActionResult> DeleteCategory(Guid categoryId)
         {
-            await _mediator.Send(new DeleteCategoryCommand(categoryId));
+            await _mediator.Send(new DeleteCategory.Command(categoryId));
 
             return NoContent();
         }

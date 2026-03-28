@@ -1,8 +1,6 @@
 ﻿using CNA.Application.Catalog.Filters;
-using CNA.Application.Catalog.Filters.Models;
-using CNA.Application.Catalog.Queries.ProductVariant;
+using CNA.Application.Catalog.ProductVariantOperations;
 using CNA.Contracts.Requests.Filters;
-using CNA.Contracts.Requests.Filters.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProductSortBy = CNA.Application.Catalog.Filters.Models.ProductSortBy;
@@ -24,7 +22,7 @@ namespace CNA.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProductVariantsByProductId(Guid productId)
         {
-            var variants = await _mediator.Send(new GetProductVariantsByProductIdQuery(productId));
+            var variants = await _mediator.Send(new GetProductVariantsByProductId.Query(productId));
             return Ok(variants);
         }
 
@@ -48,7 +46,7 @@ namespace CNA.WebApi.Controllers
             };
 
             var variants = await _mediator.Send(
-                new GetProductVariantsQuery(queryFilter));
+                new GetProductVariants.Query(queryFilter));
 
             return Ok(variants);
         }

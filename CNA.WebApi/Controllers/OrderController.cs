@@ -1,5 +1,4 @@
-﻿using CNA.Application.Catalog.Commands.Order;
-using CNA.Application.Catalog.Queries.Order;
+﻿using CNA.Application.Catalog.OrderOperations;
 using CNA.Application.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -26,21 +25,21 @@ namespace CNA.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetOrders()
         {
-            var orders = await _mediator.Send(new GetOrdersQuery(CurrentUserId));
+            var orders = await _mediator.Send(new GetOrders.Query(CurrentUserId));
             return Ok(orders);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetOrderDetails(Guid orderId)
         {
-            var order = await _mediator.Send(new GetOrderDetailsQuery(orderId));
+            var order = await _mediator.Send(new GetOrderDetails.Query(orderId));
             return Ok(order);
         }
 
         [HttpPut]
         public async Task<IActionResult> CancelOrder(Guid orderId)
         {
-            await _mediator.Send(new CancelOrderCommand(orderId));
+            await _mediator.Send(new CancelOrder.Command(orderId));
             return Ok();
         }
     }

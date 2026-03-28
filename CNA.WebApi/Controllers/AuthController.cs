@@ -1,4 +1,4 @@
-﻿using CNA.Application.Catalog.Commands.User;
+﻿using CNA.Application.Catalog.UserOperations;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,21 +16,21 @@ namespace CNA.WebApi.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterCommand command)
+        public async Task<IActionResult> Register([FromBody] Register.Command command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginCommand command)
+        public async Task<IActionResult> Login([FromBody] Login.Command command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);
         }
 
         [HttpPost("refresh")]
-        public async Task<IActionResult> Refresh([FromBody] RefreshTokenCommand command)
+        public async Task<IActionResult> Refresh([FromBody] RefreshToken.Command command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);

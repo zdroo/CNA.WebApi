@@ -1,4 +1,4 @@
-﻿using CNA.Application.Catalog.Commands.ProductVariants;
+﻿using CNA.Application.Catalog.ProductVariantOperations;
 using CNA.Contracts.Requests.ProductVariants;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +18,11 @@ namespace CNA.WebApi.Controllers.Seller
 
         [HttpPost]
         public async Task<ActionResult<Guid>> AddVariant(
-        Guid productId,
-        [FromBody] CreateProductVariantRequest request,
+        [FromBody] AddProductVariant.Command request,
         CancellationToken cancellationToken)
         {
             var variantId = await _mediator.Send(
-                new AddProductVariantCommand(productId, request),
+                request,
                 cancellationToken);
 
             return Ok(variantId);
@@ -31,13 +30,11 @@ namespace CNA.WebApi.Controllers.Seller
 
         [HttpPut("{variantId:guid}")]
         public async Task<IActionResult> UpdateVariant(
-            Guid productId,
-            Guid variantId,
-            UpdateProductVariantRequest request,
+            UpdateProductVariant.Command request,
             CancellationToken cancellationToken)
         {
             await _mediator.Send(
-                new UpdateProductVariantCommand(productId, variantId, request),
+                request,
                 cancellationToken);
 
             return NoContent();
@@ -50,7 +47,7 @@ namespace CNA.WebApi.Controllers.Seller
             CancellationToken cancellationToken)
         {
             await _mediator.Send(
-                new DeleteProductVariantCommand(productId, variantId),
+                new DeleteProductVariant.Command(productId, variantId),
                 cancellationToken);
 
             return NoContent();
