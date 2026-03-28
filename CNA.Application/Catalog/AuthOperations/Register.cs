@@ -1,13 +1,11 @@
 ﻿using CNA.Application.Interfaces;
 using CNA.Application.Services;
 using CNA.Contracts.Models;
-using CNA.Domain.Catalog.Entities;
 using MediatR;
-using System.Security.Authentication;
 
-namespace CNA.Application.Catalog.UserOperations;
+namespace CNA.Application.Catalog.AuthOperations;
 
-public static class Login
+public static class Register
 {
     public record Command(string Email, string Password) : IRequest<AuthResponse>;
 
@@ -16,34 +14,26 @@ public static class Login
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IJwtService _jwtService;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public Handler(
-            IUserRepository userRepository,
-            IPasswordHasher passwordHasher,
-            IJwtService jwtService,
-            IUnitOfWork unitOfWork)
+        public Handler(IUserRepository userRepository, IPasswordHasher passwordHasher, IJwtService jwtService)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
             _jwtService = jwtService;
-            _unitOfWork = unitOfWork;
         }
 
         public async Task<AuthResponse> Handle(Command request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByEmailAsync(request.Email);
+            var existingUser = await _userRepository.GetByEmailAsync(request.Email);
 
-            if (user == null)
-                throw new AuthenticationException("Invalid email.");
+            if (existingUser != null)
+                throw new Exception("Email already registered.");
 
-            var isValid = _passwordHasher.Verify(request.Password, user.PasswordHash);
+            var passwordHash = _passwordHasher.Hash(request.Password);
 
-            if (!isValid)
-                throw new AuthenticationException("Invalid password.");
+            var user = new Domain.Catalog.Entities.User(request.Email, passwordHash);
 
             var token = _jwtService.GenerateToken(user);
-
             var refreshToken = new Domain.Catalog.Entities.RefreshToken(
                 token: Guid.NewGuid().ToString(),
                 expiresAt: DateTime.UtcNow.AddDays(365),
@@ -51,7 +41,7 @@ public static class Login
             );
 
             user.AddRefreshToken(refreshToken);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _userRepository.AddAsync(user);
 
             return new AuthResponse(token, refreshToken.Token);
         }

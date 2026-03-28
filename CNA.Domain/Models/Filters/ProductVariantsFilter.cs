@@ -1,4 +1,5 @@
 ﻿using CNA.Application.Catalog.Filters.Models;
+using CNA.Domain.Models;
 
 namespace CNA.Application.Catalog.Filters
 {

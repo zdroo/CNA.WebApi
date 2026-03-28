@@ -5,16 +5,14 @@ namespace CNA.Application.Catalog.ProductVariantOperations;
 
 public static class AddProductVariant
 {
-    public record Command(Guid ProductId, CreateProductVariantRequest Request) : IRequest<Guid>;
-
-    public record CreateProductVariantRequest(
+    public record Command(
+        Guid ProductId,
         string Sku,
         decimal Price,
         string Description,
         string Brand,
         int Quantity,
-        VariantAttributeRequest[] VariantAttributes
-    );
+        VariantAttributeRequest[] VariantAttributes) : IRequest<Guid>;
 
     public record VariantAttributeRequest(string Name, string Value);
 
@@ -34,15 +32,13 @@ public static class AddProductVariant
             var product = await _repository.GetByIdAsync(command.ProductId)
                           ?? throw new Exception("Product not found");
 
-            var r = command.Request;
-
             var variant = product.AddVariant(
-                r.Sku,
-                r.Price,
-                r.Description,
-                r.Brand,
-                r.Quantity,
-                r.VariantAttributes.Select(a => (a.Name, a.Value))
+                command.Sku,
+                command.Price,
+                command.Description,
+                command.Brand,
+                command.Quantity,
+                command.VariantAttributes.Select(a => (a.Name, a.Value))
             );
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);

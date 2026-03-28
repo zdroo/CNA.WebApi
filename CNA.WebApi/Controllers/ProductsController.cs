@@ -1,5 +1,4 @@
-﻿using CNA.Application.Catalog.Filters;
-using CNA.Application.Catalog.ProductOperations;
+﻿using CNA.Application.Catalog.ProductOperations;
 using CNA.Contracts.Requests.Filters;
 using CNA.Contracts.Responses;
 using MediatR;
@@ -25,15 +24,12 @@ namespace CNA.WebApi.Controllers
         {
             var result = await _mediator.Send(
                 new GetProducts.Query(
-                    new ProductsFilter(
-                        filter.CategoryId,
-                        filter.SearchText,
-                        filter.IsFeatured,
-                        filter.PageSize
-                        )
-                    ),
-                cancellationToken
-                );
+                   filter.CategoryId,
+                   filter.SearchText,
+                   filter.IsFeatured,
+                   filter.PageSize
+                )
+            );
 
             return Ok(result);
         }

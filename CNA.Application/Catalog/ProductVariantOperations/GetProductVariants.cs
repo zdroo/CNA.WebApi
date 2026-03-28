@@ -1,13 +1,27 @@
 ﻿using CNA.Application.Catalog.Filters;
+using CNA.Application.Catalog.Filters.Models;
 using CNA.Application.Interfaces;
 using CNA.Contracts.Responses;
+using CNA.Domain.Models;
 using MediatR;
 
 namespace CNA.Application.Catalog.ProductVariantOperations;
 
 public static class GetProductVariants
 {
-    public record Query(ProductVariantsFilter Filter) : IRequest<List<ProductVariantResponse>>;
+    public record Query(
+        Guid? ProductId,
+        Guid? CategoryId,
+        string? Brand,
+        PriceRange? PriceRange,
+        string? SearchText,
+        Dictionary<string, string>? Attributes,
+        bool OnlyActive,
+        bool OnlyInStock,
+        bool Featured,
+        ProductSortBy? SortBy,
+        int Page,
+        int PageSize) : IRequest<List<ProductVariantResponse>>;
 
     public class Handler : IRequestHandler<Query, List<ProductVariantResponse>>
     {
@@ -20,8 +34,8 @@ public static class GetProductVariants
 
         public async Task<List<ProductVariantResponse>> Handle(Query query, CancellationToken cancellationToken)
         {
-            var products = await _repository.GetFiltered(query.Filter);
-
+            var products = await _repository.GetFiltered();
+            new ProductVariantsFilter(); // adauga mapping
             // Extrage toate variantele și map-ează-le la response
             //var variants = products
             //    .SelectMany(p => p.Variants)

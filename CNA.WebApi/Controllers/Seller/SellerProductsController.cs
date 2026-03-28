@@ -1,5 +1,4 @@
 ﻿using CNA.Application.Catalog.ProductOperations;
-using CNA.Contracts.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,11 +17,11 @@ namespace CNA.WebApi.Controllers.Seller
 
         [HttpPost]
         public async Task<ActionResult<Guid>> Create(
-            [FromBody] CreateProductRequest request,
+            [FromBody] CreateProduct.Command request,
             CancellationToken cancellationToken)
         {
             var id = await _mediator.Send(
-                new CreateProduct.Command(request),
+                request,
                 cancellationToken);
 
             return Ok(id);
@@ -43,11 +42,11 @@ namespace CNA.WebApi.Controllers.Seller
 
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(
-            Guid id,
+            DeleteProduct.Command request,
             CancellationToken cancellationToken)
         {
             await _mediator.Send(
-                new DeleteProduct.Command(id),
+                request,
                 cancellationToken);
 
             return NoContent();

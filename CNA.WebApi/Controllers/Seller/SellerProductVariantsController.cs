@@ -1,5 +1,4 @@
 ﻿using CNA.Application.Catalog.ProductVariantOperations;
-using CNA.Contracts.Requests.ProductVariants;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,12 +41,11 @@ namespace CNA.WebApi.Controllers.Seller
 
         [HttpDelete("{variantId:guid}")]
         public async Task<IActionResult> DeleteVariant(
-            Guid productId,
-            Guid variantId,
+            DeleteProductVariant.Command request,
             CancellationToken cancellationToken)
         {
             await _mediator.Send(
-                new DeleteProductVariant.Command(productId, variantId),
+                request,
                 cancellationToken);
 
             return NoContent();

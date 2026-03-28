@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CNA.Application.Catalog.CountryOperations;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CNA.WebApi.Controllers
 {
@@ -6,10 +8,18 @@ namespace CNA.WebApi.Controllers
     [ApiController]
     public class CountriesController : ControllerBase
     {
+        private readonly IMediator _mediator;
+
+        public CountriesController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
         [HttpGet("get-countries")]
         public async Task<IActionResult> Get()
         {
-            return Ok();
+            var countries = await _mediator.Send(new GetCountries.Query());
+            return Ok(countries);
         }
 
         [HttpPut("{countryId:guid}")]

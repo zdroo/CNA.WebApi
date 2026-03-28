@@ -1,6 +1,7 @@
 ﻿using CNA.Application.Catalog.Filters;
 using CNA.Application.Catalog.ProductVariantOperations;
 using CNA.Contracts.Requests.Filters;
+using CNA.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProductSortBy = CNA.Application.Catalog.Filters.Models.ProductSortBy;
@@ -20,33 +21,20 @@ namespace CNA.WebApi.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetProductVariantsByProductId(Guid productId)
+        public async Task<IActionResult> GetProductVariantsByProductId(GetProductVariantsByProductId.Query request)
         {
-            var variants = await _mediator.Send(new GetProductVariantsByProductId.Query(productId));
+            var variants = await _mediator.Send(request);
             return Ok(variants);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProductVariantsFiltered([FromQuery] ProductVariantsFilterRequest filter)
+        public async Task<IActionResult> GetProductVariantsFiltered(
+            [FromQuery] GetProductVariants.Query request,
+            CancellationToken cancellationToken)
         {
-            var queryFilter = new ProductVariantsFilter
-            {
-                ProductId = filter.ProductId,
-                CategoryId = filter.CategoryId,
-                Attributes = filter.Attributes,
-                Brand = filter.Brand,
-                SearchText = filter.SearchText,
-                PriceRange = MapFilterPriceRange(filter.PriceRange),
-                OnlyActive = filter.OnlyActive,
-                OnlyInStock = filter.OnlyInStock,
-                Featured = filter.Featured,
-                SortBy = (ProductSortBy)filter.SortBy,
-                PageSize = filter.PageSize,
-                Page = filter.Page,
-            };
-
             var variants = await _mediator.Send(
-                new GetProductVariants.Query(queryFilter));
+                request,
+                cancellationToken);
 
             return Ok(variants);
         }
@@ -64,22 +52,6 @@ namespace CNA.WebApi.Controllers
         public async Task<ActionResult<Guid>> GetProductVariantById(Guid productVariantId)
         {
             throw new NotImplementedException();
-        }
-
-        private Application.Catalog.Filters.Models.PriceRange? MapFilterPriceRange(Contracts.Requests.Filters.Models.PriceRange? requestedPriceRange)
-        {
-            if (requestedPriceRange is null)
-            {
-                return null;
-            }
-
-            var result = new Application.Catalog.Filters.Models.PriceRange
-            {
-                MinPrice = requestedPriceRange.MinPrice,
-                MaxPrice = requestedPriceRange.MaxPrice
-            };
-
-            return result;
         }
     }
 }

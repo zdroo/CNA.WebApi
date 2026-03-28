@@ -30,29 +30,26 @@ namespace CNA.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddToCart([FromBody] AddProductVariantToCartRequest request)
+        public async Task<IActionResult> AddToCart([FromBody] Guid productVariantId)
         {
-            var command = new AddCartItem.Command(CurrentUserId, request.productVariantId);
+            var command = new AddCartItem.Command(CurrentUserId, productVariantId);
             await _mediator.Send(command);
 
             var cartResponse = await _mediator.Send(new GetCartByUserId.Query(CurrentUserId));
-
             return Ok(cartResponse);
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateQuantity(UpdateCartItemRequest request)
+        public async Task<IActionResult> UpdateQuantity([FromBody] UpdateCartItem.Command request)
         {
-            var command = new UpdateCartItem.Command(CurrentUserId, request.CartItemId, request.Quantity);
-            var cartItem = await _mediator.Send(command);
+            var cartItem = await _mediator.Send(request);
             return Ok(cartItem);
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> RemoveFromCart(RemoveCartItemRequest request)
+        [HttpDelete("{cartItemId:guid}")]
+        public async Task<IActionResult> RemoveFromCart(Guid cartItemId)
         {
-            var command = new RemoveCartItem.Command(CurrentUserId, request.CartItemId);
-            await _mediator.Send(command);
+            await _mediator.Send(new RemoveCartItem.Command(CurrentUserId, cartItemId));
 
             var cartResponse = await _mediator.Send(new GetCartByUserId.Query(CurrentUserId));
             return Ok(cartResponse);
@@ -61,17 +58,15 @@ namespace CNA.WebApi.Controllers
         [HttpDelete]
         public async Task<IActionResult> ClearCart()
         {
-            var command = new ClearCart.Command(CurrentUserId);
-            await _mediator.Send(command);
-
+            await _mediator.Send(new ClearCart.Command(CurrentUserId));
             var cartResponse = await _mediator.Send(new GetCartByUserId.Query(CurrentUserId));
             return Ok(cartResponse);
         }
 
         [HttpPost("checkout")]
-        public async Task<IActionResult> Checkout([FromBody] CheckoutRequest request)
+        public async Task<IActionResult> Checkout([FromBody] CartCheckout.Command request)
         {
-            await _mediator.Send(new CartCheckout.Command(CurrentUserId, request.ShippingContactId, request.CartItemIds));
+            await _mediator.Send(request);
 
             return Ok();
         }

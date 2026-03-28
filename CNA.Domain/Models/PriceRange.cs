@@ -1,4 +1,4 @@
-﻿namespace CNA.Application.Catalog.Filters.Models
+﻿namespace CNA.Domain.Models
 {
     public record PriceRange
     {

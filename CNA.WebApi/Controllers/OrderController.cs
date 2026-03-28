@@ -30,16 +30,16 @@ namespace CNA.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetOrderDetails(Guid orderId)
+        public async Task<IActionResult> GetOrderDetails([FromQuery] GetOrderDetails.Query request)
         {
-            var order = await _mediator.Send(new GetOrderDetails.Query(orderId));
+            var order = await _mediator.Send(request);
             return Ok(order);
         }
 
         [HttpPut]
-        public async Task<IActionResult> CancelOrder(Guid orderId)
+        public async Task<IActionResult> CancelOrder(CancelOrder.Command request)
         {
-            await _mediator.Send(new CancelOrder.Command(orderId));
+            await _mediator.Send(request);
             return Ok();
         }
     }

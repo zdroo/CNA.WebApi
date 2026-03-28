@@ -7,7 +7,7 @@ namespace CNA.Application.Catalog.ProductOperations;
 
 public static class GetProducts
 {
-    public record Query(ProductsFilter Filter) : IRequest<List<ProductResponse>>;
+    public record Query(Guid? CategoryId, string? SearchText, bool IsFeatured, int PageSize = 12) : IRequest<List<ProductResponse>>;
 
     public class Handler : IRequestHandler<Query, List<ProductResponse>>
     {

@@ -5,9 +5,8 @@ namespace CNA.Application.Catalog.ProductOperations;
 
 public static class UpdateProduct
 {
-    public record Command(Guid ProductId, UpdateProductRequest Request) : IRequest;
-
-    public record UpdateProductRequest(
+    public record Command(
+        Guid ProductId, 
         string Name,
         string Description,
         string Brand,
@@ -15,8 +14,7 @@ public static class UpdateProduct
         bool IsActive,
         bool IsShippable,
         bool IsDigital,
-        bool IsReturnable
-    );
+        bool IsReturnable) : IRequest;
 
     public class Handler : IRequestHandler<Command>
     {
@@ -34,17 +32,15 @@ public static class UpdateProduct
             var product = await _repository.GetByIdAsync(command.ProductId)
                           ?? throw new Exception("Product not found");
 
-            var r = command.Request;
-
             product.UpdateProduct(
-                r.Name,
-                r.Description,
-                r.Brand,
-                r.CategoryId,
-                r.IsActive,
-                r.IsShippable,
-                r.IsDigital,
-                r.IsReturnable
+                command.Name,
+                command.Description,
+                command.Brand,
+                command.CategoryId,
+                command.IsActive,
+                command.IsShippable,
+                command.IsDigital,
+                command.IsReturnable
             );
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);

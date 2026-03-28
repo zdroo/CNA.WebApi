@@ -1,5 +1,4 @@
 ﻿using CNA.Application.Interfaces;
-using CNA.Contracts.Requests.Categories;
 using CNA.Domain.Catalog.Entities;
 using MediatR;
 
@@ -7,7 +6,7 @@ namespace CNA.Application.Catalog.CategoriesOperations
 {
     public static class CreateCategory
     {
-        public record Command(CreateCategoryRequest Request) : IRequest<Guid>;
+        public record Command(string Name, string Slug, Guid? ParentCategoryId) : IRequest<Guid>;
 
         public class Handler : IRequestHandler<Command, Guid>
         {
@@ -19,8 +18,7 @@ namespace CNA.Application.Catalog.CategoriesOperations
 
             public async Task<Guid> Handle(Command command, CancellationToken cancellationToken = default)
             {
-                var r = command.Request;
-                var category = new Category(r.Name, r.Slug);
+                var category = new Category(command.Name, command.Slug);
 
                 await _categoryRepository.AddCategoryAsync(category);
                 return category.Id;

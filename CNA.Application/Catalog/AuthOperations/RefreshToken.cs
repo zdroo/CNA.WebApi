@@ -2,7 +2,7 @@
 using CNA.Contracts.Models;
 using MediatR;
 
-namespace CNA.Application.Catalog.UserOperations;
+namespace CNA.Application.Catalog.AuthOperations;
 
 public static class RefreshToken
 {

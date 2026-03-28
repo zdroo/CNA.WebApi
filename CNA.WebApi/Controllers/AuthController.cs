@@ -1,4 +1,4 @@
-﻿using CNA.Application.Catalog.UserOperations;
+﻿using CNA.Application.Catalog.AuthOperations;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

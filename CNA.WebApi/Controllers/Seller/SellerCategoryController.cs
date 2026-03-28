@@ -1,5 +1,4 @@
 ﻿using CNA.Application.Catalog.CategoriesOperations;
-using CNA.Contracts.Requests.Categories;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,9 +16,9 @@ namespace CNA.WebApi.Controllers.Seller
         }
 
         [HttpGet]
-        public async Task<IActionResult> CreateCategory(CreateCategoryRequest request)
+        public async Task<IActionResult> CreateCategory(CreateCategory.Command request)
         {
-            var id = await _mediator.Send(new CreateCategory.Command(request));
+            var id = await _mediator.Send(request);
             return Ok(id);
         }
 
