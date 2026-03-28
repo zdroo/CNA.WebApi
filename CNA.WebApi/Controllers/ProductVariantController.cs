@@ -1,10 +1,11 @@
-﻿using CNA.Application.Catalog.Queries.Filters;
+﻿using CNA.Application.Catalog.Filters.Models;
+using CNA.Application.Catalog.Queries.Filters;
 using CNA.Application.Catalog.Queries.ProductVariant;
 using CNA.Contracts.Requests.Filters;
 using CNA.Contracts.Requests.Filters.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using ProductSortBy = CNA.Application.Catalog.Queries.Filters.Models.ProductSortBy;
+using ProductSortBy = CNA.Application.Catalog.Filters.Models.ProductSortBy;
 
 namespace CNA.WebApi.Controllers
 {
@@ -67,7 +68,7 @@ namespace CNA.WebApi.Controllers
             throw new NotImplementedException();
         }
 
-        private Application.Catalog.Queries.Filters.Models.PriceRange? MapFilterPriceRange(PriceRange? requestedPriceRange)
+        private Application.Catalog.Filters.Models.PriceRange? MapFilterPriceRange(PriceRange? requestedPriceRange)
         {
             if (requestedPriceRange is null)
             {
