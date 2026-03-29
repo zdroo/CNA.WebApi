@@ -23,7 +23,7 @@ namespace CNA.WebApi.Controllers
         }
 
         [HttpPut("{countryId:guid}")]
-        public async Task<IActionResult> Update()
+        public async Task<IActionResult> Update([FromRoute] Guid countryId)
         {
             return Ok();
         }

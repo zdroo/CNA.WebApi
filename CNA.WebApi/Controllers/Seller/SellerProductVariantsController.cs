@@ -29,14 +29,17 @@ namespace CNA.WebApi.Controllers.Seller
 
         [HttpPut("{variantId:guid}")]
         public async Task<IActionResult> UpdateVariant(
+            [FromRoute] Guid variantId,
             [FromBody] UpdateProductVariant.Command request,
             CancellationToken cancellationToken)
         {
+            request = request with { VariantId = variantId };
+
             await _mediator.Send(
                 request,
                 cancellationToken);
 
-            return NoContent();
+            return Ok();
         }
 
         [HttpDelete("{variantId:guid}")]

@@ -51,11 +51,12 @@ namespace CNA.Application.Common.Mapping
                 .ForMember(dest => dest.StockQuantity, opt => opt.MapFrom(src => src.Stock.Quantity))
                 .ForMember(dest => dest.Attributes, opt => opt.MapFrom(src =>
                     src.Attributes.ToDictionary(a => a.Name, a => a.Value)
-                ));
+                ))
+                .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.Product.CategoryId));
 
             // Map Product → ProductResponse
             CreateMap<Product, ProductResponse>();
-                //.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                //.ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.ProductId))
                 //.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 //.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 //.ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.CategoryId))

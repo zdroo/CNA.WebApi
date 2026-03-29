@@ -38,10 +38,12 @@ namespace CNA.WebApi.Controllers
             return Ok(cartResponse);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateQuantity([FromBody] UpdateCartItem.Command request)
+        [HttpPut("{cartItemId:guid}")]
+        public async Task<IActionResult> UpdateQuantity(
+            [FromRoute] Guid cartItemId,
+            [FromQuery] int quantity)
         {
-            var cartItem = await _mediator.Send(request);
+            var cartItem = await _mediator.Send(new UpdateCartItem.Command(CurrentUserId, cartItemId, quantity));
             return Ok(cartItem);
         }
 

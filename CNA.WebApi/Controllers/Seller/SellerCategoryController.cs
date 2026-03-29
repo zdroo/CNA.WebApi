@@ -15,8 +15,8 @@ namespace CNA.WebApi.Controllers.Seller
             _mediator = mediator;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> CreateCategory(CreateCategory.Command request)
+        [HttpPost]
+        public async Task<IActionResult> CreateCategory([FromBody] CreateCategory.Command request)
         {
             var id = await _mediator.Send(request);
             return Ok(id);

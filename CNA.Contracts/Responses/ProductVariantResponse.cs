@@ -2,6 +2,8 @@
 {
     public record ProductVariantResponse(
         Guid ProductVariantId,
+        Guid ProductId,
+        Guid CategoryId,
         string Sku, 
         string Description, 
         string Brand, 

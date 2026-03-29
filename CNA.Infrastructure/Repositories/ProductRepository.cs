@@ -124,6 +124,7 @@ namespace CNA.Infrastructure.Repositories
         {
             var query = _context.ProductVariants
                 .Include(v => v.Product)
+                    .ThenInclude(p => p.Category)
                 .Include(v => v.Attributes)
                 .Include(v => v.Stock)
                 .Include(v => v.Reviews)

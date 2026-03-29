@@ -29,9 +29,12 @@ namespace CNA.WebApi.Controllers.Seller
 
         [HttpPut("{productId:guid}")]
         public async Task<IActionResult> Update(
+            [FromRoute] Guid productId,
             [FromBody] UpdateProduct.Command request,
             CancellationToken cancellationToken)
         {
+            request = request with { ProductId = productId };
+
             await _mediator.Send(
                 request,
                 cancellationToken);
