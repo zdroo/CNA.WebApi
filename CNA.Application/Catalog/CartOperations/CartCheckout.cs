@@ -44,11 +44,8 @@ public static class CartCheckout
                         ?? throw new ShippingContactNotFoundException(command.ShippingContactId, user.Id);
 
                     var snapshot = BuildSnapshot(shippingContact);
-
                     var cart = user.GetOrCreateCart();
-
                     var itemsToCheckout = GetItemsToCheckout(cart, command.CartItemIds);
-
                     var itemsWithVariants = await GetItemsWithVariantsAsync(itemsToCheckout);
 
                     ValidateAndReserveStock(itemsWithVariants);
@@ -59,7 +56,6 @@ public static class CartCheckout
                         cart.RemoveItemByCartItemId(item.CartItem.Id);
 
                     await _orderRepository.AddAsync(order);
-
                     saved = true;
                 }
                 catch (DbUpdateConcurrencyException ex)
@@ -84,7 +80,7 @@ public static class CartCheckout
             );
         }
 
-        private static List<CartItem> GetItemsToCheckout(Domain.Catalog.Entities.Cart cart, List<Guid> cartItemIds)
+        private static List<CartItem> GetItemsToCheckout(Cart cart, List<Guid> cartItemIds)
         {
             var items = cart.Items
                 .Where(x => cartItemIds.Contains(x.Id))
@@ -121,12 +117,12 @@ public static class CartCheckout
                 item.Variant.DecreaseStock(item.CartItem.Quantity);
         }
 
-        private static Domain.Catalog.Entities.Order CreateOrder(
+        private static Order CreateOrder(
             Command command,
             ShippingAddressSnapshot snapshot,
             List<CartItemWithVariant> itemsWithVariants)
         {
-            return new Domain.Catalog.Entities.Order(
+            return new Order(
                 command.UserId,
                 command.ShippingContactId,
                 snapshot,

@@ -1,3 +1,4 @@
+using CNA.Application.Common.Mapping;
 using CNA.Application.Interfaces;
 using CNA.Infrastructure;
 using CNA.Infrastructure.Repositories;
@@ -19,6 +20,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<CNA.Application.Services.IPasswordHasher, CNA.Application.Services.PasswordHasher>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IUserContextService, UserContextService>();
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 builder.Services.AddHttpContextAccessor();
 

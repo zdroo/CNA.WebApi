@@ -1,8 +1,8 @@
-﻿using CNA.Application.Catalog.Filters;
-using CNA.Application.Catalog.Filters.Models;
-using CNA.Application.Interfaces;
+﻿using CNA.Application.Interfaces;
 using CNA.Contracts.Responses;
 using CNA.Domain.Catalog.Entities;
+using CNA.Domain.Catalog.Enums;
+using CNA.Domain.Filters;
 using Microsoft.EntityFrameworkCore;
 
 namespace CNA.Infrastructure.Repositories
@@ -199,7 +199,7 @@ namespace CNA.Infrastructure.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<List<AttributeFilter>> GetVariantFiltersAsync(AttributesFilter filter)
+        public async Task<List<VariantAttribute>> GetVariantFiltersAsync(AttributesFilter filter)
         {
             var query = _context.ProductVariants
                 .Include(v => v.Product)
@@ -218,12 +218,6 @@ namespace CNA.Infrastructure.Repositories
 
             var attributes = await query
                 .SelectMany(v => v.Attributes)
-                .GroupBy(a => a.Name)
-                .Select(g => new AttributeFilter
-                {
-                    Name = g.Key,
-                    Values = g.Select(x => x.Value).Distinct().ToList()
-                })
                 .ToListAsync();
 
             return attributes;

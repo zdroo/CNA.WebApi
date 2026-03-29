@@ -24,9 +24,7 @@ public static class RemoveCartItem
                 ?? throw new Exception("User not found");
 
             var cart = user.GetOrCreateCart();
-
             cart.RemoveItemByCartItemId(command.CartItemId);
-
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }

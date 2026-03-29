@@ -1,10 +1,7 @@
-﻿using CNA.Application.Catalog.Filters;
+﻿using CNA.Application.Catalog.AttributesOperations;
 using CNA.Application.Catalog.ProductVariantOperations;
-using CNA.Contracts.Requests.Filters;
-using CNA.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using ProductSortBy = CNA.Application.Catalog.Filters.Models.ProductSortBy;
 
 namespace CNA.WebApi.Controllers
 {
@@ -19,16 +16,8 @@ namespace CNA.WebApi.Controllers
             _mediator = mediator;
         }
 
-
         [HttpGet]
-        public async Task<IActionResult> GetProductVariantsByProductId(GetProductVariantsByProductId.Query request)
-        {
-            var variants = await _mediator.Send(request);
-            return Ok(variants);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetProductVariantsFiltered(
+        public async Task<IActionResult> GetVariants(
             [FromQuery] GetProductVariants.Query request,
             CancellationToken cancellationToken)
         {
@@ -40,10 +29,13 @@ namespace CNA.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAttributes(Guid categoryId, Guid productId)
+        public async Task<IActionResult> GetAttributes(
+            GetAttributesFilter.Query request,
+            CancellationToken cancellationToken)
         {
             var attributes = await _mediator.Send(
-                new AttributesFilter(categoryId, productId));
+                request,
+                cancellationToken);
 
             return Ok(attributes);
         }

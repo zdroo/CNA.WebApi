@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using CNA.Application.Interfaces;
 using CNA.Domain.Exceptions;
+using AutoMapper;
 
 namespace CNA.Application.Catalog.CartOperations;
 
@@ -23,15 +24,18 @@ public static class UpdateCartItem
         private readonly ICartRepository _cartRepository;
         private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
         public Handler(
             ICartRepository cartRepository,
             IUserRepository userRepository,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
         {
             _cartRepository = cartRepository;
             _userRepository = userRepository;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<CartItemResponse> Handle(Command command, CancellationToken cancellationToken)
@@ -47,15 +51,7 @@ public static class UpdateCartItem
             cartItem.Increase(command.Quantity);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-            return new CartItemResponse(
-                cartItem.Id,
-                cartItem.ProductVariantId,
-                cartItem.CartId,
-                cartItem.Quantity,
-                cartItem.Price,
-                cartItem.Total
-            );
+            return _mapper.Map<CartItemResponse>(cartItem);
         }
     }
 }

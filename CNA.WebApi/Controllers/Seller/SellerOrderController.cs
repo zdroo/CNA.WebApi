@@ -1,7 +1,4 @@
-﻿using CNA.Application.Catalog.Filters;
-using CNA.Application.Catalog.Filters.Models;
-using CNA.Contracts.Requests.Filters;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 //using AppOrderStatus = CNA.Application.Catalog.Queries.Filters.Models.OrderStatus;
 
@@ -19,16 +16,16 @@ namespace CNA.WebApi.Controllers.Seller
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetOrders(OrdersFilterRequest filter)
+        public async Task<IActionResult> GetOrders()
         {
             // TODO Command and handler
-            var newFilter = new OrdersFilter(
-                filter.UserId,
-                filter.OrderId,
-                (OrderStatus)filter.OrderStatus,
-                filter.IsPaid,
-                filter.MinCost,
-                filter.MaxCost);
+            //var newFilter = new OrdersFilter(
+            //    filter.UserId,
+            //    filter.OrderId,
+            //    (OrderStatus)filter.OrderStatus,
+            //    filter.IsPaid,
+            //    filter.MinCost,
+            //    filter.MaxCost);
 
             return Ok();
         }

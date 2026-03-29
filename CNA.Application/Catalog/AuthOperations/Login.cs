@@ -1,6 +1,6 @@
 ﻿using CNA.Application.Interfaces;
 using CNA.Application.Services;
-using CNA.Contracts.Models;
+using CNA.Contracts.Responses;
 using CNA.Domain.Catalog.Entities;
 using MediatR;
 using System.Security.Authentication;
@@ -44,7 +44,7 @@ public static class Login
 
             var token = _jwtService.GenerateToken(user);
 
-            var refreshToken = new Domain.Catalog.Entities.RefreshToken(
+            var refreshToken = new RefreshToken(
                 token: Guid.NewGuid().ToString(),
                 expiresAt: DateTime.UtcNow.AddDays(365),
                 userId: user.Id

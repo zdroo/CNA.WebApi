@@ -1,6 +1,8 @@
-﻿using CNA.Application.Interfaces;
+﻿using AutoMapper;
+using CNA.Application.Interfaces;
 using CNA.Contracts.Responses;
 using MediatR;
+using System.Collections.Generic;
 
 namespace CNA.Application.Catalog.CountryOperations;
 
@@ -11,24 +13,18 @@ public static class GetCountries
     public class Handler : IRequestHandler<Query, List<CountryResponse>>
     {
         private readonly ICountryRepository _countryRepository;
+        private readonly IMapper _mapper;
 
-        public Handler(ICountryRepository countryRepository)
+        public Handler(ICountryRepository countryRepository, IMapper mapper)
         {
             _countryRepository = countryRepository;
+            _mapper = mapper;
         }
 
         public async Task<List<CountryResponse>> Handle(Query query, CancellationToken cancellationToken)
         {
             var countries = await _countryRepository.GetCountries();
-
-            return countries
-                .Select(c => new CountryResponse(
-                    c.Name,
-                    c.CountryCode,
-                    c.CurrencyCode,
-                    c.PhonePrefix,
-                    c.IsShippingAvailable))
-                .ToList();
+            return _mapper.Map<List<CountryResponse>>(countries);
         }
     }
 }

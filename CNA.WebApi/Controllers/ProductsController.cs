@@ -1,5 +1,4 @@
 ﻿using CNA.Application.Catalog.ProductOperations;
-using CNA.Contracts.Requests.Filters;
 using CNA.Contracts.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -19,16 +18,12 @@ namespace CNA.WebApi.Controllers
 
         [HttpGet]
         public async Task<ActionResult<List<ProductResponse>>> GetProducts(
-            GetProductsFilterRequest filter,
+            GetProducts.Query request,
             CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(
-                new GetProducts.Query(
-                   filter.CategoryId,
-                   filter.SearchText,
-                   filter.IsFeatured,
-                   filter.PageSize
-                )
+                request,
+                cancellationToken
             );
 
             return Ok(result);
@@ -36,14 +31,14 @@ namespace CNA.WebApi.Controllers
 
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<ProductResponse>> GetById(
-            Guid id,
+            GetProductById.Query request,
             CancellationToken cancellationToken)
         {
             var product = await _mediator.Send(
-                new GetProductById.Query(id),
+                request,
                 cancellationToken);
 
-            return product is null ? NotFound() : Ok(product);
+            return product is null ? BadRequest() : Ok(product);
         }
     }
 }

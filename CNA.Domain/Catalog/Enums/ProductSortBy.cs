@@ -1,4 +1,4 @@
-﻿namespace CNA.Contracts.Requests.Filters.Models
+﻿namespace CNA.Domain.Catalog.Enums
 {
     public enum ProductSortBy
     {

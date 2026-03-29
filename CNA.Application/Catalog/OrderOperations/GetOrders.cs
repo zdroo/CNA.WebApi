@@ -1,5 +1,5 @@
-﻿using CNA.Application.Interfaces;
-using CNA.Contracts.Enums;
+﻿using AutoMapper;
+using CNA.Application.Interfaces;
 using CNA.Contracts.Responses;
 using MediatR;
 
@@ -12,31 +12,18 @@ public static class GetOrders
     public class Handler : IRequestHandler<Query, List<OrderResponse>>
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IMapper _mapper;
 
-        public Handler(IOrderRepository orderRepository)
+        public Handler(IOrderRepository orderRepository, IMapper mapper)
         {
             _orderRepository = orderRepository;
+            _mapper = mapper;
         }
 
         public async Task<List<OrderResponse>> Handle(Query query, CancellationToken cancellationToken)
         {
             var orders = await _orderRepository.GetOrders(query.UserId);
-
-            var ordersResponse = orders.Select(o =>
-                new OrderResponse(
-                    o.Id,
-                    o.TotalAmount,
-                    (OrderStatus)o.Status,
-                    o.Items.Select(i =>
-                        new OrderItemResponse(
-                            i.ProductVariantId,
-                            i.Quantity,
-                            i.Price,
-                            i.Total
-                        )).ToList()
-                )).ToList();
-
-            return ordersResponse;
+            return _mapper.Map<List<OrderResponse>>(orders);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using CNA.Application.Interfaces;
+﻿using AutoMapper;
+using CNA.Application.Interfaces;
 using CNA.Contracts.Responses;
 using MediatR;
 
@@ -11,18 +12,19 @@ public static class GetCategories
     public class Handler : IRequestHandler<Query, List<CategoryResponse>>
     {
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IMapper _mapper;
 
-        public Handler(ICategoryRepository categoryRepository)
+        public Handler(ICategoryRepository categoryRepository, IMapper mapper)
         {
             _categoryRepository = categoryRepository;
+            _mapper = mapper;
         }
 
         public async Task<List<CategoryResponse>> Handle(Query query, CancellationToken cancellationToken)
         {
             var categories = await _categoryRepository.GetCategoriesAsync();
-            return categories
-                .Select(c => new CategoryResponse(c.Name, c.IsActive))
-                .ToList();
+
+            return _mapper.Map<List<CategoryResponse>>(categories);
         }
     }
 }

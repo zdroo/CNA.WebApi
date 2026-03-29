@@ -1,7 +1,8 @@
-﻿using CNA.Application.Catalog.Filters;
-using CNA.Application.Catalog.Filters.Models;
+﻿using AutoMapper;
 using CNA.Application.Interfaces;
 using CNA.Contracts.Responses;
+using CNA.Domain.Catalog.Enums;
+using CNA.Domain.Filters;
 using CNA.Domain.Models;
 using MediatR;
 
@@ -26,30 +27,20 @@ public static class GetProductVariants
     public class Handler : IRequestHandler<Query, List<ProductVariantResponse>>
     {
         private readonly IProductRepository _repository;
+        private readonly IMapper _mapper;
 
-        public Handler(IProductRepository repository)
+        public Handler(IProductRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<List<ProductVariantResponse>> Handle(Query query, CancellationToken cancellationToken)
         {
-            var products = await _repository.GetFiltered();
-            new ProductVariantsFilter(); // adauga mapping
-            // Extrage toate variantele și map-ează-le la response
-            //var variants = products
-            //    .SelectMany(p => p.Variants)
-            //    .Select(v => new ProductVariantResponse(
-            //        v.Id,
-            //        v.Sku,
-            //        v.Description,
-            //        v.Brand,
-            //        v.Price,
-            //        v.Stock.Quantity,
-            //        v.Attributes.ToDictionary(a => a.Name, a => a.Value)
-            //    )).ToList();
+            var filter = _mapper.Map<ProductVariantsFilter>(query);
+            var variants = await _repository.GetFiltered(filter);
 
-            return new List<ProductVariantResponse>();
+            return _mapper.Map<List<ProductVariantResponse>>(variants);
         }
     }
 }

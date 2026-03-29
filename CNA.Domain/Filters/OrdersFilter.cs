@@ -1,6 +1,6 @@
-﻿using CNA.Application.Catalog.Filters.Models;
+﻿using CNA.Domain.Catalog.Enums;
 
-namespace CNA.Application.Catalog.Filters
+namespace CNA.Domain.Filters
 {
     public record OrdersFilter(
         Guid? UserId,

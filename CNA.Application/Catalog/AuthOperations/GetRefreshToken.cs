@@ -1,10 +1,11 @@
 ﻿using CNA.Application.Interfaces;
-using CNA.Contracts.Models;
+using CNA.Contracts.Responses;
+using CNA.Domain.Catalog.Entities;
 using MediatR;
 
 namespace CNA.Application.Catalog.AuthOperations;
 
-public static class RefreshToken
+public static class GetRefreshToken
 {
     public record Command(string Token) : IRequest<AuthResponse>;
 
@@ -32,7 +33,7 @@ public static class RefreshToken
 
             refreshToken.Revoke();
 
-            var newRefreshToken = new Domain.Catalog.Entities.RefreshToken(
+            var newRefreshToken = new RefreshToken(
                 token: Guid.NewGuid().ToString(),
                 expiresAt: DateTime.UtcNow.AddDays(365),
                 userId: user.Id

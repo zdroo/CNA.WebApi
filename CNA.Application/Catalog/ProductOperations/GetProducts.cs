@@ -1,4 +1,4 @@
-﻿using CNA.Application.Catalog.Filters;
+﻿using AutoMapper;
 using CNA.Application.Interfaces;
 using CNA.Contracts.Responses;
 using MediatR;
@@ -12,33 +12,18 @@ public static class GetProducts
     public class Handler : IRequestHandler<Query, List<ProductResponse>>
     {
         private readonly IProductRepository _repository;
+        private readonly IMapper _mapper;
 
-        public Handler(IProductRepository repository)
+        public Handler(IProductRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<List<ProductResponse>> Handle(Query query, CancellationToken cancellationToken)
         {
             var products = await _repository.ListAllAsync();
-
-            return products.Select(p => new ProductResponse
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Description = p.Description,
-                CategoryId = p.CategoryId,
-                IsActive = p.IsActive,
-                Variants = p.Variants.Select(v => new ProductVariantResponse(
-                    v.Id,
-                    v.Sku,
-                    v.Description,
-                    v.Brand,
-                    v.Price,
-                    v.Stock.Quantity,
-                    v.Attributes.ToDictionary(a => a.Name, a => a.Value)
-                )).ToList()
-            }).ToList();
+            return _mapper.Map<List<ProductResponse>>(products);
         }
     }
 }

@@ -1,8 +1,9 @@
-﻿using CNA.Contracts.Requests.Filters.Models;
+﻿using CNA.Domain.Catalog.Enums;
+using CNA.Domain.Models;
 
-namespace CNA.Contracts.Requests.Filters
+namespace CNA.Domain.Filters
 {
-    public record ProductVariantsFilterRequest
+    public class ProductVariantsFilter
     {
         public Guid? ProductId { get; set; }
         public Guid? CategoryId { get; set; }

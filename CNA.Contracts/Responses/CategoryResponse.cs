@@ -1,4 +1,4 @@
 ﻿namespace CNA.Contracts.Responses
 {
-    public record CategoryResponse(string Name, bool IsActive);
+    public record CategoryResponse(Guid CategoryId, string Name, bool IsActive);
 }

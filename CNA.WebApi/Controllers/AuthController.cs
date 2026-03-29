@@ -30,7 +30,7 @@ namespace CNA.WebApi.Controllers
         }
 
         [HttpPost("refresh")]
-        public async Task<IActionResult> Refresh([FromBody] RefreshToken.Command command)
+        public async Task<IActionResult> Refresh([FromBody] GetRefreshToken.Command command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);

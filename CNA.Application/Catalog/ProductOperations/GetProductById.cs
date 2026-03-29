@@ -1,5 +1,8 @@
-﻿using CNA.Application.Interfaces;
+﻿using AutoMapper;
+using CNA.Application.Interfaces;
 using CNA.Contracts.Responses;
+using CNA.Domain.Catalog.Entities;
+using CNA.Domain.Exceptions;
 using MediatR;
 
 namespace CNA.Application.Catalog.ProductOperations;
@@ -11,6 +14,7 @@ public static class GetProductById
     public class Handler : IRequestHandler<Query, ProductResponse?>
     {
         private readonly IProductRepository _repository;
+        private readonly IMapper _mapper;
 
         public Handler(IProductRepository repository)
         {
@@ -19,27 +23,10 @@ public static class GetProductById
 
         public async Task<ProductResponse?> Handle(Query query, CancellationToken cancellationToken)
         {
-            var p = await _repository.GetByIdAsync(query.ProductId);
-            if (p == null)
-                return null;
+            var product = await _repository.GetByIdAsync(query.ProductId)
+                ?? throw new ProductNotFoundException(query.ProductId);
 
-            return new ProductResponse
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Description = p.Description,
-                CategoryId = p.CategoryId,
-                IsActive = p.IsActive,
-                Variants = p.Variants.Select(v => new ProductVariantResponse(
-                    v.Id,
-                    v.Sku,
-                    v.Description,
-                    v.Brand,
-                    v.Price,
-                    v.Stock.Quantity,
-                    v.Attributes.ToDictionary(a => a.Name, a => a.Value)
-                )).ToList()
-            };
+            return _mapper.Map<ProductResponse>(product);
         }
     }
 }

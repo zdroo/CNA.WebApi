@@ -1,6 +1,6 @@
-﻿using CNA.Application.Catalog.Filters;
-using CNA.Contracts.Responses;
+﻿using CNA.Contracts.Responses;
 using CNA.Domain.Catalog.Entities;
+using CNA.Domain.Filters;
 
 namespace CNA.Application.Interfaces
 {
@@ -16,6 +16,6 @@ namespace CNA.Application.Interfaces
         Task<List<ProductVariant>> GetFiltered(ProductVariantsFilter filter);
         Task<ProductVariant?> GetByProductVariantId(Guid productVariantId);
         Task<List<ProductVariant>> GetByProductVariantIds(IEnumerable<Guid> productVariantIds);
-        Task<List<AttributeFilter>> GetVariantFiltersAsync(AttributesFilter filter);
+        Task<List<VariantAttribute>> GetVariantFiltersAsync(AttributesFilter filter);
     }
 }
