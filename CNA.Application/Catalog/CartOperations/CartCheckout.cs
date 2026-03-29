@@ -1,10 +1,10 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
 using CNA.Application.Interfaces;
 using CNA.Domain.Catalog.Entities;
-using CNA.Domain.Catalog.Entities.Localization;
 using CNA.Domain.Catalog.ValueObjects;
 using CNA.Domain.Exceptions;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace CNA.Application.Catalog.CartOperations;
 
@@ -17,15 +17,18 @@ public static class CartCheckout
         private readonly IUserRepository _userRepository;
         private readonly IProductRepository _productRepository;
         private readonly IOrderRepository _orderRepository;
+        private readonly IMapper _mapper;
 
         public Handler(
             IUserRepository userRepository,
             IProductRepository productRepository,
-            IOrderRepository orderRepository)
+            IOrderRepository orderRepository,
+            IMapper mapper)
         {
             _userRepository = userRepository;
             _productRepository = productRepository;
             _orderRepository = orderRepository;
+            _mapper = mapper;
         }
 
         public async Task Handle(Command command, CancellationToken cancellationToken)
@@ -43,7 +46,7 @@ public static class CartCheckout
                         .FirstOrDefault(sc => sc.Id == command.ShippingContactId)
                         ?? throw new ShippingContactNotFoundException(command.ShippingContactId, user.Id);
 
-                    var snapshot = BuildSnapshot(shippingContact);
+                    var snapshot = _mapper.Map<ShippingAddressSnapshot>(shippingContact);
                     var cart = user.GetOrCreateCart();
                     var itemsToCheckout = GetItemsToCheckout(cart, command.CartItemIds);
                     var itemsWithVariants = await GetItemsWithVariantsAsync(itemsToCheckout);
@@ -64,20 +67,6 @@ public static class CartCheckout
                         await entry.ReloadAsync(cancellationToken);
                 }
             }
-        }
-
-        private static ShippingAddressSnapshot BuildSnapshot(ShippingContact contact)
-        {
-            return new ShippingAddressSnapshot(
-                contact.FullName,
-                contact.PhoneNumber,
-                contact.Address.AddressLine1,
-                contact.Address.AddressLine2,
-                contact.Address.City,
-                contact.Address.Region,
-                contact.Address.PostalCode,
-                contact.Address.CountryCode
-            );
         }
 
         private static List<CartItem> GetItemsToCheckout(Cart cart, List<Guid> cartItemIds)
