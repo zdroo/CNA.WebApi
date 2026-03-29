@@ -69,7 +69,7 @@ namespace CNA.Application.Common.Mapping
                 .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Address.City))
                 .ForMember(dest => dest.Region, opt => opt.MapFrom(src => src.Address.Region))
                 .ForMember(dest => dest.PostalCode, opt => opt.MapFrom(src => src.Address.PostalCode))
-                .ForMember(dest => dest.CountryCode, opt => opt.MapFrom(src => src.Address.CountryCode))
+                .ForMember(dest => dest.CountryCode, opt => opt.MapFrom(src => src.Address.CountryCode));
         }
     }
 }
