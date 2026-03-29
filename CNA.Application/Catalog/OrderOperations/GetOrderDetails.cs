@@ -2,6 +2,7 @@
 using CNA.Application.Interfaces;
 using CNA.Contracts.Enums;
 using CNA.Contracts.Responses;
+using CNA.Domain.Exceptions;
 using MediatR;
 
 namespace CNA.Application.Catalog.OrderOperations;
@@ -24,7 +25,7 @@ public static class GetOrderDetails
         public async Task<OrderResponse> Handle(Query query, CancellationToken cancellationToken)
         {
             var order = await _orderRepository.GetByIdAsync(query.OrderId)
-                        ?? throw new Exception("Order not found");
+                        ?? throw new OrderNotFoundException(query.OrderId);
 
             return _mapper.Map<OrderResponse>(order);
         }

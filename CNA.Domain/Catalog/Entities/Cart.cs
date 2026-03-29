@@ -1,4 +1,5 @@
 ﻿using CNA.Domain.Common;
+using CNA.Domain.Exceptions;
 
 namespace CNA.Domain.Catalog.Entities
 {
@@ -30,18 +31,18 @@ namespace CNA.Domain.Catalog.Entities
             _items.Add(new CartItem(productVariantId, quantity, price));
         }
 
-        public void RemoveItemByProductVariantId(Guid productVariantId)
-        {
-            var item = _items.FirstOrDefault(i => i.ProductVariantId == productVariantId)
-                ?? throw new Exception("Item not found");
+        //public void RemoveItemByProductVariantId(Guid productVariantId)
+        //{
+        //    var item = _items.FirstOrDefault(i => i.ProductVariantId == productVariantId)
+        //        ?? throw new CartItemNotFoundException(productVariantId);
 
-            _items.Remove(item);
-        }
+        //    _items.Remove(item);
+        //}
 
         public void RemoveItemByCartItemId(Guid cartItemId)
         {
             var item = _items.FirstOrDefault(i => i.Id == cartItemId)
-                ?? throw new Exception("Item not found");
+                ?? throw new CartItemNotFoundException(cartItemId);
 
             _items.Remove(item);
         }

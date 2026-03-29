@@ -2,6 +2,7 @@
 using CNA.Application.Interfaces;
 using CNA.Domain.Exceptions;
 using AutoMapper;
+using CNA.Contracts.Responses;
 
 namespace CNA.Application.Catalog.CartOperations;
 
@@ -9,15 +10,6 @@ public static class UpdateCartItem
 {
     public record Command(Guid UserId, Guid CartItemId, int Quantity = 1)
         : IRequest<CartItemResponse>;
-
-    public record CartItemResponse(
-        Guid Id,
-        Guid ProductVariantId,
-        Guid CartId,
-        int Quantity,
-        decimal Price,
-        decimal Total
-    );
 
     public class Handler : IRequestHandler<Command, CartItemResponse>
     {
@@ -45,8 +37,8 @@ public static class UpdateCartItem
 
             var cart = user.GetOrCreateCart();
 
-            var cartItem = await _cartRepository.GetByIdAsync(command.CartItemId)
-                ?? throw new Exception("Item not found");
+            var cartItem = cart.Items.FirstOrDefault(_ => _.Id == command.CartItemId)
+                ?? throw new CartItemNotFoundException(command.CartItemId);
 
             cartItem.Increase(command.Quantity);
 

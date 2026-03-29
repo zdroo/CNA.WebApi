@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using CNA.Application.Interfaces;
+using CNA.Domain.Exceptions;
 
 namespace CNA.Application.Catalog.ProductOperations;
 
@@ -19,7 +20,7 @@ public static class DeleteProduct
         public async Task Handle(Command command, CancellationToken cancellationToken)
         {
             var product = await _repository.GetByIdAsync(command.ProductId)
-                ?? throw new Exception("Product not found");
+                ?? throw new ProductNotFoundException(command.ProductId);
 
             await _repository.DeleteAsync(product);
         }

@@ -1,5 +1,6 @@
 ﻿using CNA.Application.Interfaces;
 using CNA.Contracts.Responses;
+using CNA.Domain.Exceptions;
 using MediatR;
 
 namespace CNA.Application.Catalog.CartOperations;
@@ -20,7 +21,7 @@ public static class GetCartByUserId
         public async Task<CartResponse> Handle(Query query, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetByIdAsync(query.UserId)
-                       ?? throw new Exception("User not found.");
+                       ?? throw new UserNotFoundException(query.UserId);
 
             var cart = user.GetOrCreateCart();
 

@@ -2,6 +2,7 @@
 using CNA.Application.Services;
 using CNA.Contracts.Responses;
 using CNA.Domain.Catalog.Entities;
+using CNA.Domain.Exceptions;
 using MediatR;
 
 namespace CNA.Application.Catalog.AuthOperations;
@@ -28,7 +29,7 @@ public static class Register
             var existingUser = await _userRepository.GetByEmailAsync(request.Email);
 
             if (existingUser != null)
-                throw new Exception("Email already registered.");
+                throw new EmailAlreadyRegisteredException($"Email already registered '{request.Email}'.");
 
             var passwordHash = _passwordHasher.Hash(request.Password);
 

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using CNA.Application.Interfaces;
+using CNA.Domain.Exceptions;
 
 namespace CNA.Application.Catalog.CategoriesOperations;
 
@@ -19,7 +20,7 @@ public static class DeleteCategory
         public async Task Handle(Command command, CancellationToken cancellationToken)
         {
             var category = await _categoryRepository.GetByIdAsync(command.CategoryId)
-                ?? throw new Exception("Category not found");
+                ?? throw new CategoryNotFoundException(command.CategoryId);
 
             await _categoryRepository.DeleteCategoryAsync(category);
         }

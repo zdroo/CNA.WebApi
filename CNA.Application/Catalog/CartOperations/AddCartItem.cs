@@ -1,4 +1,5 @@
 ﻿using CNA.Application.Interfaces;
+using CNA.Domain.Exceptions;
 using MediatR;
 
 namespace CNA.Application.Catalog.CartOperations;
@@ -26,13 +27,13 @@ public static class AddCartItem
         public async Task Handle(Command request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetByIdAsync(request.UserId)
-                       ?? throw new Exception("User not found");
+                       ?? throw new UserNotFoundException(request.UserId);
 
             var cart = user.GetOrCreateCart();
 
             var variant = await _productRepository
                 .GetByProductVariantId(request.ProductVariantId)
-                ?? throw new ArgumentException("Variant not found");
+                ?? throw new VariantNotFoundException(request.ProductVariantId);
 
             cart.AddItem(variant.Id, variant.Price);
 

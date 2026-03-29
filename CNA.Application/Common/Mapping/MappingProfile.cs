@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CNA.Contracts.Responses;
 using CNA.Domain.Catalog.Entities;
+using CNA.Domain.Catalog.Entities.Localization;
 
 namespace CNA.Application.Common.Mapping
 {
@@ -31,7 +32,7 @@ namespace CNA.Application.Common.Mapping
             CreateMap<Category, CategoryResponse>()
                 .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.Id));
 
-            CreateMap<CountryResponse, CountryResponse>();
+            CreateMap<Country, CountryResponse>();
 
             CreateMap<OrderItem, OrderItemResponse>()
                 .ForMember(dest => dest.ProductVariantId, opt => opt.MapFrom(src => src.ProductVariantId))

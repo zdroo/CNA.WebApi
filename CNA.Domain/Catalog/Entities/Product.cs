@@ -66,7 +66,7 @@ namespace CNA.Domain.Catalog.Entities
                 _variants.Remove(variant);
             }
 
-            throw new VariantNotExistingException(variantId);
+            throw new VariantNotFoundException(variantId);
         }
 
         public void UpdateVariant(
@@ -79,7 +79,7 @@ namespace CNA.Domain.Catalog.Entities
             bool? isActive)
         {
             var variant = _variants.FirstOrDefault(v => v.Id == variantId)
-                ?? throw new Exception("Variant not found");
+                ?? throw new VariantNotFoundException(variantId);
 
             variant.UpdateDetails(name, sku, price, isActive);
 

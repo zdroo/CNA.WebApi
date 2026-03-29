@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using CNA.Application.Interfaces;
+using CNA.Domain.Exceptions;
 
 namespace CNA.Application.Catalog.OrderOperations;
 
@@ -21,10 +22,9 @@ public static class CancelOrder
         public async Task Handle(Command command, CancellationToken cancellationToken)
         {
             var order = await _orderRepository.GetByIdAsync(command.OrderId)
-                        ?? throw new Exception("Order not found");
+                        ?? throw new OrderNotFoundException(command.OrderId);
 
             order.Cancel();
-
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }

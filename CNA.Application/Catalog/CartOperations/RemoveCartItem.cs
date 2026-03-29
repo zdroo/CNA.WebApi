@@ -1,5 +1,6 @@
-﻿using MediatR;
-using CNA.Application.Interfaces;
+﻿using CNA.Application.Interfaces;
+using CNA.Domain.Exceptions;
+using MediatR;
 
 namespace CNA.Application.Catalog.CartOperations;
 
@@ -21,7 +22,7 @@ public static class RemoveCartItem
         public async Task Handle(Command command, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetByIdAsync(command.UserId)
-                ?? throw new Exception("User not found");
+                ?? throw new UserNotFoundException(command.UserId);
 
             var cart = user.GetOrCreateCart();
             cart.RemoveItemByCartItemId(command.CartItemId);
