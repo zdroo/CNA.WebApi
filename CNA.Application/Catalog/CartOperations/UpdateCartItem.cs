@@ -6,7 +6,7 @@ namespace CNA.Application.Catalog.CartOperations;
 
 public static class UpdateCartItem
 {
-    public record Command(Guid UserId, Guid CartItemId, int Quantity)
+    public record Command(Guid UserId, Guid CartItemId, int Quantity = 1)
         : IRequest<CartItemResponse>;
 
     public record CartItemResponse(

@@ -1,6 +1,5 @@
 ﻿using CNA.Application.Catalog.CartOperations;
 using CNA.Application.Interfaces;
-using CNA.Contracts.Requests.Cart;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
