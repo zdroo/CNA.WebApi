@@ -27,26 +27,25 @@ namespace CNA.WebApi.Controllers.Seller
             return Ok(id);
         }
 
-        [HttpPut("{id:guid}")]
+        [HttpPut("{productId:guid}")]
         public async Task<IActionResult> Update(
-            Guid id,
-            UpdateProduct.Command request,
+            [FromBody] UpdateProduct.Command request,
             CancellationToken cancellationToken)
         {
             await _mediator.Send(
                 request,
                 cancellationToken);
 
-            return Ok(id);
+            return Ok();
         }
 
-        [HttpDelete("{id:guid}")]
+        [HttpDelete("{productId:guid}")]
         public async Task<IActionResult> Delete(
-            DeleteProduct.Command request,
+            [FromRoute] Guid productId,
             CancellationToken cancellationToken)
         {
             await _mediator.Send(
-                request,
+                new DeleteProduct.Command(productId),
                 cancellationToken);
 
             return NoContent();

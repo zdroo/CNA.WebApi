@@ -107,6 +107,7 @@ namespace CNA.Infrastructure.Repositories
         {
             return await _context.ProductVariants
                 .Include(x => x.Attributes)
+                .Include(v => v.Product)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.ProductId == productVariantId);
         }

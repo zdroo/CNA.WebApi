@@ -18,7 +18,7 @@ namespace CNA.WebApi.Controllers
 
         [HttpGet]
         public async Task<ActionResult<List<ProductResponse>>> GetProducts(
-            GetProducts.Query request,
+            [FromQuery] GetProducts.Query request,
             CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(
@@ -29,16 +29,16 @@ namespace CNA.WebApi.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id:guid}")]
+        [HttpGet("{productId:guid}")]
         public async Task<ActionResult<ProductResponse>> GetById(
-            GetProductById.Query request,
+            [FromRoute] Guid productId,
             CancellationToken cancellationToken)
         {
             var product = await _mediator.Send(
-                request,
+                new GetProductById.Query(productId),
                 cancellationToken);
 
-            return product is null ? BadRequest() : Ok(product);
+            return Ok(product);
         }
     }
 }

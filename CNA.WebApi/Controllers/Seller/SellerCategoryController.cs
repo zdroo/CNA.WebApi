@@ -23,13 +23,13 @@ namespace CNA.WebApi.Controllers.Seller
         }
 
         [HttpPut("{categoryId:guid}")]
-        public async Task<IActionResult> UpdateCategory(Guid categoryId)
+        public async Task<IActionResult> UpdateCategory([FromRoute] Guid categoryId)
         {
             return Ok();
         }
 
         [HttpDelete("{categoryId:guid}")]
-        public async Task<IActionResult> DeleteCategory(Guid categoryId)
+        public async Task<IActionResult> DeleteCategory([FromRoute] Guid categoryId)
         {
             await _mediator.Send(new DeleteCategory.Command(categoryId));
 

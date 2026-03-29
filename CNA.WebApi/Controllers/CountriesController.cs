@@ -15,8 +15,8 @@ namespace CNA.WebApi.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("get-countries")]
-        public async Task<IActionResult> Get()
+        [HttpGet]
+        public async Task<IActionResult> GetCountries()
         {
             var countries = await _mediator.Send(new GetCountries.Query());
             return Ok(countries);

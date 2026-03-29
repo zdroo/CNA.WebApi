@@ -6,7 +6,7 @@ namespace CNA.Application.Catalog.ProductVariantOperations;
 
 public static class DeleteProductVariant
 {
-    public record Command(Guid ProductId, Guid VariantId) : IRequest;
+    public record Command(Guid VariantId) : IRequest;
 
     public class Handler : IRequestHandler<Command>
     {
@@ -21,11 +21,13 @@ public static class DeleteProductVariant
 
         public async Task Handle(Command command, CancellationToken cancellationToken)
         {
-            var product = await _repository.GetByIdAsync(command.ProductId)
-                          ?? throw new ProductNotFoundException(command.ProductId);
+            var variant = await _repository.GetByProductVariantId(command.VariantId)
+                ?? throw new VariantNotFoundException(command.VariantId);
 
-            product.RemoveVariant(command.VariantId);
+            if (variant.Product is null)
+                throw new ArgumentNullException($"Variant '{command.VariantId}' product is null.");
 
+            variant.Product.RemoveVariant(command.VariantId);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }

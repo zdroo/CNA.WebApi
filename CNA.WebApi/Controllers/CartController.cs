@@ -58,15 +58,13 @@ namespace CNA.WebApi.Controllers
         public async Task<IActionResult> ClearCart()
         {
             await _mediator.Send(new ClearCart.Command(CurrentUserId));
-            var cartResponse = await _mediator.Send(new GetCartByUserId.Query(CurrentUserId));
-            return Ok(cartResponse);
+            return NoContent();
         }
 
         [HttpPost("checkout")]
         public async Task<IActionResult> Checkout([FromBody] CartCheckout.Command request)
         {
             await _mediator.Send(request);
-
             return Ok();
         }
     }

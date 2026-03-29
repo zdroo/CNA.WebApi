@@ -12,6 +12,7 @@ namespace CNA.Application.Interfaces
         Task DeleteAsync(Product product);
         Task<IReadOnlyList<Product>> ListByCategoryAsync(Guid categoryId);
 
+
         Task<List<ProductVariant>> GetByProductId(Guid productId);
         Task<List<ProductVariant>> GetFiltered(ProductVariantsFilter filter);
         Task<ProductVariant?> GetByProductVariantId(Guid productVariantId);

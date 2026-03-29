@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using CNA.Application.Interfaces;
-using CNA.Contracts.Enums;
 using CNA.Contracts.Responses;
 using CNA.Domain.Exceptions;
 using MediatR;

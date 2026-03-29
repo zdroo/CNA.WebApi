@@ -29,17 +29,24 @@ namespace CNA.WebApi.Controllers
             return Ok(orders);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetOrderDetails([FromQuery] GetOrderDetails.Query request)
+        [HttpGet("{orderId:guid}")]
+        public async Task<IActionResult> GetOrderDetails(
+            [FromRoute] Guid orderId,
+            CancellationToken cancellationToken)
         {
-            var order = await _mediator.Send(request);
+            var order = await _mediator.Send(
+                new GetOrderDetails.Query(orderId),
+                cancellationToken);
+
             return Ok(order);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> CancelOrder(CancelOrder.Command request)
+        [HttpPut("{orderId:guid}/cancel")]
+        public async Task<IActionResult> CancelOrder(
+            [FromRoute] Guid orderId,
+            CancellationToken cancellationToken)
         {
-            await _mediator.Send(request);
+            await _mediator.Send(new CancelOrder.Command(orderId));
             return Ok();
         }
     }

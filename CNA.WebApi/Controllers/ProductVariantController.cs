@@ -30,7 +30,7 @@ namespace CNA.WebApi.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetAttributes(
-            GetAttributesFilter.Query request,
+            [FromQuery] GetAttributesFilter.Query request,
             CancellationToken cancellationToken)
         {
             var attributes = await _mediator.Send(
