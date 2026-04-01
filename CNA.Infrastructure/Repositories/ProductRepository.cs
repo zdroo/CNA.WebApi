@@ -137,7 +137,7 @@ namespace CNA.Infrastructure.Repositories
 
             if (!string.IsNullOrWhiteSpace(filter.ProductSlug))
             {
-                query = query.Where(p => p.Slug == filter.ProductSlug);
+                query = query.Where(p => p.Product.Slug == filter.ProductSlug);
             }
 
             if (filter.ProductId.HasValue)

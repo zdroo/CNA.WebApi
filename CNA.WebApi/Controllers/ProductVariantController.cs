@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CNA.WebApi.Controllers
 {
-    [Route("api/product-variant")]
+    [Route("api/variants")]
     [ApiController]
     public class ProductVariantController : ControllerBase
     {
@@ -17,6 +17,18 @@ namespace CNA.WebApi.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetFiltered(
+            [FromQuery] GetProductVariants.Query request,
+            CancellationToken cancellationToken)
+        {
+            var variants = await _mediator.Send(
+                request,
+                cancellationToken);
+
+            return Ok(variants);
+        }
+
+        [HttpGet()]
         public async Task<IActionResult> GetVariants(
             [FromQuery] GetProductVariants.Query request,
             CancellationToken cancellationToken)

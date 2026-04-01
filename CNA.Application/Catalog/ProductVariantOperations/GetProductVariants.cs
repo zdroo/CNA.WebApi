@@ -9,20 +9,22 @@ namespace CNA.Application.Catalog.ProductVariantOperations;
 
 public static class GetProductVariants
 {
-    public record Query(
-        string? ProductSlug,
-        Guid? ProductId,
-        Guid? CategoryId,
-        string? Brand,
-        PriceRange? PriceRange,
-        string? SearchText,
-        Dictionary<string, string>? Attributes,
-        bool OnlyActive,
-        bool OnlyInStock,
-        bool Featured,
-        ProductSortBy? SortBy,
-        int Page,
-        int PageSize) : IRequest<List<ProductVariantResponse>>;
+    public record Query : IRequest<List<ProductVariantResponse>>
+    {
+        public string? ProductSlug { get; init; }
+        public Guid? ProductId { get; init; }
+        public Guid? CategoryId { get; init; }
+        public string? Brand { get; init; }
+        public PriceRange? PriceRange { get; init; }
+        public string? SearchText { get; init; }
+        public Dictionary<string, string>? Attributes { get; init; }
+        public bool OnlyActive { get; init; }
+        public bool OnlyInStock { get; init; }
+        public bool Featured { get; init; }
+        public ProductSortBy? SortBy { get; init; }
+        public int Page { get; init; } = 1;
+        public int PageSize { get; init; } = 12;
+    }
 
     public class Handler : IRequestHandler<Query, List<ProductVariantResponse>>
     {

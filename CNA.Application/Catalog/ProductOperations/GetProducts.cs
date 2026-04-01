@@ -9,7 +9,7 @@ public static class GetProducts
 {
     public record Query : IRequest<List<ProductResponse>>
     {
-        public string Category { get; init; } = default!;
+        public string? Category { get; init; }// = default!;
         public Guid? CategoryId { get; init; }
         public string? SearchText { get; init; }
         public bool IsFeatured { get; init; }
@@ -29,7 +29,10 @@ public static class GetProducts
 
         public async Task<List<ProductResponse>> Handle(Query query, CancellationToken cancellationToken)
         {
-            var products = await _repository.ListByCategoryAsync(query.Category);
+            var products = !string.IsNullOrWhiteSpace(query.Category)
+                ? await _repository.ListByCategoryAsync(query.Category)
+                : await _repository.ListAllAsync();
+
             return _mapper.Map<List<ProductResponse>>(products);
         }
     }
