@@ -11,6 +11,7 @@ namespace CNA.Domain.Catalog.Entities
         public string? Description { get; private set; }
         public string? Brand { get; private set; }
         public string Sku { get; private set; } = default!;
+        public string Slug { get; private set; } = default!;
         public string Name { get; private set; } = default!;
         public decimal Price { get; private set; }
         public bool IsFeatured { get; private set; }

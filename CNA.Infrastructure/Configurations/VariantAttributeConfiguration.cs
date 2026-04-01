@@ -24,7 +24,7 @@ namespace CNA.Infrastructure.Configurations
                 .HasMaxLength(200);
 
             builder.HasOne(a => a.ProductVariant)
-                .WithMany()
+                .WithMany(v => v.Attributes)
                 .HasForeignKey(a => a.ProductVariantId)
                 .OnDelete(DeleteBehavior.Cascade);
 

@@ -29,7 +29,7 @@ namespace CNA.Infrastructure.Configurations
                 .IsRequired();
 
             builder.HasOne(r => r.ProductVariant)
-                .WithMany()
+                .WithMany(v => v.Reviews)
                 .HasForeignKey(r => r.ProductVariantId)
                 .OnDelete(DeleteBehavior.Cascade);
 

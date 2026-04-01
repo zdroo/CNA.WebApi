@@ -7,10 +7,14 @@ namespace CNA.Application.Catalog.ProductOperations;
 
 public static class GetProducts
 {
-    public record Query(Guid? CategoryId,
-        string? SearchText,
-        bool IsFeatured,
-        int PageSize = 12) : IRequest<List<ProductResponse>>;
+    public record Query : IRequest<List<ProductResponse>>
+    {
+        public string Category { get; init; } = default!;
+        public Guid? CategoryId { get; init; }
+        public string? SearchText { get; init; }
+        public bool IsFeatured { get; init; }
+        public int PageSize { get; init; } = 12;
+    }
 
     public class Handler : IRequestHandler<Query, List<ProductResponse>>
     {
@@ -25,7 +29,7 @@ public static class GetProducts
 
         public async Task<List<ProductResponse>> Handle(Query query, CancellationToken cancellationToken)
         {
-            var products = await _repository.ListAllAsync();
+            var products = await _repository.ListByCategoryAsync(query.Category);
             return _mapper.Map<List<ProductResponse>>(products);
         }
     }

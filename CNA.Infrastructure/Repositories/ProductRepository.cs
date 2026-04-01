@@ -35,6 +35,9 @@ namespace CNA.Infrastructure.Repositories
                     .ThenInclude(v => v.Attributes)
                 .Include(p => p.Variants)
                     .ThenInclude(v => v.Stock)
+                .Include(p => p.Variants)
+                    .ThenInclude(v => v.Reviews)
+                .Include(p => p.Category)
                 .ToListAsync();
         }
 
@@ -48,16 +51,14 @@ namespace CNA.Infrastructure.Repositories
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<IReadOnlyList<Product>> ListByCategoryAsync(Guid categoryId)
+        public async Task<IReadOnlyList<Product>> ListByCategoryAsync(string categorySlug)
         {
+            var products = _context.Products
+                .Include(p => p.Category).ToList();
+
             return await _context.Products
-                .Where(p => p.CategoryId == categoryId)
-                .Include(p => p.Variants)
-                    .ThenInclude(v => v.Attributes)
-                .Include(p => p.Variants)
-        .           ThenInclude(v => v.Reviews)
-                .Include(p => p.Variants)
-                    .ThenInclude(v => v.Stock)
+                .Include(p => p.Category)
+                .Where(p => p.Category.Slug == categorySlug)
                 .ToListAsync();
         }
 
@@ -133,6 +134,11 @@ namespace CNA.Infrastructure.Repositories
                 .Include(v => v.Images.OrderBy(i => i.SortOrder))
                 .Include(v => v.Reviews)
                 .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(filter.ProductSlug))
+            {
+                query = query.Where(p => p.Slug == filter.ProductSlug);
+            }
 
             if (filter.ProductId.HasValue)
             {

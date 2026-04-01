@@ -6,14 +6,13 @@ namespace CNA.Domain.Catalog.Entities
     public class Product : BaseEntity
     {
         public string Name { get; private set; } = default!;
+        public string Slug { get; private set; } = default!;
         public string Description { get; private set; } = default!;
         public Guid CategoryId { get; private set; }
         public Category Category { get; private set; } = default!;
-
         public bool IsShippable { get; private set; } = true;
         public bool IsDigital { get; private set; }
         public bool IsReturnable { get; private set; } = true;
-
         public bool IsActive { get; private set; } = true;
         public string? ImageUrl { get; private set; }
 

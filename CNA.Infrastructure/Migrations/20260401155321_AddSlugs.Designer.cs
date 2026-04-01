@@ -4,6 +4,7 @@ using CNA.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CNA.Infrastructure.Migrations
 {
     [DbContext(typeof(CNADbContext))]
-    partial class CNADbContextModelSnapshot : ModelSnapshot
+    [Migration("20260401155321_AddSlugs")]
+    partial class AddSlugs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -408,6 +411,9 @@ namespace CNA.Infrastructure.Migrations
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("CategoryId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -460,6 +466,8 @@ namespace CNA.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("CategoryId1");
+
                     b.ToTable("Products", (string)null);
                 });
 
@@ -504,6 +512,9 @@ namespace CNA.Infrastructure.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ProductId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .IsRequired()
@@ -526,6 +537,8 @@ namespace CNA.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("ProductId1");
 
                     b.HasIndex("Sku")
                         .IsUnique();
@@ -594,6 +607,9 @@ namespace CNA.Infrastructure.Migrations
                     b.Property<Guid>("ProductVariantId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ProductVariantId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
@@ -606,6 +622,8 @@ namespace CNA.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ProductVariantId");
+
+                    b.HasIndex("ProductVariantId1");
 
                     b.HasIndex("UserId");
 
@@ -715,6 +733,9 @@ namespace CNA.Infrastructure.Migrations
                     b.Property<Guid>("ProductVariantId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ProductVariantId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -726,6 +747,8 @@ namespace CNA.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ProductVariantId");
+
+                    b.HasIndex("ProductVariantId1");
 
                     b.ToTable("VariantAttributes", (string)null);
                 });
@@ -874,10 +897,14 @@ namespace CNA.Infrastructure.Migrations
             modelBuilder.Entity("CNA.Domain.Catalog.Entities.Product", b =>
                 {
                     b.HasOne("CNA.Domain.Catalog.Entities.Category", "Category")
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("CNA.Domain.Catalog.Entities.Category", null)
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId1");
 
                     b.Navigation("Category");
                 });
@@ -885,10 +912,14 @@ namespace CNA.Infrastructure.Migrations
             modelBuilder.Entity("CNA.Domain.Catalog.Entities.ProductVariant", b =>
                 {
                     b.HasOne("CNA.Domain.Catalog.Entities.Product", "Product")
-                        .WithMany("Variants")
+                        .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("CNA.Domain.Catalog.Entities.Product", null)
+                        .WithMany("Variants")
+                        .HasForeignKey("ProductId1");
 
                     b.Navigation("Product");
                 });
@@ -907,10 +938,14 @@ namespace CNA.Infrastructure.Migrations
             modelBuilder.Entity("CNA.Domain.Catalog.Entities.Review", b =>
                 {
                     b.HasOne("CNA.Domain.Catalog.Entities.ProductVariant", "ProductVariant")
-                        .WithMany("Reviews")
+                        .WithMany()
                         .HasForeignKey("ProductVariantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("CNA.Domain.Catalog.Entities.ProductVariant", null)
+                        .WithMany("Reviews")
+                        .HasForeignKey("ProductVariantId1");
 
                     b.HasOne("CNA.Domain.Catalog.Entities.User", null)
                         .WithMany()
@@ -935,10 +970,14 @@ namespace CNA.Infrastructure.Migrations
             modelBuilder.Entity("CNA.Domain.Catalog.Entities.VariantAttribute", b =>
                 {
                     b.HasOne("CNA.Domain.Catalog.Entities.ProductVariant", "ProductVariant")
-                        .WithMany("Attributes")
+                        .WithMany()
                         .HasForeignKey("ProductVariantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("CNA.Domain.Catalog.Entities.ProductVariant", null)
+                        .WithMany("Attributes")
+                        .HasForeignKey("ProductVariantId1");
 
                     b.Navigation("ProductVariant");
                 });

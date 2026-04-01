@@ -47,8 +47,11 @@ namespace CNA.Infrastructure.Configurations
                 .IsRequired()
                 .HasDefaultValue(true);
 
+            builder.Property(p => p.Slug)
+                .HasMaxLength(100);
+
             builder.HasOne(v => v.Product)
-                .WithMany()
+                .WithMany(p => p.Variants)
                 .HasForeignKey(v => v.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -58,12 +61,12 @@ namespace CNA.Infrastructure.Configurations
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany<VariantAttribute>(v => v.Attributes)
-                .WithOne()
+                .WithOne(a => a.ProductVariant)
                 .HasForeignKey(a => a.ProductVariantId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany<VariantImage>(v => v.Images)
-                .WithOne()
+                .WithOne(i => i.ProductVariant)
                 .HasForeignKey(a => a.ProductVariantId)
                 .OnDelete(DeleteBehavior.Cascade);
         }

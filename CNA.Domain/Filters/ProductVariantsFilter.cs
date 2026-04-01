@@ -5,6 +5,7 @@ namespace CNA.Domain.Filters
 {
     public class ProductVariantsFilter
     {
+        public string ProductSlug { get; set; } = default!;
         public Guid? ProductId { get; set; }
         public Guid? CategoryId { get; set; }
         public string? Brand { get; set; }

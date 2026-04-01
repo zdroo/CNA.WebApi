@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using CNA.Application.Interfaces;
+using CNA.Application.Models;
 using CNA.Contracts.Responses;
-using CNA.Domain.Catalog.Enums;
 using CNA.Domain.Filters;
-using CNA.Domain.Models;
 using MediatR;
 
 namespace CNA.Application.Catalog.ProductVariantOperations;
@@ -11,6 +10,7 @@ namespace CNA.Application.Catalog.ProductVariantOperations;
 public static class GetProductVariants
 {
     public record Query(
+        string? ProductSlug,
         Guid? ProductId,
         Guid? CategoryId,
         string? Brand,

@@ -10,7 +10,7 @@ namespace CNA.Application.Interfaces
         Task<IReadOnlyList<Product>> ListAllAsync();
         Task AddAsync(Product product);
         Task DeleteAsync(Product product);
-        Task<IReadOnlyList<Product>> ListByCategoryAsync(Guid categoryId);
+        Task<IReadOnlyList<Product>> ListByCategoryAsync(string categorySlug);
 
 
         Task<List<ProductVariant>> GetByProductId(Guid productId);

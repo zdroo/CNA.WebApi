@@ -39,8 +39,11 @@ namespace CNA.Infrastructure.Configurations
                 .IsRequired()
                 .HasDefaultValue(true);
 
+            builder.Property(p => p.Slug)
+                .HasMaxLength(100);
+
             builder.HasOne(p => p.Category)
-                .WithMany()
+                .WithMany(c => c.Products)
                 .HasForeignKey(p => p.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
