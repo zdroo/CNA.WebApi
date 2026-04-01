@@ -20,6 +20,9 @@ namespace CNA.Infrastructure.Configurations
                 .IsRequired()
                 .HasMaxLength(100);
 
+            builder.Property(c => c.ImageUrl)
+                .HasMaxLength(100);
+
             builder.HasIndex(c => c.Slug)
                 .IsUnique();
 
@@ -32,7 +35,7 @@ namespace CNA.Infrastructure.Configurations
                 .HasForeignKey(c => c.ParentCategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasMany<Product>("_products")
+            builder.HasMany<Product>(c => c.Products)
                 .WithOne(p => p.Category)
                 .HasForeignKey(p => p.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);

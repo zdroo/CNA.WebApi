@@ -1,4 +1,4 @@
-using CNA.Application.Common.Mapping;
+using CNA.Application.Catalog.CartOperations;
 using CNA.Application.Interfaces;
 using CNA.Infrastructure;
 using CNA.Infrastructure.Repositories;
@@ -20,7 +20,17 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<CNA.Application.Services.IPasswordHasher, CNA.Application.Services.PasswordHasher>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IUserContextService, UserContextService>();
-builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<ICountryRepository, CountryRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
+
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(typeof(AddCartItem.Handler).Assembly));
+
+builder.Services.AddAutoMapper(cfg => { }, typeof(CNA.Application.AssemblyReference).Assembly);
 
 builder.Services.AddHttpContextAccessor();
 
@@ -29,6 +39,16 @@ builder.Services.AddDbContext<CNADbContext>(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -95,6 +115,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 app.UseAuthentication();
+app.UseCors("AllowAll");
 
 app.MapControllers();
 

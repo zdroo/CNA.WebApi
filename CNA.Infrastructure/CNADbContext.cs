@@ -25,6 +25,7 @@ namespace CNA.Infrastructure
         public DbSet<Stock> Stocks => Set<Stock>();
         public DbSet<User> Users => Set<User>();
         public DbSet<VariantAttribute> VariantAttributes => Set<VariantAttribute>();
+        public DbSet<VariantImage> VariantImages => Set<VariantImage>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -49,3 +50,4 @@ namespace CNA.Infrastructure
 //modelBuilder.ApplyConfiguration(new StockConfiguration());
 //modelBuilder.ApplyConfiguration(new UserConfiguration());
 //modelBuilder.ApplyConfiguration(new VariantAttributeConfiguration());
+//dotnet ef migrations add InitialCreate --project CNA.Infrastructure --startup-project CNA.WebApi

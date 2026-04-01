@@ -19,7 +19,7 @@ namespace CNA.Infrastructure.Configurations
             builder.HasIndex(c => c.UserId)
                 .IsUnique();
 
-            builder.HasMany<CartItem>("_items")
+            builder.HasMany<CartItem>(c => c.Items)
                 .WithOne(ci => ci.Cart)
                 .HasForeignKey(ci => ci.CartId)
                 .OnDelete(DeleteBehavior.Cascade);

@@ -16,6 +16,9 @@ namespace CNA.Domain.Catalog.Entities
         public bool IsFeatured { get; private set; }
         public Stock Stock { get; private set; } = default!;
 
+        private readonly List<VariantImage> _images = new();
+        public IReadOnlyCollection<VariantImage> Images => _images;
+
         private readonly List<VariantAttribute> _attributes = new();
         public IReadOnlyCollection<VariantAttribute> Attributes => _attributes;
 
@@ -99,6 +102,12 @@ namespace CNA.Domain.Catalog.Entities
 
             if (isActive.HasValue)
                 IsActive = isActive.Value;
+        }
+
+        public void AddImage(string url)
+        {
+            var order = _images.Count;
+            _images.Add(new VariantImage(url, order));
         }
     }
 }

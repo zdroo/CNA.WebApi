@@ -35,7 +35,7 @@ namespace CNA.Infrastructure.Configurations
                 .HasForeignKey(o => o.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasMany<OrderItem>("_items")
+            builder.HasMany<OrderItem>(o => o.Items)
                 .WithOne()
                 .HasForeignKey("OrderId")
                 .OnDelete(DeleteBehavior.Cascade);

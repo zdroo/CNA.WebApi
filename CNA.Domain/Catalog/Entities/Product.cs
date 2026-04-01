@@ -15,6 +15,7 @@ namespace CNA.Domain.Catalog.Entities
         public bool IsReturnable { get; private set; } = true;
 
         public bool IsActive { get; private set; } = true;
+        public string? ImageUrl { get; private set; }
 
         private readonly List<ProductVariant> _variants = new();
         public IReadOnlyCollection<ProductVariant> Variants => _variants;

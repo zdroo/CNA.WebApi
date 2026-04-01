@@ -20,6 +20,9 @@ namespace CNA.Infrastructure.Configurations
                 .IsRequired()
                 .HasMaxLength(1000);
 
+            builder.Property(p => p.ImageUrl)
+                .HasMaxLength(100);
+
             builder.Property(p => p.IsShippable)
                 .IsRequired()
                 .HasDefaultValue(true);
@@ -43,7 +46,7 @@ namespace CNA.Infrastructure.Configurations
 
             builder.HasIndex(p => p.CategoryId);
 
-            builder.HasMany<ProductVariant>("_variants")
+            builder.HasMany<ProductVariant>(p => p.Variants)
                 .WithOne(v => v.Product)
                 .HasForeignKey(v => v.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);

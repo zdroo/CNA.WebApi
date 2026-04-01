@@ -57,7 +57,12 @@ namespace CNA.Infrastructure.Configurations
                 .HasForeignKey<Stock>(s => s.ProductVariantId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasMany<VariantAttribute>("_attributes")
+            builder.HasMany<VariantAttribute>(v => v.Attributes)
+                .WithOne()
+                .HasForeignKey(a => a.ProductVariantId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany<VariantImage>(v => v.Images)
                 .WithOne()
                 .HasForeignKey(a => a.ProductVariantId)
                 .OnDelete(DeleteBehavior.Cascade);

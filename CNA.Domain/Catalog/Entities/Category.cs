@@ -9,6 +9,7 @@ namespace CNA.Domain.Catalog.Entities
         public Guid? ParentCategoryId { get; private set; }
         public Category? ParentCategory { get; private set; }
         public bool IsActive { get; private set; } = true;
+        public string? ImageUrl { get; set; }
 
         private readonly List<Product> _products = new();
         public IReadOnlyCollection<Product> Products => _products;

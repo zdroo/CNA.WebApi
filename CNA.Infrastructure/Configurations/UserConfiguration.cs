@@ -44,15 +44,15 @@ namespace CNA.Infrastructure.Configurations
                 .HasForeignKey<Cart>(c => c.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasMany<Address>("_addresses")
+            builder.HasMany(u => u.Addresses)
                 .WithOne(a => a.User)
                 .HasForeignKey(a => a.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Navigation(nameof(User.Addresses))
+            builder.Navigation(u => u.Addresses)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.HasMany<ShippingContact>("_shippingContacts")
+            builder.HasMany<ShippingContact>(u => u.ShippingContacts)
                 .WithOne(sc => sc.User)
                 .HasForeignKey(sc => sc.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
@@ -60,8 +60,8 @@ namespace CNA.Infrastructure.Configurations
             builder.Navigation(nameof(User.ShippingContacts))
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.HasMany<RefreshToken>("_refreshTokens")
-                .WithOne()
+            builder.HasMany<RefreshToken>(u => u.RefreshTokens)
+                .WithOne(rt => rt.User)
                 .HasForeignKey("UserId")
                 .OnDelete(DeleteBehavior.Cascade);
 

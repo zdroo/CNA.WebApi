@@ -31,7 +31,11 @@ namespace CNA.Application.Common.Mapping
                 .ForMember(dest => dest.Total, opt => opt.MapFrom(src => src.GetTotal()));
 
             CreateMap<Category, CategoryResponse>()
-                .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.Id));
+                .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Slug, opt => opt.MapFrom(src => src.Slug))
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive))
+                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.ImageUrl));
 
             CreateMap<Country, CountryResponse>();
 

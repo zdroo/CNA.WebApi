@@ -99,6 +99,7 @@ namespace CNA.Infrastructure.Repositories
                 .Include(x => x.Stock)
                 .Include(x => x.Reviews)
                 .Include(x => x.Attributes)
+                .Include(v => v.Images.OrderBy(i => i.SortOrder))
                 .AsNoTracking()
                 .Where(p => p.ProductId == productId).ToListAsync();
         }
@@ -108,6 +109,7 @@ namespace CNA.Infrastructure.Repositories
             return await _context.ProductVariants
                 .Include(x => x.Attributes)
                 .Include(v => v.Product)
+                .Include(v => v.Images.OrderBy(i => i.SortOrder))
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.ProductId == productVariantId);
         }
@@ -116,6 +118,7 @@ namespace CNA.Infrastructure.Repositories
         {
             return await _context.ProductVariants
                 .Include(x => x.Attributes)
+                .Include(v => v.Images.OrderBy(i => i.SortOrder))
                 .AsNoTracking()
                 .Where(_ => productVariantIds.Contains(_.Id)).ToListAsync();
         }
@@ -127,6 +130,7 @@ namespace CNA.Infrastructure.Repositories
                     .ThenInclude(p => p.Category)
                 .Include(v => v.Attributes)
                 .Include(v => v.Stock)
+                .Include(v => v.Images.OrderBy(i => i.SortOrder))
                 .Include(v => v.Reviews)
                 .AsQueryable();
 
@@ -204,7 +208,6 @@ namespace CNA.Infrastructure.Repositories
         public async Task<List<VariantAttribute>> GetVariantFiltersAsync(AttributesFilter filter)
         {
             var query = _context.ProductVariants
-                .Include(v => v.Product)
                 .Include(v => v.Attributes)
                 .AsQueryable();
 

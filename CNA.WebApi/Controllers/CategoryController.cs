@@ -15,7 +15,7 @@ namespace CNA.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCategories()
+        public async Task<IActionResult> GetCategories(CancellationToken cancellationToken)
         {
             var categories = await _mediator.Send(new GetCategories.Query());
 
