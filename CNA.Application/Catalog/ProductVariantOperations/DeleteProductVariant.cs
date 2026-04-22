@@ -21,7 +21,7 @@ public static class DeleteProductVariant
 
         public async Task Handle(Command command, CancellationToken cancellationToken)
         {
-            var variant = await _repository.GetByProductVariantId(command.VariantId)
+            var variant = await _repository.GetVariantById(command.VariantId)
                 ?? throw new VariantNotFoundException(command.VariantId);
 
             if (variant.Product is null)

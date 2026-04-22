@@ -62,7 +62,9 @@ namespace CNA.Application.Common.Mapping
                 ))
                 .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.Product.CategoryId))
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name))
-                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Product.Category.Name));
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Product.Category.Name))
+                .ForMember(dest => dest.ImageUrls, opt => opt.MapFrom(src => src.Images.OrderBy(i => i.SortOrder).Select(i => i.Url).ToList()))
+                .ForMember(dest => dest.PrimaryImageUrl, opt => opt.MapFrom(src => src.Images.FirstOrDefault(i => i.SortOrder == 0).Url));
 
             CreateMap<Product, ProductResponse>()
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(x => x.Category.Name))
@@ -99,6 +101,12 @@ namespace CNA.Application.Common.Mapping
             CreateMap<Application.Models.ProductSortBy, Domain.Catalog.Enums.ProductSortBy>();
 
             CreateMap<GetProductVariants.Query, ProductVariantsFilter>();
+
+            CreateMap<Review, ReviewResponse>()
+                .ForMember(dest => dest.ReviewId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
+                .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => (int)src.Rating))
+                .ForMember(dest => dest.UserName, opt => opt.Ignore());
         }
     }
 }

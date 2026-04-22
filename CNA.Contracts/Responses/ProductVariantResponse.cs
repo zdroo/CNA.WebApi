@@ -13,14 +13,16 @@
         public string Brand { get; init; } = string.Empty;
         public decimal Price { get; init; }
         public int StockQuantity { get; init; }
+        public string? PrimaryImageUrl { get; init; }
+        public List<string> ImageUrls { get; init; } = new();
         public Dictionary<string, string> Attributes { get; init; } = new();
+        public decimal AverageRating { get; init; }
+        public List<ReviewResponse> Reviews { get; init; } = new();
 
-        // Constructor gol
         public ProductVariantResponse()
         {
         }
 
-        // Constructor cu parametri (opțional)
         public ProductVariantResponse(
             string variantSlug,
             Guid productVariantId,

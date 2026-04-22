@@ -15,7 +15,8 @@ namespace CNA.Application.Interfaces
 
         Task<List<ProductVariant>> GetByProductId(Guid productId);
         Task<List<ProductVariant>> GetFiltered(ProductVariantsFilter filter);
-        Task<ProductVariant?> GetByProductVariantId(Guid productVariantId);
+        Task<ProductVariant?> GetVariantBySlug(string variantSlug);
+        Task<ProductVariant?> GetVariantById(Guid variantId);
         Task<List<ProductVariant>> GetByProductVariantIds(IEnumerable<Guid> productVariantIds);
         Task<List<VariantAttribute>> GetVariantFiltersAsync(AttributesFilter filter);
     }

@@ -82,9 +82,16 @@ namespace CNA.WebApi.Controllers
         }
 
         [HttpGet("{productSlug}/{variantSlug}")]
-        public async Task<ActionResult<Guid>> GetProductVariantById(Guid productVariantId)
+        public async Task<ActionResult<Guid>> GetProductVariantById(
+            [FromRoute] string variantSlug,
+            CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var variant = await _mediator
+                .Send(
+                new GetSingleProductVariant.Query(variantSlug),
+                cancellationToken);
+
+            return Ok(variant);
         }
 
 

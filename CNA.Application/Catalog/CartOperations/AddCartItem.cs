@@ -32,7 +32,7 @@ public static class AddCartItem
             var cart = user.GetOrCreateCart();
 
             var variant = await _productRepository
-                .GetByProductVariantId(request.ProductVariantId)
+                .GetVariantById(request.ProductVariantId)
                 ?? throw new VariantNotFoundException(request.ProductVariantId);
 
             cart.AddItem(variant.Id, variant.Price);

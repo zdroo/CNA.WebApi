@@ -1,6 +1,7 @@
-﻿using MediatR;
+using CNA.Application.Catalog.OrderOperations;
+using CNA.Domain.Catalog.Enums;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-//using AppOrderStatus = CNA.Application.Catalog.Queries.Filters.Models.OrderStatus;
 
 namespace CNA.WebApi.Controllers.Seller
 {
@@ -16,18 +17,20 @@ namespace CNA.WebApi.Controllers.Seller
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetOrders()
+        public async Task<IActionResult> GetOrders(
+            [FromQuery] Guid? userId,
+            [FromQuery] Guid? orderId,
+            [FromQuery] OrderStatus? orderStatus,
+            [FromQuery] bool isPaid,
+            [FromQuery] decimal? minCost,
+            [FromQuery] decimal? maxCost,
+            CancellationToken cancellationToken)
         {
-            // TODO Command and handler
-            //var newFilter = new OrdersFilter(
-            //    filter.UserId,
-            //    filter.OrderId,
-            //    (OrderStatus)filter.OrderStatus,
-            //    filter.IsPaid,
-            //    filter.MinCost,
-            //    filter.MaxCost);
+            var orders = await _mediator.Send(
+                new GetSellerOrders.Query(userId, orderId, orderStatus, isPaid, minCost, maxCost),
+                cancellationToken);
 
-            return Ok();
+            return Ok(orders);
         }
     }
 }

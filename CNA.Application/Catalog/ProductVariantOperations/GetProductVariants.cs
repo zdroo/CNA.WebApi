@@ -12,6 +12,7 @@ public static class GetProductVariants
     public record Query : IRequest<List<ProductVariantResponse>>
     {
         public string? ProductSlug { get; init; }
+        public string? VariantSlug { get; init; }
         public Guid? ProductId { get; init; }
         public Guid? CategoryId { get; init; }
         public string? Brand { get; init; }

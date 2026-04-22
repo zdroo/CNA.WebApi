@@ -1,4 +1,5 @@
-﻿using CNA.Application.Interfaces;
+using CNA.Application.Catalog.ReviewOperations;
+using CNA.Application.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,15 +23,25 @@ namespace CNA.WebApi.Controllers
         }
 
         [HttpGet]
-        public Task<ActionResult> GetReviews()
+        public async Task<IActionResult> GetReviews(
+            [FromQuery] Guid productVariantId,
+            CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var reviews = await _mediator.Send(
+                new GetReviews.Query(productVariantId),
+                cancellationToken);
+
+            return Ok(reviews);
         }
 
         [HttpPost]
-        public Task<ActionResult> AddReview(Guid orderId)
+        public async Task<ActionResult<Guid>> AddReview(
+            [FromBody] AddReview.Command request,
+            CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var command = request with { UserId = CurrentUserId };
+            var id = await _mediator.Send(command, cancellationToken);
+            return Ok(id);
         }
     }
 }

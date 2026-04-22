@@ -1,5 +1,4 @@
 ﻿using CNA.Application.Interfaces;
-using CNA.Contracts.Responses;
 using CNA.Domain.Catalog.Entities;
 using CNA.Domain.Catalog.Enums;
 using CNA.Domain.Filters;
@@ -80,7 +79,7 @@ namespace CNA.Infrastructure.Repositories
                     EF.Functions.Like(p.Description, $"%{filter.SearchText}%")
                     );
             }
-            
+
             if (filter.IsFeatured)
             {
                 // TODO
@@ -105,14 +104,28 @@ namespace CNA.Infrastructure.Repositories
                 .Where(p => p.ProductId == productId).ToListAsync();
         }
 
-        public async Task<ProductVariant?> GetByProductVariantId(Guid productVariantId)
+        public async Task<ProductVariant?> GetVariantBySlug(string variantSlug)
         {
             return await _context.ProductVariants
                 .Include(x => x.Attributes)
                 .Include(v => v.Product)
+                .Include(v => v.Stock)
+                .Include(v => v.Reviews)
                 .Include(v => v.Images.OrderBy(i => i.SortOrder))
                 .AsNoTracking()
-                .FirstOrDefaultAsync(p => p.ProductId == productVariantId);
+                .FirstOrDefaultAsync(p => p.Slug == variantSlug);
+        }
+
+        public async Task<ProductVariant?> GetVariantById(Guid variantId)
+        {
+            return await _context.ProductVariants
+                .Include(v => v.Attributes)
+                .Include(v => v.Product)
+                .Include(v => v.Stock)
+                .Include(v => v.Reviews)
+                .Include(v => v.Images.OrderBy(i => i.SortOrder))
+                .AsNoTracking()
+                .FirstOrDefaultAsync(v => v.Id == variantId);
         }
 
         public async Task<List<ProductVariant>> GetByProductVariantIds(IEnumerable<Guid> productVariantIds)
