@@ -65,7 +65,9 @@ namespace CNA.Application.Common.Mapping
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name))
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Product.Category.Name))
                 .ForMember(dest => dest.ImageUrls, opt => opt.MapFrom(src => src.Images.OrderBy(i => i.SortOrder).Select(i => i.Url).ToList()))
-                .ForMember(dest => dest.PrimaryImageUrl, opt => opt.MapFrom(src => src.Images.FirstOrDefault(i => i.SortOrder == 0).Url));
+                .ForMember(dest => dest.PrimaryImageUrl, opt => opt.MapFrom(src => src.Images.FirstOrDefault(i => i.SortOrder == 0).Url))
+                .ForMember(dest => dest.AverageRating, opt => opt.MapFrom(src => src.GetAverageRating()))
+                .ForMember(dest => dest.Reviews, opt => opt.MapFrom(src => src.Reviews));
 
             CreateMap<Product, ProductResponse>()
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(x => x.Category.Name))
