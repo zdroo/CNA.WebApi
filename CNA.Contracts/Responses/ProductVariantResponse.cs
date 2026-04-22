@@ -3,6 +3,7 @@
     public record ProductVariantResponse
     {
         public string VariantSlug { get; init; } = string.Empty;
+        public string ProductSlug { get; init; } = string.Empty;
         public Guid VariantId { get; init; }
         public Guid ProductId { get; init; }
         public Guid CategoryId { get; init; }

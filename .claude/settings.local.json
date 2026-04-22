@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Bash(dotnet build *)"
+      "Bash(dotnet build *)",
+      "Bash(grep -v \"^$\")",
+      "Bash(xargs grep *)",
+      "Bash(grep -E \"\\\\.\\(ts|tsx|js|jsx\\)$\")",
+      "Bash(npx tsc *)",
+      "Bash(xargs head *)",
+      "Bash(sqlcmd *)"
     ]
   }
 }

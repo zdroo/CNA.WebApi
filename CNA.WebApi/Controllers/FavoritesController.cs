@@ -1,4 +1,4 @@
-﻿using CNA.Application.Catalog.FavoritesOperations;
+using CNA.Application.Catalog.FavoritesOperations;
 using CNA.Application.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -26,12 +26,21 @@ namespace CNA.WebApi.Controllers
             CancellationToken cancellationToken)
         {
             request.UserId = CurrentUserId != Guid.Empty
-                ? CurrentUserId 
+                ? CurrentUserId
                 : null;
 
             await _mediator.Send(request, cancellationToken);
 
             return Ok();
+        }
+
+        [HttpDelete("{favoriteItemId:guid}")]
+        public async Task<IActionResult> RemoveFavorite(
+            [FromRoute] Guid favoriteItemId,
+            CancellationToken cancellationToken)
+        {
+            await _mediator.Send(new RemoveFavorite.Command(favoriteItemId), cancellationToken);
+            return NoContent();
         }
     }
 }

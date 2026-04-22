@@ -19,6 +19,16 @@ namespace CNA.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<FavoriteItem?> GetByIdAsync(Guid favoriteItemId)
+        {
+            return await _context.FavoriteItems.FindAsync(favoriteItemId);
+        }
+
+        public async Task RemoveAsync(FavoriteItem favorite)
+        {
+            _context.FavoriteItems.Remove(favorite);
+        }
+
         public async Task<List<FavoriteItem>> GetAllAsync(Guid userId)
         {
             return await _context.FavoriteItems.Where(f => f.UserId == userId).ToListAsync();

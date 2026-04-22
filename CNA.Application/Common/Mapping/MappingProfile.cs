@@ -57,6 +57,7 @@ namespace CNA.Application.Common.Mapping
                 .ForMember(dest => dest.VariantId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.StockQuantity, opt => opt.MapFrom(src => src.Stock.Quantity))
                 .ForMember(dest => dest.VariantSlug, opt => opt.MapFrom(src => src.Slug))
+                .ForMember(dest => dest.ProductSlug, opt => opt.MapFrom(src => src.Product.Slug))
                 .ForMember(dest => dest.Attributes, opt => opt.MapFrom(src =>
                     src.Attributes.ToDictionary(a => a.Name, a => a.Value)
                 ))
