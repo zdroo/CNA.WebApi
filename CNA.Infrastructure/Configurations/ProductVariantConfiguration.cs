@@ -41,11 +41,13 @@ namespace CNA.Infrastructure.Configurations
 
             builder.Property(v => v.IsFeatured)
                 .IsRequired()
-                .HasDefaultValue(false);
+                .HasDefaultValue(false)
+                .ValueGeneratedNever();
 
             builder.Property(v => v.IsActive)
                 .IsRequired()
-                .HasDefaultValue(true);
+                .HasDefaultValue(true)
+                .ValueGeneratedNever();
 
             builder.Property(p => p.Slug)
                 .HasMaxLength(100);

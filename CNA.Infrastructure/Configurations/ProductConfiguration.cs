@@ -25,19 +25,23 @@ namespace CNA.Infrastructure.Configurations
 
             builder.Property(p => p.IsShippable)
                 .IsRequired()
-                .HasDefaultValue(true);
+                .HasDefaultValue(true)
+                .ValueGeneratedNever();
 
             builder.Property(p => p.IsDigital)
                 .IsRequired()
-                .HasDefaultValue(false);
+                .HasDefaultValue(false)
+                .ValueGeneratedNever();
 
             builder.Property(p => p.IsReturnable)
                 .IsRequired()
-                .HasDefaultValue(true);
+                .HasDefaultValue(true)
+                .ValueGeneratedNever();
 
             builder.Property(p => p.IsActive)
                 .IsRequired()
-                .HasDefaultValue(true);
+                .HasDefaultValue(true)
+                .ValueGeneratedNever();
 
             builder.Property(p => p.Slug)
                 .HasMaxLength(100);

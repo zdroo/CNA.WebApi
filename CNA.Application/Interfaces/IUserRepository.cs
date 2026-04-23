@@ -9,5 +9,7 @@ namespace CNA.Application.Interfaces
         Task AddAsync(User user);
         Task DeleteAsync(User user);
         Task<User?> GetByRefreshTokenAsync(string refreshToken);
+        Task<User?> GetByGoogleIdAsync(string googleId);
+        Task AddRefreshTokenAsync(RefreshToken token);
     }
 }

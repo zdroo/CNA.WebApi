@@ -33,7 +33,8 @@ namespace CNA.Infrastructure.Configurations
 
             builder.Property(c => c.IsShippingAvailable)
                 .IsRequired()
-                .HasDefaultValue(false);
+                .HasDefaultValue(false)
+                .ValueGeneratedNever();
         }
     }
 }

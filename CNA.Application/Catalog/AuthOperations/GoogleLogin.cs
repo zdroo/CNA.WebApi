@@ -1,60 +1,63 @@
-﻿using CNA.Application.Interfaces;
+using CNA.Application.Interfaces;
 using CNA.Application.Services;
 using CNA.Contracts.Responses;
 using CNA.Domain.Catalog.Entities;
 using MediatR;
-using System.Security.Authentication;
 
 namespace CNA.Application.Catalog.AuthOperations;
 
-public static class Login
+public static class GoogleLogin
 {
-    public record Command(string Email, string Password) : IRequest<AuthResponse>;
+    public record Command(string IdToken) : IRequest<AuthResponse>;
 
     public class Handler : IRequestHandler<Command, AuthResponse>
     {
         private readonly IUserRepository _userRepository;
-        private readonly IPasswordHasher _passwordHasher;
         private readonly IJwtService _jwtService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IGoogleAuthService _googleAuthService;
 
         public Handler(
             IUserRepository userRepository,
-            IPasswordHasher passwordHasher,
             IJwtService jwtService,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IGoogleAuthService googleAuthService)
         {
             _userRepository = userRepository;
-            _passwordHasher = passwordHasher;
             _jwtService = jwtService;
             _unitOfWork = unitOfWork;
+            _googleAuthService = googleAuthService;
         }
 
         public async Task<AuthResponse> Handle(Command request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByEmailAsync(request.Email);
+            var googleUser = await _googleAuthService.ValidateTokenAsync(request.IdToken);
+
+            var user = await _userRepository.GetByGoogleIdAsync(googleUser.GoogleId)
+                    ?? await _userRepository.GetByEmailAsync(googleUser.Email);
 
             if (user == null)
-                throw new AuthenticationException("Invalid email.");
+            {
+                user = new User(
+                    email: googleUser.Email,
+                    googleId: googleUser.GoogleId,
+                    firstName: googleUser.FirstName,
+                    lastName: googleUser.LastName);
 
-            var isValid = _passwordHasher.Verify(request.Password, user.PasswordHash);
+                await _userRepository.AddAsync(user);
+            }
 
-            if (!isValid)
-                throw new AuthenticationException("Invalid password.");
-
-            var token = _jwtService.GenerateToken(user);
-
+            var accessToken = _jwtService.GenerateToken(user);
             var refreshToken = new RefreshToken(
                 token: Guid.NewGuid().ToString(),
                 expiresAt: DateTime.UtcNow.AddDays(365),
-                userId: user.Id
-            );
+                userId: user.Id);
 
             user.AddRefreshToken(refreshToken);
             await _userRepository.AddRefreshTokenAsync(refreshToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return new AuthResponse(token, refreshToken.Token);
+            return new AuthResponse(accessToken, refreshToken.Token);
         }
     }
 }

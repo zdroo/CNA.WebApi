@@ -24,12 +24,10 @@ namespace CNA.Infrastructure.Configurations
 
             builder.Property(rt => rt.IsRevoked)
                 .IsRequired()
-                .HasDefaultValue(false);
+                .HasDefaultValue(false)
+                .ValueGeneratedNever();
 
-            builder.HasOne(rt => rt.User)
-                .WithMany()
-                .HasForeignKey(rt => rt.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.Property(rt => rt.UserId).IsRequired();
         }
     }
 }

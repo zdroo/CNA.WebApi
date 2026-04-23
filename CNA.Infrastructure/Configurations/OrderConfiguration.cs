@@ -28,7 +28,8 @@ namespace CNA.Infrastructure.Configurations
 
             builder.Property(o => o.IsPaid)
                 .IsRequired()
-                .HasDefaultValue(false);
+                .HasDefaultValue(false)
+                .ValueGeneratedNever();
 
             builder.HasOne<User>()
                 .WithMany()

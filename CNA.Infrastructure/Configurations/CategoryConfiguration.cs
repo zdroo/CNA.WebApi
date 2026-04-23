@@ -28,7 +28,8 @@ namespace CNA.Infrastructure.Configurations
 
             builder.Property(c => c.IsActive)
                 .IsRequired()
-                .HasDefaultValue(true);
+                .HasDefaultValue(true)
+                .ValueGeneratedNever();
 
             builder.HasOne(c => c.ParentCategory)
                 .WithMany()

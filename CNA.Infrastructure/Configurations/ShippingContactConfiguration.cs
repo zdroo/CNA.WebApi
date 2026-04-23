@@ -22,7 +22,8 @@ namespace CNA.Infrastructure.Configurations
 
             builder.Property(sc => sc.IsDefault)
                 .IsRequired()
-                .HasDefaultValue(false);
+                .HasDefaultValue(false)
+                .ValueGeneratedNever();
 
             builder.HasOne(sc => sc.User)
                 .WithMany(u => u.ShippingContacts)

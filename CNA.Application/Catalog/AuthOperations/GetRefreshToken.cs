@@ -40,6 +40,7 @@ public static class GetRefreshToken
             );
 
             user.AddRefreshToken(newRefreshToken);
+            await _userRepository.AddRefreshTokenAsync(newRefreshToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
             var accessToken = _jwtService.GenerateToken(user);
             return new AuthResponse(accessToken, newRefreshToken.Token);

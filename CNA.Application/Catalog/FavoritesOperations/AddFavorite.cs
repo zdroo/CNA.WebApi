@@ -6,7 +6,7 @@ namespace CNA.Application.Catalog.FavoritesOperations
 {
     public static class AddFavorite
     {
-        public record Command : IRequest
+        public record Command : IRequest<Guid>
         {
             public Guid ProductVariantId { get; init; }
             public Guid? UserId { get; set; }
@@ -20,7 +20,7 @@ namespace CNA.Application.Catalog.FavoritesOperations
             }
         }
 
-        public class Handler : IRequestHandler<Command>
+        public class Handler : IRequestHandler<Command, Guid>
         {
             private readonly IFavoritesRepository _favoriteRepository;
 
@@ -29,7 +29,7 @@ namespace CNA.Application.Catalog.FavoritesOperations
                 _favoriteRepository = favoriteRepository;
             }
 
-            public async Task Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Guid> Handle(Command request, CancellationToken cancellationToken)
             {
                 if (request.UserId == null && string.IsNullOrWhiteSpace(request.SessionId))
                 {
@@ -43,6 +43,7 @@ namespace CNA.Application.Catalog.FavoritesOperations
                 );
 
                 await _favoriteRepository.AddAsync(favorite);
+                return favorite.Id;
             }
         }
     }

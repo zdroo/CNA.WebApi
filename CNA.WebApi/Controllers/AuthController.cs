@@ -35,5 +35,12 @@ namespace CNA.WebApi.Controllers
             var result = await _mediator.Send(command);
             return Ok(result);
         }
+
+        [HttpPost("google")]
+        public async Task<IActionResult> Google([FromBody] GoogleLogin.Command command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
     }
 }

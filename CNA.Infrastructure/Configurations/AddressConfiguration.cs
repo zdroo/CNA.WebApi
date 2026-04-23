@@ -36,7 +36,8 @@ namespace CNA.Infrastructure.Configurations
 
             builder.Property(a => a.IsDefault)
                 .IsRequired()
-                .HasDefaultValue(false);
+                .HasDefaultValue(false)
+                .ValueGeneratedNever();
 
             builder.HasOne(a => a.User)
                 .WithMany(u => u.Addresses)

@@ -31,13 +31,21 @@ namespace CNA.Infrastructure.Configurations
             builder.Property(x => x.PasswordHash)
                 .IsRequired();
 
+            builder.Property(x => x.GoogleId)
+                .HasMaxLength(128);
+
+            builder.HasIndex(x => x.GoogleId)
+                .IsUnique()
+                .HasFilter("[GoogleId] IS NOT NULL");
+
             builder.Property(x => x.Role)
                 .IsRequired()
                 .HasConversion<string>();
 
             builder.Property(x => x.IsActive)
                 .IsRequired()
-                .HasDefaultValue(true);
+                .HasDefaultValue(true)
+                .ValueGeneratedNever();
 
             builder.HasOne(u => u.Cart)
                 .WithOne(c => c.User)
@@ -62,7 +70,7 @@ namespace CNA.Infrastructure.Configurations
 
             builder.HasMany<RefreshToken>(u => u.RefreshTokens)
                 .WithOne(rt => rt.User)
-                .HasForeignKey("UserId")
+                .HasForeignKey(rt => rt.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Navigation(nameof(User.RefreshTokens))

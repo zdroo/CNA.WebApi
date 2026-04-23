@@ -31,12 +31,30 @@ namespace CNA.Infrastructure.Repositories
 
         public async Task<List<FavoriteItem>> GetAllAsync(Guid userId)
         {
-            return await _context.FavoriteItems.Where(f => f.UserId == userId).ToListAsync();
+            return await _context.FavoriteItems
+                .Include(f => f.Product)
+                    .ThenInclude(v => v.Product)
+                .Include(f => f.Product)
+                    .ThenInclude(v => v.Stock)
+                .Include(f => f.Product)
+                    .ThenInclude(v => v.Images.OrderBy(i => i.SortOrder))
+                .Where(f => f.UserId == userId)
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task<List<FavoriteItem>> GetAllAsync(string sessionId)
         {
-            return await _context.FavoriteItems.Where(f => f.SessionId == sessionId).ToListAsync();
+            return await _context.FavoriteItems
+                .Include(f => f.Product)
+                    .ThenInclude(v => v.Product)
+                .Include(f => f.Product)
+                    .ThenInclude(v => v.Stock)
+                .Include(f => f.Product)
+                    .ThenInclude(v => v.Images.OrderBy(i => i.SortOrder))
+                .Where(f => f.SessionId == sessionId)
+                .AsNoTracking()
+                .ToListAsync();
         }
     }
 }

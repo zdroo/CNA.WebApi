@@ -10,6 +10,7 @@ namespace CNA.Domain.Catalog.Entities
         public string LastName { get; set; }
         public string Email { get; private set; } = default!;
         public string PasswordHash { get; private set; } = default!;
+        public string? GoogleId { get; private set; }
         public UserRole Role { get; private set; } = UserRole.User;
         public Cart? Cart { get; private set; }
         public bool IsActive { get; private set; }
@@ -29,6 +30,18 @@ namespace CNA.Domain.Catalog.Entities
         {
             Email = email;
             PasswordHash = passwordHash;
+            Role = UserRole.User;
+            IsActive = true;
+            CreatedAt = DateTime.UtcNow;
+        }
+
+        public User(string email, string googleId, string firstName, string lastName)
+        {
+            Email = email;
+            GoogleId = googleId;
+            FirstName = firstName;
+            LastName = lastName;
+            PasswordHash = string.Empty;
             Role = UserRole.User;
             IsActive = true;
             CreatedAt = DateTime.UtcNow;

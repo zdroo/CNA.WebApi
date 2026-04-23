@@ -7,7 +7,15 @@
       "Bash(grep -E \"\\\\.\\(ts|tsx|js|jsx\\)$\")",
       "Bash(npx tsc *)",
       "Bash(xargs head *)",
-      "Bash(sqlcmd *)"
+      "Bash(sqlcmd *)",
+      "Bash(dotnet ef migrations *)",
+      "Bash(xargs cat *)",
+      "Bash(curl -s -X POST http://localhost:5062/api/auth/register -H 'Content-Type: application/json' -d '{\"email\":\"admin@cna.com\",\"password\":\"Admin1234!\"}')",
+      "Bash(curl -sv -X POST http://localhost:5062/api/auth/register -H 'Content-Type: application/json' -d '{\"email\":\"admin@cna.com\",\"password\":\"Admin1234!\"}')",
+      "Bash(curl *)",
+      "Bash(dotnet add *)",
+      "Bash(npm install *)",
+      "Bash(dotnet ef *)"
     ]
   }
 }

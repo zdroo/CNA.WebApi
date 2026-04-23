@@ -55,5 +55,18 @@ namespace CNA.Infrastructure.Repositories
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<User?> GetByGoogleIdAsync(string googleId)
+        {
+            return await _context.Users
+                .Include(u => u.RefreshTokens)
+                .FirstOrDefaultAsync(u => u.GoogleId == googleId);
+        }
+
+        public Task AddRefreshTokenAsync(RefreshToken token)
+        {
+            _context.RefreshTokens.Add(token);
+            return Task.CompletedTask;
+        }
     }
 }
