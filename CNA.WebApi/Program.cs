@@ -9,10 +9,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Stripe;
 using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -26,7 +29,9 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IFavoritesRepository, FavoritesRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+builder.Services.AddScoped<IShippingContactRepository, ShippingContactRepository>();
 builder.Services.AddScoped<CNA.Application.Services.IGoogleAuthService, GoogleAuthService>();
+builder.Services.AddScoped<CNA.Application.Services.ICartService, CartService>();
 
 
 builder.Services.AddMediatR(cfg =>
@@ -115,9 +120,9 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
-app.UseAuthorization();
-app.UseAuthentication();
 app.UseCors("AllowAll");
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

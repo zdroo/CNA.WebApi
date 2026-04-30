@@ -5,5 +5,6 @@
         Guid GetUserId();
         string? GetUserEmail();
         bool IsAuthenticated();
+        Guid? GetSessionId();
     }
 }

@@ -1,43 +1,41 @@
-﻿using CNA.Domain.Common;
+using CNA.Domain.Common;
 using CNA.Domain.Exceptions;
 
 namespace CNA.Domain.Catalog.Entities
 {
     public class Cart : BaseEntity
     {
-        public Guid UserId { get; private set; }
-        public User User { get; private set; } = default!;
+        public Guid? UserId { get; private set; }
+        public User? User { get; private set; }
+        public Guid? SessionId { get; private set; }
 
         private readonly List<CartItem> _items = new();
         public IReadOnlyCollection<CartItem> Items => _items;
 
         protected Cart() { }
 
-        public Cart(Guid userId)
+        private Cart(Guid? userId, Guid? sessionId)
         {
             UserId = userId;
+            SessionId = sessionId;
         }
 
-        public void AddItem(Guid productVariantId, decimal price, int quantity = 1)
+        public static Cart ForUser(Guid userId) => new(userId, null);
+        public static Cart ForSession(Guid sessionId) => new(null, sessionId);
+
+        public CartItem? AddItem(Guid productVariantId, decimal price, int quantity = 1)
         {
             var existing = _items.FirstOrDefault(i => i.ProductVariantId == productVariantId);
-
             if (existing != null)
             {
                 existing.Increase(quantity);
-                return;
+                return null;
             }
 
-            _items.Add(new CartItem(productVariantId, quantity, price));
+            var item = new CartItem(Id, productVariantId, quantity, price);
+            _items.Add(item);
+            return item;
         }
-
-        //public void RemoveItemByProductVariantId(Guid productVariantId)
-        //{
-        //    var item = _items.FirstOrDefault(i => i.ProductVariantId == productVariantId)
-        //        ?? throw new CartItemNotFoundException(productVariantId);
-
-        //    _items.Remove(item);
-        //}
 
         public void RemoveItemByCartItemId(Guid cartItemId)
         {

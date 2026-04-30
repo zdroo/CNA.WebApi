@@ -10,9 +10,9 @@ namespace CNA.Application.Catalog.CartOperations;
 
 public static class CartCheckout
 {
-    public record Command(Guid UserId, Guid ShippingContactId, List<Guid> CartItemIds) : IRequest;
+    public record Command(Guid UserId, Guid ShippingContactId, List<Guid> CartItemIds) : IRequest<Guid>;
 
-    public class Handler : IRequestHandler<Command>
+    public class Handler : IRequestHandler<Command, Guid>
     {
         private readonly IUserRepository _userRepository;
         private readonly IProductRepository _productRepository;
@@ -31,9 +31,10 @@ public static class CartCheckout
             _mapper = mapper;
         }
 
-        public async Task Handle(Command command, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(Command command, CancellationToken cancellationToken)
         {
             var saved = false;
+            Guid orderId = Guid.Empty;
 
             while (!saved)
             {
@@ -47,13 +48,15 @@ public static class CartCheckout
                         ?? throw new ShippingContactNotFoundException(command.ShippingContactId, user.Id);
 
                     var snapshot = _mapper.Map<ShippingAddressSnapshot>(shippingContact);
-                    var cart = user.GetOrCreateCart();
+                    var cart = user.Cart
+                        ?? throw new InvalidOperationException("Cart is empty.");
                     var itemsToCheckout = GetItemsToCheckout(cart, command.CartItemIds);
                     var itemsWithVariants = await GetItemsWithVariantsAsync(itemsToCheckout);
 
                     ValidateAndReserveStock(itemsWithVariants);
 
                     var order = CreateOrder(command, snapshot, itemsWithVariants);
+                    orderId = order.Id;
 
                     foreach (var item in itemsWithVariants)
                         cart.RemoveItemByCartItemId(item.CartItem.Id);
@@ -67,6 +70,8 @@ public static class CartCheckout
                         await entry.ReloadAsync(cancellationToken);
                 }
             }
+
+            return orderId;
         }
 
         private static List<CartItem> GetItemsToCheckout(Cart cart, List<Guid> cartItemIds)
@@ -119,7 +124,10 @@ public static class CartCheckout
                     new OrderItem(
                         x.CartItem.ProductVariantId,
                         x.CartItem.Quantity,
-                        x.CartItem.Price
+                        x.CartItem.Price,
+                        x.Variant.Name,
+                        x.Variant.Slug,
+                        x.Variant.Product.Slug
                     )
                 )
             );

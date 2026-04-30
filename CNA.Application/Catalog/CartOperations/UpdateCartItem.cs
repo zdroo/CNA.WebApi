@@ -1,49 +1,35 @@
-﻿using MediatR;
+using MediatR;
 using CNA.Application.Interfaces;
+using CNA.Application.Services;
 using CNA.Domain.Exceptions;
-using AutoMapper;
-using CNA.Contracts.Responses;
 
 namespace CNA.Application.Catalog.CartOperations;
 
 public static class UpdateCartItem
 {
-    public record Command(Guid UserId, Guid CartItemId, int Quantity = 1)
-        : IRequest<CartItemResponse>;
+    public record Command(Guid? UserId, Guid? SessionId, Guid CartItemId, int Quantity = 1) : IRequest;
 
-    public class Handler : IRequestHandler<Command, CartItemResponse>
+    public class Handler : IRequestHandler<Command>
     {
-        private readonly ICartRepository _cartRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly ICartService _cartService;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public Handler(
-            ICartRepository cartRepository,
-            IUserRepository userRepository,
-            IUnitOfWork unitOfWork,
-            IMapper mapper)
+        public Handler(ICartService cartService, IUnitOfWork unitOfWork)
         {
-            _cartRepository = cartRepository;
-            _userRepository = userRepository;
+            _cartService = cartService;
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
-        public async Task<CartItemResponse> Handle(Command command, CancellationToken cancellationToken)
+        public async Task Handle(Command command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByIdAsync(command.UserId)
-                ?? throw new UserNotFoundException(command.UserId);
+            var cart = await _cartService.GetOrCreateCartAsync(command.UserId, command.SessionId, cancellationToken);
 
-            var cart = user.GetOrCreateCart();
-
-            var cartItem = cart.Items.FirstOrDefault(_ => _.Id == command.CartItemId)
+            var cartItem = cart.Items.FirstOrDefault(i => i.Id == command.CartItemId)
                 ?? throw new CartItemNotFoundException(command.CartItemId);
 
-            cartItem.Increase(command.Quantity);
+            cartItem.SetQuantity(command.Quantity);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            return _mapper.Map<CartItemResponse>(cartItem);
         }
     }
 }

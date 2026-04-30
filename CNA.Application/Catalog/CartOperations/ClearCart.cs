@@ -1,30 +1,29 @@
-﻿using MediatR;
+using MediatR;
 using CNA.Application.Interfaces;
-using CNA.Domain.Exceptions;
+using CNA.Application.Services;
 
 namespace CNA.Application.Catalog.CartOperations;
 
 public static class ClearCart
 {
-    public record Command(Guid UserId) : IRequest;
+    public record Command(Guid? UserId, Guid? SessionId) : IRequest;
 
     public class Handler : IRequestHandler<Command>
     {
-        private readonly IUserRepository _userRepository;
+        private readonly ICartService _cartService;
         private readonly IUnitOfWork _unitOfWork;
 
-        public Handler(IUserRepository userRepository, IUnitOfWork unitOfWork)
+        public Handler(ICartService cartService, IUnitOfWork unitOfWork)
         {
-            _userRepository = userRepository;
+            _cartService = cartService;
             _unitOfWork = unitOfWork;
         }
 
         public async Task Handle(Command command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByIdAsync(command.UserId)
-                        ?? throw new UserNotFoundException(command.UserId);
+            var cart = await _cartService.GetCartAsync(command.UserId, command.SessionId, cancellationToken);
 
-            var cart = user.GetOrCreateCart();
+            if (cart == null) return;
 
             cart.Clear();
 

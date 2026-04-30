@@ -25,13 +25,6 @@ namespace CNA.Application.Common.Mapping
                         .ToList()
                 });
 
-            CreateMap<CartItem, CartItemResponse>();
-            //.ForMember(dest => dest.Total, opt => opt.MapFrom(src => src.Total));
-
-            CreateMap<Cart, CartResponse>()
-                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items))
-                .ForMember(dest => dest.Total, opt => opt.MapFrom(src => src.GetTotal()));
-
             CreateMap<Category, CategoryResponse>()
                 .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
@@ -41,17 +34,10 @@ namespace CNA.Application.Common.Mapping
 
             CreateMap<Country, CountryResponse>();
 
-            CreateMap<OrderItem, OrderItemResponse>()
-                .ForMember(dest => dest.ProductVariantId, opt => opt.MapFrom(src => src.ProductVariantId))
-                .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))
-                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
-                .ForMember(dest => dest.Total, opt => opt.MapFrom(src => src.Total));
+            CreateMap<OrderItem, OrderItemResponse>();
 
             CreateMap<Order, OrderResponse>()
-                .ForMember(dest => dest.OrderId, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.TotalAmount, opt => opt.MapFrom(src => src.TotalAmount))
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
-                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items));
+                .ForMember(dest => dest.OrderId, opt => opt.MapFrom(src => src.Id));
 
             CreateMap<ProductVariant, ProductVariantResponse>()
                 .ForMember(dest => dest.VariantId, opt => opt.MapFrom(src => src.Id))
@@ -91,6 +77,30 @@ namespace CNA.Application.Common.Mapping
             //.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
             //.ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.CategoryId))
             //.ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive))
+
+            CreateMap<ShippingContact, ShippingContactResponse>()
+                .ConstructUsing(src => new ShippingContactResponse(
+                    src.Id,
+                    src.FullName,
+                    src.PhoneNumber,
+                    src.Address.AddressLine1,
+                    src.Address.AddressLine2,
+                    src.Address.City,
+                    src.Address.Region,
+                    src.Address.PostalCode,
+                    src.Address.CountryCode,
+                    src.IsDefault
+                ));
+
+            CreateMap<FavoriteItem, FavoriteItemResponse>()
+                .ForMember(dest => dest.FavoriteItemId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.VariantSlug, opt => opt.MapFrom(src => src.Product.Slug))
+                .ForMember(dest => dest.ProductSlug, opt => opt.MapFrom(src => src.Product.Product.Slug))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Product.Name))
+                .ForMember(dest => dest.Brand, opt => opt.MapFrom(src => src.Product.Brand))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Product.Price))
+                .ForMember(dest => dest.StockQuantity, opt => opt.MapFrom(src => src.Product.Stock.Quantity))
+                .ForMember(dest => dest.PrimaryImageUrl, opt => opt.MapFrom(src => src.Product.Images.Select(i => i.Url).FirstOrDefault()));
 
             CreateMap<ShippingContact, ShippingAddressSnapshot>()
                 .ForMember(dest => dest.AddressLine1, opt => opt.MapFrom(src => src.Address.AddressLine1))

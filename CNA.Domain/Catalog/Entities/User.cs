@@ -79,7 +79,7 @@ namespace CNA.Domain.Catalog.Entities
 
         public Cart GetOrCreateCart()
         {
-            Cart ??= new Cart(Id);
+            Cart ??= Cart.ForUser(Id);
             return Cart;
         }
     }

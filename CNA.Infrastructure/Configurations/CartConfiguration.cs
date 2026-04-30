@@ -1,10 +1,9 @@
-﻿using CNA.Domain.Catalog.Entities;
+using CNA.Domain.Catalog.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CNA.Infrastructure.Configurations
 {
-
     public class CartConfiguration : IEntityTypeConfiguration<Cart>
     {
         public void Configure(EntityTypeBuilder<Cart> builder)
@@ -14,10 +13,18 @@ namespace CNA.Infrastructure.Configurations
             builder.HasKey(c => c.Id);
 
             builder.Property(c => c.UserId)
-                .IsRequired();
+                .IsRequired(false);
+
+            builder.Property(c => c.SessionId)
+                .IsRequired(false);
 
             builder.HasIndex(c => c.UserId)
-                .IsUnique();
+                .IsUnique()
+                .HasFilter("[UserId] IS NOT NULL");
+
+            builder.HasIndex(c => c.SessionId)
+                .IsUnique()
+                .HasFilter("[SessionId] IS NOT NULL");
 
             builder.HasMany<CartItem>(c => c.Items)
                 .WithOne(ci => ci.Cart)
@@ -29,4 +36,3 @@ namespace CNA.Infrastructure.Configurations
         }
     }
 }
-

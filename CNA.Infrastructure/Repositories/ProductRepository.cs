@@ -133,8 +133,20 @@ namespace CNA.Infrastructure.Repositories
             return await _context.ProductVariants
                 .Include(x => x.Attributes)
                 .Include(v => v.Images.OrderBy(i => i.SortOrder))
-                .AsNoTracking()
+                .Include(v => v.Stock)
+                .Include(v => v.Product)
                 .Where(_ => productVariantIds.Contains(_.Id)).ToListAsync();
+        }
+
+        public async Task<List<ProductVariant>> GetByProductVariantIdsWithDetails(IEnumerable<Guid> productVariantIds)
+        {
+            return await _context.ProductVariants
+                .Include(v => v.Product)
+                .Include(v => v.Images.OrderBy(i => i.SortOrder))
+                .Include(v => v.Stock)
+                .AsNoTracking()
+                .Where(v => productVariantIds.Contains(v.Id))
+                .ToListAsync();
         }
 
         public async Task<List<ProductVariant>> GetFiltered(ProductVariantsFilter filter)

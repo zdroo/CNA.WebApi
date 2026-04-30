@@ -18,8 +18,9 @@ namespace CNA.Infrastructure.Repositories
             return await _context.Users
                 .Include(u => u.Addresses)
                 .Include(u => u.ShippingContacts)
+                    .ThenInclude(sc => sc.Address)
                 .Include(u => u.RefreshTokens)
-                .Include(u => u.Cart)
+                .Include(u => u.Cart!)
                     .ThenInclude(c => c.Items)
                 .FirstOrDefaultAsync(u => u.Id == id);
         }

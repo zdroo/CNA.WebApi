@@ -12,8 +12,9 @@ namespace CNA.Domain.Catalog.Entities
 
         protected CartItem() { }
 
-        public CartItem(Guid productVariantId, int quantity, decimal price)
+        public CartItem(Guid cartId, Guid productVariantId, int quantity, decimal price)
         {
+            CartId = cartId;
             ProductVariantId = productVariantId;
             Quantity = quantity;
             Price = price;
@@ -22,6 +23,13 @@ namespace CNA.Domain.Catalog.Entities
         public void Increase(int quantity)
         {
             Quantity += quantity;
+        }
+
+        public void SetQuantity(int quantity)
+        {
+            if (quantity <= 0)
+                throw new InvalidOperationException("Quantity must be positive");
+            Quantity = quantity;
         }
 
         public decimal Total => Price * Quantity;

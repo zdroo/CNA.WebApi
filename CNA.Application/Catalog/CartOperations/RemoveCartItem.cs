@@ -1,4 +1,5 @@
-﻿using CNA.Application.Interfaces;
+using CNA.Application.Interfaces;
+using CNA.Application.Services;
 using CNA.Domain.Exceptions;
 using MediatR;
 
@@ -6,25 +7,22 @@ namespace CNA.Application.Catalog.CartOperations;
 
 public static class RemoveCartItem
 {
-    public record Command(Guid UserId, Guid CartItemId) : IRequest;
+    public record Command(Guid? UserId, Guid? SessionId, Guid CartItemId) : IRequest;
 
     public class Handler : IRequestHandler<Command>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IUserRepository _userRepository;
+        private readonly ICartService _cartService;
 
-        public Handler(IUnitOfWork unitOfWork, IUserRepository userRepository)
+        public Handler(IUnitOfWork unitOfWork, ICartService cartService)
         {
             _unitOfWork = unitOfWork;
-            _userRepository = userRepository;
+            _cartService = cartService;
         }
 
         public async Task Handle(Command command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByIdAsync(command.UserId)
-                ?? throw new UserNotFoundException(command.UserId);
-
-            var cart = user.GetOrCreateCart();
+            var cart = await _cartService.GetOrCreateCartAsync(command.UserId, command.SessionId, cancellationToken);
             cart.RemoveItemByCartItemId(command.CartItemId);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }

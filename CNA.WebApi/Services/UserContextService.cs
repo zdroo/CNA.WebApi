@@ -30,5 +30,13 @@ namespace CNA.WebApi.Services
         {
             return _httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
         }
+
+        public Guid? GetSessionId()
+        {
+            // Try header first, then query parameter as fallback
+            var value = _httpContextAccessor.HttpContext?.Request.Headers["X-Session-Id"].FirstOrDefault()
+                ?? _httpContextAccessor.HttpContext?.Request.Query["sessionId"].FirstOrDefault();
+            return Guid.TryParse(value, out var sessionId) ? sessionId : null;
+        }
     }
 }

@@ -50,6 +50,7 @@ namespace CNA.Infrastructure.Configurations
             builder.HasOne(u => u.Cart)
                 .WithOne(c => c.User)
                 .HasForeignKey<Cart>(c => c.UserId)
+                .IsRequired(false)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(u => u.Addresses)
